@@ -1,19 +1,45 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\PostController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
-use App\Http\Controllers\HomeController;
-
+/*
+|--------------------------------------------------------------------------
+| Public Routes - Cahaya Ornamen
+|--------------------------------------------------------------------------
+*/
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Katalog Produk Ornamen
+Route::get('/katalog', [ProductController::class, 'index'])->name('products.index');
+Route::get('/katalog/{slug}', [ProductController::class, 'show'])->name('products.show');
 
+// Portofolio Proyek Terpasang
+Route::get('/portofolio', [PortfolioController::class, 'index'])->name('portfolios.index');
+Route::get('/portofolio/{slug}', [PortfolioController::class, 'show'])->name('portfolios.show');
+
+// Artikel & Tips Arsitektur (SEO)
+Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
+Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('articles.show');
+
+// Kontak & Form Konsultasi Lead
+Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
+Route::post('/konsultasi', [ContactController::class, 'store'])->name('inquiries.store');
+
+/*
+|--------------------------------------------------------------------------
+| Auth & Admin CMS Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('/dashboard', function () {
     return redirect()->route('admin.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');

@@ -1,0 +1,52 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Inquiry;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Inertia\Response;
+
+class ContactController extends Controller
+{
+    /**
+     * Menampilkan halaman kontak dan form konsultasi RAB.
+     */
+    public function index(): Response
+    {
+        $contactInfo = [
+            'brand_name' => 'Cahaya Ornamen',
+            'phone' => '+62 812-3456-7890',
+            'whatsapp_number' => '6281234567890',
+            'whatsapp_url' => 'https://wa.me/6281234567890?text=Halo%20Cahaya%20Ornamen,%20saya%20ingin%20konsultasi%20kebutuhan%20ornamen%20arsitektur',
+            'email' => 'halo@cahayaornamen.com',
+            'workshop_address' => 'Jl. Raya Industri Arsitektur No. 88, Kawasan Workshop GRC, Jawa Timur, Indonesia',
+            'working_hours' => 'Senin - Sabtu: 08.00 - 17.00 WIB',
+        ];
+
+        return Inertia::render('Contact', [
+            'contactInfo' => $contactInfo,
+        ]);
+    }
+
+    /**
+     * Menyimpan submission formulir konsultasi / permintaan penawaran.
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|max:50',
+            'email' => 'nullable|email|max:255',
+            'project_type' => 'nullable|string|max:100',
+            'location' => 'nullable|string|max:255',
+            'estimated_volume' => 'nullable|string|max:100',
+            'message' => 'required|string|max:2000',
+        ]);
+
+        Inquiry::create($validated);
+
+        return back()->with('success', 'Permintaan konsultasi Anda berhasil dikirim. Tim estimator Cahaya Ornamen akan segera menghubungi Anda.');
+    }
+}
