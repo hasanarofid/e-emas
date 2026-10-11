@@ -333,8 +333,8 @@ class HomeController extends Controller
         $contactInfo = [
             'brand_name' => 'Cahaya Ornamen',
             'tagline' => 'Spesialis Ornamen Arsitektur Klasik, GRC Krawangan, Pilar, & Kubah',
-            'phone' => '+62 812-3456-7890',
-            'whatsapp_number' => '6281234567890',
+            'phone' => '+62 813-1605-3870',
+            'whatsapp_number' => '6281316053870',
             'whatsapp_message' => 'Halo Cahaya Ornamen, saya ingin berkonsultasi mengenai kebutuhan ornamen arsitektur (GRC/Krawangan/Pilar/Kubah).',
             'email' => 'halo@cahayaornamen.com',
             'workshop_address' => 'Jl. Raya Industri Arsitektur No. 88, Kawasan Workshop GRC, Jawa Timur, Indonesia',

@@ -14,7 +14,7 @@ import {
 const props = defineProps({
     whatsappNumber: {
         type: String,
-        default: '6281234567890'
+        default: '6281316053870'
     }
 });
 
@@ -164,7 +164,7 @@ const submitInquiry = () => {
                                     v-model="form.phone"
                                     type="tel" 
                                     required
-                                    placeholder="081234567890"
+                                    placeholder="081316053870"
                                     class="w-full px-4 py-2.5 rounded-xl border border-brand-dark/20 bg-white text-sm text-brand-dark focus:ring-2 focus:ring-brand-primary focus:border-brand-primary outline-none transition-all"
                                 />
                             </div>

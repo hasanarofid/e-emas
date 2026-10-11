@@ -7,8 +7,8 @@ defineProps({
         type: Object,
         default: () => ({
             brand_name: 'Cahaya Ornamen',
-            phone: '+62 812-3456-7890',
-            whatsapp_number: '6281234567890',
+            phone: '+62 813-1605-3870',
+            whatsapp_number: '6281316053870',
             email: 'halo@cahayaornamen.com',
             workshop_address: 'Jl. Raya Industri Arsitektur No. 88, Kawasan Workshop GRC, Jawa Timur, Indonesia',
             working_hours: 'Senin - Sabtu: 08.00 - 17.00 WIB'

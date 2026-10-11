@@ -6,7 +6,7 @@ import { MessageSquare, ArrowRight, ShieldCheck, Sparkles, Layers, CheckCircle2 
 defineProps({
     whatsappNumber: {
         type: String,
-        default: '6281234567890'
+        default: '6281316053870'
     }
 });
 

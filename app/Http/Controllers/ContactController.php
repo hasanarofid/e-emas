@@ -17,9 +17,9 @@ class ContactController extends Controller
     {
         $contactInfo = [
             'brand_name' => 'Cahaya Ornamen',
-            'phone' => '+62 812-3456-7890',
-            'whatsapp_number' => '6281234567890',
-            'whatsapp_url' => 'https://wa.me/6281234567890?text=Halo%20Cahaya%20Ornamen,%20saya%20ingin%20konsultasi%20kebutuhan%20ornamen%20arsitektur',
+            'phone' => '+62 813-1605-3870',
+            'whatsapp_number' => '6281316053870',
+            'whatsapp_url' => 'https://wa.me/6281316053870?text=Halo%20Cahaya%20Ornamen,%20saya%20ingin%20konsultasi%20kebutuhan%20ornamen%20arsitektur',
             'email' => 'halo@cahayaornamen.com',
             'workshop_address' => 'Jl. Raya Industri Arsitektur No. 88, Kawasan Workshop GRC, Jawa Timur, Indonesia',
             'working_hours' => 'Senin - Sabtu: 08.00 - 17.00 WIB',

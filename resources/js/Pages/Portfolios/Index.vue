@@ -77,7 +77,7 @@ defineProps({
 
                             <div class="pt-4 border-t border-brand-dark/10">
                                 <a 
-                                    :href="`https://wa.me/6281234567890?text=Halo%20Cahaya%20Ornamen,%20saya%20tertarik%20dengan%20proyek:%20${encodeURIComponent(item.title)}`"
+                                    :href="`https://wa.me/6281316053870?text=Halo%20Cahaya%20Ornamen,%20saya%20tertarik%20dengan%20proyek:%20${encodeURIComponent(item.title)}`"
                                     target="_blank"
                                     class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-primary hover:text-brand-dark"
                                 >

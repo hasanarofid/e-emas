@@ -74,7 +74,7 @@ defineProps({
                         <p class="text-xs text-brand-dark/75">Konsultasikan kebutuhan proyek Anda langsung bersama tim arsitek & fabrikator kami.</p>
                     </div>
                     <a 
-                        href="https://wa.me/6281234567890?text=Halo%20Cahaya%20Ornamen,%20saya%20membaca%20artikel%20dan%20ingin%20konsultasi"
+                        href="https://wa.me/6281316053870?text=Halo%20Cahaya%20Ornamen,%20saya%20membaca%20artikel%20dan%20ingin%20konsultasi"
                         target="_blank"
                         class="px-5 py-2.5 rounded-xl bg-brand-cta text-brand-dark font-bold text-xs shadow-md hover:bg-yellow-300 transition-all shrink-0 flex items-center gap-2"
                     >
