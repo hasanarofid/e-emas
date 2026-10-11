@@ -33,8 +33,19 @@ const filteredProducts = computed(() => {
 </script>
 
 <template>
-    <section class="py-24 bg-brand-sand/40 border-y border-brand-dark/10 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section class="py-24 bg-brand-sand/40 border-y border-brand-dark/10 relative overflow-hidden">
+        
+        <!-- Subtle Arabesque Watermark on Left - Straight & Ultra Light -->
+        <div class="absolute -left-20 sm:-left-28 top-1/2 -translate-y-1/2 w-[340px] sm:w-[420px] pointer-events-none select-none opacity-[0.05] sm:opacity-[0.07] mix-blend-multiply z-0">
+            <img 
+                src="/images/ornaments/mandala-transparent.png" 
+                alt="Ornamen Arabesque Background" 
+                class="w-full h-auto object-contain"
+                loading="lazy"
+            />
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
             <!-- Section Header -->
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">

@@ -32,6 +32,26 @@ const heroRef = ref(null);
         <div class="absolute -top-24 right-10 w-96 h-96 bg-brand-sand rounded-full blur-3xl opacity-50 pointer-events-none"></div>
         <div class="absolute bottom-0 -left-20 w-80 h-80 bg-brand-light/10 rounded-full blur-2xl pointer-events-none"></div>
 
+        <!-- Left Background Ornament (Straight & Ultra-Subtle Watermark) -->
+        <div class="absolute -left-16 sm:-left-28 lg:-left-36 top-1/2 -translate-y-1/2 w-[300px] sm:w-[440px] lg:w-[500px] pointer-events-none select-none opacity-[0.06] sm:opacity-[0.08] mix-blend-multiply z-0">
+            <img 
+                src="/images/ornaments/mandala-transparent.png" 
+                alt="Ornamen Arabesque Background Kiri" 
+                class="w-full h-auto object-contain"
+                loading="eager"
+            />
+        </div>
+
+        <!-- Right Background Ornament (Straight & Ultra-Subtle Mirror) -->
+        <div class="absolute -right-16 sm:-right-28 lg:-right-36 top-1/2 -translate-y-1/2 w-[300px] sm:w-[440px] lg:w-[500px] pointer-events-none select-none opacity-[0.06] sm:opacity-[0.08] mix-blend-multiply z-0">
+            <img 
+                src="/images/ornaments/mandala-transparent.png" 
+                alt="Ornamen Arabesque Background Kanan" 
+                class="w-full h-auto object-contain transform scale-x-[-1]"
+                loading="eager"
+            />
+        </div>
+
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
                 

@@ -11,7 +11,18 @@ defineProps({
 
 <template>
     <section id="about" class="py-24 bg-brand-sand/50 relative overflow-hidden border-y border-brand-dark/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Subtle Arabesque Watermark on Right - Straight & Ultra Light -->
+        <div class="absolute -right-20 sm:-right-28 top-1/2 -translate-y-1/2 w-[340px] sm:w-[420px] pointer-events-none select-none opacity-[0.05] sm:opacity-[0.07] mix-blend-multiply z-0">
+            <img 
+                src="/images/ornaments/mandala-transparent.png" 
+                alt="Ornamen Arabesque Background" 
+                class="w-full h-auto object-contain transform scale-x-[-1]"
+                loading="lazy"
+            />
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 
