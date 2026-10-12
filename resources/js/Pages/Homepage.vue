@@ -47,8 +47,8 @@ const props = defineProps({
             brand_name: 'Cahaya Ornamen',
             phone: '+62 813-1605-3870',
             whatsapp_number: '6281316053870',
-            email: 'halo@cahayaornamen.com',
-            workshop_address: 'Jl. Raya Industri Arsitektur No. 88, Kawasan Workshop GRC, Jawa Timur, Indonesia',
+            workshop_address: 'Jl. Kedung Rahmat, Kauman, Sepande, Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271',
+            maps_url: 'https://maps.app.goo.gl/F8mZvh4tVoo7KQYJ8',
             working_hours: 'Senin - Sabtu: 08.00 - 17.00 WIB'
         })
     }

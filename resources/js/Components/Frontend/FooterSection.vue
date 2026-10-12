@@ -9,8 +9,8 @@ defineProps({
             brand_name: 'Cahaya Ornamen',
             phone: '+62 813-1605-3870',
             whatsapp_number: '6281316053870',
-            email: 'halo@cahayaornamen.com',
-            workshop_address: 'Jl. Raya Industri Arsitektur No. 88, Kawasan Workshop GRC, Jawa Timur, Indonesia',
+            workshop_address: 'Jl. Kedung Rahmat, Kauman, Sepande, Kec. Candi, Kabupaten Sidoarjo, Jawa Timur 61271',
+            maps_url: 'https://maps.app.goo.gl/F8mZvh4tVoo7KQYJ8',
             working_hours: 'Senin - Sabtu: 08.00 - 17.00 WIB'
         })
     }
@@ -130,13 +130,22 @@ defineProps({
                     <ul class="space-y-2.5 text-xs sm:text-sm text-brand-cream/80">
                         <li class="flex items-start gap-2">
                             <MapPin class="w-4 h-4 text-brand-cta shrink-0 mt-0.5" />
-                            <span>{{ contactInfo.workshop_address }}</span>
+                            <a 
+                                v-if="contactInfo.maps_url" 
+                                :href="contactInfo.maps_url" 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                class="hover:text-brand-cta transition-colors underline decoration-brand-cta/40 hover:decoration-brand-cta"
+                            >
+                                {{ contactInfo.workshop_address }}
+                            </a>
+                            <span v-else>{{ contactInfo.workshop_address }}</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <Phone class="w-4 h-4 text-brand-cta shrink-0" />
                             <span>{{ contactInfo.phone }}</span>
                         </li>
-                        <li class="flex items-center gap-2">
+                        <li v-if="contactInfo.email" class="flex items-center gap-2">
                             <Mail class="w-4 h-4 text-brand-cta shrink-0" />
                             <span>{{ contactInfo.email }}</span>
                         </li>
