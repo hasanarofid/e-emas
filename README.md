@@ -1,6 +1,6 @@
-# Ivan Arsitek CMS
+# Cahaya Ornamen CMS
 
-Sistem Manajemen Konten (CMS) modular berkinerja tinggi yang dirancang khusus untuk bisnis perusahaan arsitektur. Terinspirasi dari platform terkemuka seperti Asia Arsitek, sistem ini dibangun menggunakan **Laravel 11**, **Vue 3 (Inertia.js)**, **Tailwind CSS**, dan **Spatie Permission**. Didesain dengan alur kerja seperti WordPress namun dioptimalkan untuk kebutuhan bisnis arsitek.
+Sistem Manajemen Konten (CMS) modular berkinerja tinggi yang dirancang khusus untuk bisnis perusahaan arsitektur & ornamen GRC **Cahaya Ornamen**. Sistem ini dibangun menggunakan **Laravel 11**, **Vue 3 (Inertia.js)**, **Tailwind CSS**, dan **Spatie Permission**. Didesain dengan alur kerja seperti WordPress namun dioptimalkan untuk kebutuhan bisnis ornamen arsitektur.
 
 ---
 

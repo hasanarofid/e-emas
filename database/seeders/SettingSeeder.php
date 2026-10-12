@@ -15,12 +15,12 @@ class SettingSeeder extends Seeder
         $settings = [
             [
                 'key' => 'site_name',
-                'value' => 'My Premium CMS',
+                'value' => 'Cahaya Ornamen',
                 'type' => 'text',
             ],
             [
                 'key' => 'site_description',
-                'value' => 'Sebuah platform CMS serbaguna berbasis Laravel 11 dan Vue 3 yang sangat fleksibel dan super cepat.',
+                'value' => 'Spesialis Ornamen Arsitektur Klasik, GRC Krawangan, Pilar, & Kubah dengan presisi cetakan tinggi.',
                 'type' => 'textarea',
             ],
             [

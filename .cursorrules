@@ -1,6 +1,6 @@
-# Aturan Proyek: Ivan Arsitek CMS
+# Aturan Proyek: Cahaya Ornamen CMS
 
-Proyek ini adalah CMS (Content Management System) khusus untuk bisnis Arsitektur, terinspirasi dari website seperti https://asiaarsitek.com/. Sistem dibangun menggunakan Laravel 11, Vue 3 (Inertia.js), dan Tailwind CSS.
+Proyek ini adalah CMS (Content Management System) khusus untuk bisnis Ornamen Arsitektur & Fabrikasi GRC Cahaya Ornamen. Sistem dibangun menggunakan Laravel 11, Vue 3 (Inertia.js), dan Tailwind CSS.
 
 ## Panduan Pengembangan:
 1. **Fokus Bisnis Proses**: 
