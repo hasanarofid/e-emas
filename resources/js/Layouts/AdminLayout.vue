@@ -8,6 +8,9 @@ import {
   LogOut, 
   Gem,
   Store,
+  TrendingUp,
+  Layers,
+  Settings as SettingsIcon,
 } from 'lucide-vue-next';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
 
