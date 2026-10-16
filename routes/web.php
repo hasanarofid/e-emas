@@ -59,7 +59,30 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
     Route::get('/items/{item}/print-tag', [ItemController::class, 'printTag'])->name('items.print-tag');
 
-    // 5. Pengaturan Identitas Toko & Surat Emas (Settings)
+    // 5. Kasir POS Penjualan & Cetak Surat Emas (FASE 3)
+    Route::get('/pos', [\App\Http\Controllers\Admin\PosController::class, 'index'])->name('pos.index');
+    Route::post('/pos', [\App\Http\Controllers\Admin\PosController::class, 'store'])->name('pos.store');
+    Route::get('/pos/invoice/{sale}', [\App\Http\Controllers\Admin\PosController::class, 'invoice'])->name('pos.invoice');
+    Route::get('/pos/certificate/{sale}', [\App\Http\Controllers\Admin\PosController::class, 'certificate'])->name('pos.certificate');
+
+    // 6. Master Bank & Pembayaran Kasir (Ref: SITOKMAS)
+    Route::post('/bank-accounts', function (\Illuminate\Http\Request $request) {
+        $validated = $request->validate([
+            'bank_name' => 'required|string|max:100',
+            'account_number' => 'required|string|max:100',
+            'account_holder' => 'required|string|max:255',
+            'notes' => 'nullable|string|max:255',
+        ]);
+        \App\Models\BankAccount::create($validated);
+        return back()->with('success', 'Rekening bank pembayaran berhasil ditambahkan!');
+    })->name('bank-accounts.store');
+
+    Route::delete('/bank-accounts/{bankAccount}', function (\App\Models\BankAccount $bankAccount) {
+        $bankAccount->delete();
+        return back()->with('success', 'Rekening bank berhasil dihapus!');
+    })->name('bank-accounts.destroy');
+
+    // 7. Pengaturan Identitas Toko & Surat Emas (Settings)
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });

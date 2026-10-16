@@ -71,20 +71,30 @@ Menghindari tampilan generic AI yang monoton, e-Emas mengusung gaya **"Modern Je
   - Fitur pindah baki cepat (memindahkan perhiasan dari Baki A ke Baki B via scan barcode).
 - [x] **2.3 Manajemen Inventaris & Barcode Generator**
   - Form tambah perhiasan dengan kalkulasi otomatis berat bersih (`berat_kotor - berat_batu`) dan estimasi harga jual harian.
-  - Halaman preview & cetak label stiker barcode perhiasan (Jewelry Tag Halter).
   - Filter inventaris berdasarkan pencarian barcode/nama, baki, kadar, kategori, dan status.
+- [x] **2.4 Modul Cetak Stiker Perhiasan Halter / Dumbbell Tag (Request Client)**
+  - Dukungan cetak stiker roll label khusus perhiasan (Ukuran 2.5" x 1.25" / 70x15mm / Dumbbell Butterfly Tag).
+  - Desain dua sisi (Flap Kiri: QR Code + Kadar + Berat Bersih; Flap Kanan: Barcode 1D Code128 + SKU + Ongkos + Nama Toko; Tengah: Ekor bening non-adhesive untuk cincin/kalung).
+  - Pilihan: Cetak Satuan (`Single Tag Print`) dan Cetak Massal Sekaligus per Baki (`Batch Tray Tag Print`).
+  - Kompatibel dengan printer barcode thermal (TSC, Zebra, Xprinter, Sato).
+- [x] **2.5 Master Akun Bank & Metode Pembayaran Kasir (Ref: SITOKMAS)**
+  - Manajemen rekening bank penerima toko (BCA, Mandiri, BRI, BNI, QRIS Static/Dynamic, Mesin EDC).
+  - Integrasi pemilihan rekening tujuan pada POS kasir saat menerima pembayaran non-tunai.
 
 ---
 
 ### FASE 3: POS Kasir Penjualan & Cetak Surat Emas
-- [ ] **3.1 Tampilan Kasir (POS Terminal)**
+- [x] **3.1 Tampilan Kasir (POS Terminal)**
   - Antarmuka kasir ultra-responsif (Split screen: Daftar Keranjang & Scan Barcode).
   - Kalkulasi otomatis total harga per gram real-time berdasarkan kadar hari ini + ongkos kerja.
+  - Multi-payment support: Tunai, Transfer Bank, QRIS, Kartu Debit/Kredit, dan Split Payment (Sebagian Tunai + Sebagian Transfer).
   - Input identitas pembeli (Nama, No HP/WhatsApp, Alamat untuk surat jaminan emas).
-- [ ] **3.2 Generator Nota / Surat Emas Resmi**
-  - Tampilan print preview surat jaminan toko emas (format rapi, memuat foto barang, gramasi, kadar, harga beli kembali yang dijamin).
-  - Dukungan cetak Thermal 80mm untuk struk kasir cepat dan A5/Custom Form untuk Sertifikat Surat Emas.
-  - Opsi kirim nota digital langsung via format tautan WhatsApp Web.
+- [x] **3.2 Generator Nota / Surat Emas Resmi & Multi-Format Cetak (Ref: SITOKMAS)**
+  - **Format 1: Struk Kasir Thermal (58mm & 80mm):** Struk cepat untuk pembeli bawa pulang ringkas.
+  - **Format 2: Surat Jaminan Emas Resmi (Kuarto / A5 Landscape):** Memuat kop toko resmi, foto perhiasan, rincian karat, gramasi netto/bruto, ongkos bikin, serta pasal jaminan buyback toko.
+  - **Format 3: Invoice Digital WhatsApp:** Tombol 1-klik untuk kirim link nota/surat emas via WhatsApp Web ke nomor pembeli.
+- [ ] **3.3 Log Aktivitas & Audit Trail Kasir (Ref: SITOKMAS)**
+  - Mencatat setiap transaksi penjualan, pembatalan/void, dan diskon dengan ID kasir bertugas.
 
 ---
 
@@ -99,13 +109,14 @@ Menghindari tampilan generic AI yang monoton, e-Emas mengusung gaya **"Modern Je
 
 ---
 
-### FASE 5: Laporan Akuntansi & Stock Opname
+### FASE 5: Laporan Akuntansi, Statistik & Stock Opname (Ref: SITOKMAS)
 - [ ] **5.1 Audit Stok Baki (Stock Opname Harian)**
   - Mode audit: Kasir cukup scan barcode berturut-turut pada satu baki.
   - Sistem menampilkan rekonsiliasi instan (Barang Cocok, Barang Kurang / Selisih, Barang Salah Baki).
-- [ ] **5.2 Laporan Neraca Gramasi & Laba Rugi**
+- [ ] **5.2 Laporan Statistik & Grafik Penjualan Realtime**
+  - Grafik tren penjualan harian, mingguan, dan bulanan (Omzet Rupiah & Gramasi Emas).
   - Rekap total gramasi emas masuk dan keluar harian/bulanan.
-  - Laporan omzet penjualan, pengeluaran buyback, dan margin laba kotor.
+  - Laporan margin laba kotor & laporan arus kas per rekening bank.
 
 ---
 

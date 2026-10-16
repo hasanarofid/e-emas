@@ -22,6 +22,7 @@ class Sale extends Model
         'tax',
         'grand_total',
         'payment_method',
+        'bank_account_id',
         'amount_paid',
         'change_due',
         'cashier_id',
@@ -41,6 +42,11 @@ class Sale extends Model
     public function cashier(): BelongsTo
     {
         return $this->belongsTo(User::class, 'cashier_id');
+    }
+
+    public function bankAccount(): BelongsTo
+    {
+        return $this->belongsTo(BankAccount::class, 'bank_account_id');
     }
 
     public function items(): HasMany

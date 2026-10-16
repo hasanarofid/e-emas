@@ -11,6 +11,7 @@ import {
   TrendingUp,
   Layers,
   Settings as SettingsIcon,
+  ShoppingBag,
 } from 'lucide-vue-next';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
 
@@ -22,6 +23,7 @@ const isSidebarCollapsed = ref(false);
 
 const navigation = [
   { name: 'Dashboard', href: route('admin.dashboard'), icon: LayoutDashboard, current: route().current('admin.dashboard') },
+  { name: 'Kasir POS Penjualan', href: route('admin.pos.index'), icon: ShoppingBag, current: route().current('admin.pos.*'), highlight: true },
   { name: 'Kurs Harga Emas', href: route('admin.gold-rates.index'), icon: TrendingUp, current: route().current('admin.gold-rates.*') },
   { name: 'Baki & Etalase', href: route('admin.trays.index'), icon: Layers, current: route().current('admin.trays.*') },
   { name: 'Inventaris Perhiasan', href: route('admin.items.index'), icon: Gem, current: route().current('admin.items.*') },

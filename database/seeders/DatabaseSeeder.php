@@ -59,6 +59,20 @@ class DatabaseSeeder extends Seeder
             Setting::set($key, $val, 'general');
         }
 
+        // 2b. Master Akun Bank Pembayaran (Ref: SITOKMAS)
+        \App\Models\BankAccount::firstOrCreate(
+            ['bank_name' => 'BCA', 'account_number' => '8921-8899-001'],
+            ['account_holder' => 'Toko Mas Permata Abadi', 'is_active' => true, 'notes' => 'Rekening Utama Kasir BCA']
+        );
+        \App\Models\BankAccount::firstOrCreate(
+            ['bank_name' => 'Mandiri', 'account_number' => '137-00-998877-6'],
+            ['account_holder' => 'Toko Mas Permata Abadi', 'is_active' => true, 'notes' => 'Rekening EDC Mandiri']
+        );
+        \App\Models\BankAccount::firstOrCreate(
+            ['bank_name' => 'QRIS', 'account_number' => 'NMID: ID1020261998822'],
+            ['account_holder' => 'Permata Abadi Gold QRIS', 'is_active' => true, 'notes' => 'QRIS Kasir Standar Nasional']
+        );
+
         // 3. Master Kadar & Harga Emas Harian (Standar Indonesia)
         $goldRatesData = [
             [
