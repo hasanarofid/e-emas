@@ -28,7 +28,7 @@ class PosController extends Controller
 
         $goldRates = GoldRate::orderBy('carat', 'desc')->get();
         $bankAccounts = BankAccount::where('is_active', true)->get();
-        $trays = Tray::where('is_active', true)->orderBy('code')->get();
+        $trays = Tray::where('status', 'active')->orderBy('code')->get();
         $storeSettings = Setting::getAll();
 
         $recentSales = Sale::with(['cashier', 'bankAccount', 'items'])
