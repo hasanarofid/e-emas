@@ -13,6 +13,8 @@ import {
   Settings as SettingsIcon,
   ShoppingBag,
   ArrowRightLeft,
+  ClipboardCheck,
+  BarChart3,
 } from 'lucide-vue-next';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
 
@@ -29,6 +31,8 @@ const navigation = [
   { name: 'Kurs Harga Emas', href: route('admin.gold-rates.index'), icon: TrendingUp, current: route().current('admin.gold-rates.*') },
   { name: 'Baki & Etalase', href: route('admin.trays.index'), icon: Layers, current: route().current('admin.trays.*') },
   { name: 'Inventaris Perhiasan', href: route('admin.items.index'), icon: Gem, current: route().current('admin.items.*') },
+  { name: 'Stock Opname Baki', href: route('admin.stock-audits.index'), icon: ClipboardCheck, current: route().current('admin.stock-audits.*') },
+  { name: 'Laporan & Statistik', href: route('admin.reports.index'), icon: BarChart3, current: route().current('admin.reports.*') },
   { name: 'Pengaturan Toko', href: route('admin.settings.index'), icon: SettingsIcon, current: route().current('admin.settings.*') },
 ];
 

@@ -110,10 +110,10 @@ Menghindari tampilan generic AI yang monoton, e-Emas mengusung gaya **"Modern Je
 ---
 
 ### FASE 5: Laporan Akuntansi, Statistik & Stock Opname (Ref: SITOKMAS)
-- [ ] **5.1 Audit Stok Baki (Stock Opname Harian)**
+- [x] **5.1 Audit Stok Baki (Stock Opname Harian)**
   - Mode audit: Kasir cukup scan barcode berturut-turut pada satu baki.
   - Sistem menampilkan rekonsiliasi instan (Barang Cocok, Barang Kurang / Selisih, Barang Salah Baki).
-- [ ] **5.2 Laporan Statistik & Grafik Penjualan Realtime**
+- [x] **5.2 Laporan Statistik & Grafik Penjualan Realtime**
   - Grafik tren penjualan harian, mingguan, dan bulanan (Omzet Rupiah & Gramasi Emas).
   - Rekap total gramasi emas masuk dan keluar harian/bulanan.
   - Laporan margin laba kotor & laporan arus kas per rekening bank.

@@ -89,7 +89,17 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/buybacks', [\App\Http\Controllers\Admin\BuybackController::class, 'store'])->name('buybacks.store');
     Route::get('/buybacks/{buyback}/receipt', [\App\Http\Controllers\Admin\BuybackController::class, 'receipt'])->name('buybacks.receipt');
 
-    // 8. Pengaturan Identitas Toko & Surat Emas (Settings)
+    // 8. Stock Opname & Audit Baki (FASE 5)
+    Route::get('/stock-audits', [\App\Http\Controllers\Admin\StockAuditController::class, 'index'])->name('stock-audits.index');
+    Route::post('/stock-audits', [\App\Http\Controllers\Admin\StockAuditController::class, 'store'])->name('stock-audits.store');
+    Route::get('/stock-audits/{stockAudit}', [\App\Http\Controllers\Admin\StockAuditController::class, 'show'])->name('stock-audits.show');
+    Route::post('/stock-audits/{stockAudit}/scan', [\App\Http\Controllers\Admin\StockAuditController::class, 'scan'])->name('stock-audits.scan');
+    Route::post('/stock-audits/{stockAudit}/complete', [\App\Http\Controllers\Admin\StockAuditController::class, 'complete'])->name('stock-audits.complete');
+
+    // 9. Laporan & Statistik Penjualan Realtime (Ref: SITOKMAS - FASE 5)
+    Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');
+
+    // 10. Pengaturan Identitas Toko & Surat Emas (Settings)
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
