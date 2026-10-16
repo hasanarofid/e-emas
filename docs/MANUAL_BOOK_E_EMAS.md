@@ -38,7 +38,7 @@
 
 ## 2. Akses Masuk & Kredensial Pengguna
 
-Buka sistem melalui browser di alamat URL toko Anda (Lokal: `http://127.0.0.1:8002/login` atau Produksi: `https://posemas.web.id/login`).
+Buka sistem melalui browser di alamat URL toko Anda: **`https://posemas.web.id/login`**.
 
 Tersedia 2 peran (*Role*) bawaan:
 * **Owner (Pemilik Toko):**
