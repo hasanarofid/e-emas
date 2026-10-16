@@ -4,66 +4,54 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Setting;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class SettingController extends Controller
 {
     /**
-     * Display the settings page.
+     * Menampilkan form pengaturan identitas toko emas dan kebijakan buyback
      */
-    public function index()
+    public function index(): Response
     {
-        // Pluck key-value settings to make it easier to work with on the frontend
-        $settings = Setting::all()->pluck('value', 'key');
-        
-        // We'll also append the full URL of the site logo if it exists
-        if (!empty($settings['site_logo'])) {
-            $settings['site_logo_url'] = Storage::url($settings['site_logo']);
-        } else {
-            $settings['site_logo_url'] = null;
-        }
+        $settings = [
+            'store_name' => Setting::get('store_name', 'Toko Mas Permata Abadi'),
+            'store_legal_name' => Setting::get('store_legal_name', 'UD. Permata Abadi Gold & Jewelry'),
+            'store_phone' => Setting::get('store_phone', '0812-3456-7890'),
+            'store_address' => Setting::get('store_address', 'Jl. Malioboro No. 88, Danurejan, Yogyakarta 55213'),
+            'store_permit_number' => Setting::get('store_permit_number', 'SIUP: 510/088/EMAS/DIY/2026'),
+            'primary_color' => Setting::get('primary_color', '#D4AF37'),
+            'gold_buyback_policy' => Setting::get('gold_buyback_policy', "Barang dapat dijual kembali (buyback) dengan menunjukkan surat emas resmi ini.\nPotongan harga mengikuti harga pasaran emas hari berjalan dan kondisi fisik barang.\nOngkos bikin tidak dapat diuangkan kembali saat transaksi buyback."),
+            'receipt_footer' => Setting::get('receipt_footer', 'Terima kasih atas kunjungan dan kepercayaan Anda. Investasi cerdas perhiasan berkualitas bersama Toko Mas Permata Abadi.'),
+        ];
 
-        return Inertia::render('Admin/Settings', [
-            'settings' => $settings
+        return Inertia::render('Admin/Settings/Index', [
+            'settings' => $settings,
         ]);
     }
 
     /**
-     * Update the global settings.
+     * Simpan pembaruan pengaturan toko
      */
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
-        $validatedData = $request->validate([
-            'site_name' => 'required|string|max:100',
-            'site_description' => 'nullable|string|max:500',
-            'whatsapp_number' => 'nullable|string|max:20',
-            'playstore_link' => 'nullable|url|max:255',
-            'site_logo' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048',
+        $validated = $request->validate([
+            'store_name' => 'required|string|max:150',
+            'store_legal_name' => 'required|string|max:150',
+            'store_phone' => 'required|string|max:50',
+            'store_address' => 'required|string|max:255',
+            'store_permit_number' => 'nullable|string|max:100',
+            'primary_color' => 'nullable|string|max:20',
+            'gold_buyback_policy' => 'required|string',
+            'receipt_footer' => 'required|string',
         ]);
 
-        // Process site logo file upload
-        if ($request->hasFile('site_logo')) {
-            $oldLogoSetting = Setting::where('key', 'site_logo')->first();
-            $oldLogoPath = $oldLogoSetting ? $oldLogoSetting->value : null;
-            
-            // Delete old file from storage if it exists
-            if ($oldLogoPath && Storage::disk('public')->exists($oldLogoPath)) {
-                Storage::disk('public')->delete($oldLogoPath);
-            }
-
-            // Save new logo
-            $path = $request->file('site_logo')->store('settings', 'public');
-            Setting::setValue('site_logo', $path, 'image');
+        foreach ($validated as $key => $value) {
+            Setting::set($key, $value, 'general');
         }
 
-        // Process standard text/url/textarea settings using updateOrCreate via helper
-        Setting::setValue('site_name', $validatedData['site_name'], 'text');
-        Setting::setValue('site_description', $validatedData['site_description'] ?? '', 'textarea');
-        Setting::setValue('whatsapp_number', $validatedData['whatsapp_number'] ?? '', 'text');
-        Setting::setValue('playstore_link', $validatedData['playstore_link'] ?? '', 'url');
-
-        return redirect()->back()->with('success', 'Konfigurasi website berhasil diperbarui.');
+        return redirect()->back()->with('success', 'Pengaturan identitas toko emas dan surat jaminan berhasil disimpan.');
     }
 }

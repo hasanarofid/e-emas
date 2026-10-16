@@ -3,32 +3,23 @@ import { ref } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { 
   LayoutDashboard, 
-  Settings as SettingsIcon, 
-  FileText, 
-  Users, 
   Menu, 
   X, 
   LogOut, 
-  Layers,
-  ChevronDown,
-  Search,
-  Server,
-  ChevronLeft,
-  ChevronRight
-} from '@lucide/vue';
+  Gem,
+  Store,
+} from 'lucide-vue-next';
+import ThemeToggle from '@/Components/ThemeToggle.vue';
 
 const page = usePage();
-const user = page.props.auth.user;
-
-const isSidebarOpen = ref(false);
-const isSidebarCollapsed = ref(false);
-const isUserMenuOpen = ref(false);
+const user = page.props.auth?.user || {};
 
 const navigation = [
   { name: 'Dashboard', href: route('admin.dashboard'), icon: LayoutDashboard, current: route().current('admin.dashboard') },
-  { name: 'Pages & Sections', href: route('admin.pages.index'), icon: Layers, current: route().current('admin.pages.*') },
-  { name: 'Posts & Categories', href: route('admin.posts.index'), icon: FileText, current: route().current('admin.posts.*') },
-  { name: 'Web Settings', href: route('admin.settings.index'), icon: SettingsIcon, current: route().current('admin.settings.index') },
+  { name: 'Kurs Harga Emas', href: route('admin.gold-rates.index'), icon: TrendingUp, current: route().current('admin.gold-rates.*') },
+  { name: 'Baki & Etalase', href: route('admin.trays.index'), icon: Layers, current: route().current('admin.trays.*') },
+  { name: 'Inventaris Perhiasan', href: route('admin.items.index'), icon: Gem, current: route().current('admin.items.*') },
+  { name: 'Pengaturan Toko', href: route('admin.settings.index'), icon: SettingsIcon, current: route().current('admin.settings.*') },
 ];
 
 const logout = () => {
@@ -37,208 +28,164 @@ const logout = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-slate-900 text-slate-100 font-sans antialiased relative overflow-hidden">
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans antialiased relative selection:bg-amber-500 selection:text-slate-950 flex transition-colors duration-300">
     <!-- Mobile Sidebar Backdrop -->
     <div 
       v-if="isSidebarOpen" 
       @click="isSidebarOpen = false" 
-      class="fixed inset-0 z-40 bg-slate-950/80 lg:hidden transition-opacity"
+      class="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm lg:hidden transition-opacity"
     ></div>
 
-    <!-- Sidebar for Mobile and Desktop -->
+    <!-- Sidebar -->
     <aside 
       :class="[
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         isSidebarCollapsed ? 'lg:w-20' : 'lg:w-72',
-        'fixed top-0 bottom-0 left-0 z-50 w-72 bg-slate-950 border-r border-slate-800/80 transition-all duration-300 ease-in-out lg:fixed flex flex-col justify-between'
+        'fixed top-0 bottom-0 left-0 z-50 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 ease-in-out flex flex-col justify-between shadow-sm'
       ]"
     >
       <div>
         <!-- Sidebar Header / Logo -->
-        <div :class="[isSidebarCollapsed ? 'lg:px-0 lg:justify-center' : 'px-6 justify-between', 'flex items-center h-20 border-b border-slate-800']">
-          <Link :href="route('admin.dashboard')" class="flex items-center gap-3">
-            <div class="p-2.5 bg-indigo-600 rounded-xl shadow-lg shadow-indigo-650/30 shrink-0">
-              <Layers class="w-5 h-5 text-white" />
+        <div :class="[isSidebarCollapsed ? 'lg:px-0 lg:justify-center' : 'px-6 justify-between', 'flex items-center h-20 border-b border-slate-200 dark:border-slate-800']">
+          <Link :href="route('admin.dashboard')" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-400 to-yellow-200 p-0.5 shadow-md shadow-amber-500/20 shrink-0">
+              <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+                <Gem class="w-5 h-5 text-amber-400" />
+              </div>
             </div>
             <div :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'transition-opacity duration-300']">
-              <h1 class="text-sm font-bold tracking-tight text-white uppercase">CMS Panel</h1>
-              <p class="text-xxs text-indigo-400 font-medium tracking-wide">SaaS SaaS-Boilerplate</p>
+              <h1 class="text-sm font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+                e-Emas POS
+                <span class="text-[9px] bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.2 rounded font-mono">v1.0</span>
+              </h1>
+              <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Permata Abadi Gold</p>
             </div>
           </Link>
           <button 
             @click="isSidebarOpen = false" 
-            class="p-2 text-slate-400 rounded-lg hover:bg-slate-800 hover:text-white lg:hidden"
+            class="p-2 text-slate-500 dark:text-slate-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden"
           >
             <X class="w-5 h-5" />
           </button>
         </div>
 
-        <!-- Navigation Links -->
-        <nav class="px-3 py-6 space-y-1.5 overflow-y-auto">
+        <!-- Main Navigation Links -->
+        <nav class="p-4 space-y-1.5">
+          <div :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 font-mono']">
+            Menu Operasional
+          </div>
+
           <Link 
             v-for="item in navigation" 
             :key="item.name" 
             :href="item.href"
             :class="[
               item.current 
-                ? 'bg-gradient-to-r from-indigo-600/15 to-indigo-600/5 text-indigo-455 border-l-4 border-indigo-650' 
-                : 'text-slate-450 hover:bg-slate-900/55 hover:text-slate-200 border-l-4 border-transparent',
-              isSidebarCollapsed ? 'lg:justify-center lg:px-0' : 'px-4',
-              'group flex items-center py-3.5 text-sm font-semibold rounded-r-xl transition-all duration-300'
+                ? 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/30' 
+                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white border-transparent',
+              'flex items-center gap-3 px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all group'
             ]"
-            :title="isSidebarCollapsed ? item.name : ''"
           >
             <component 
               :is="item.icon" 
               :class="[
-                item.current ? 'text-indigo-400' : 'text-slate-500 group-hover:text-slate-350',
-                isSidebarCollapsed ? 'lg:mr-0' : 'mr-3',
-                'h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:scale-105'
+                item.current ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-200', 
+                'w-5 h-5 shrink-0 transition-colors'
               ]" 
             />
-            <span :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'whitespace-nowrap']">{{ item.name }}</span>
+            <span :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'truncate']">{{ item.name }}</span>
+          </Link>
+
+          <!-- Quick Action to Storefront -->
+          <Link 
+            href="/" 
+            target="_blank"
+            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-300 border border-transparent text-sm font-medium transition-all group"
+          >
+            <Store class="w-5 h-5 text-slate-400 group-hover:text-amber-500 shrink-0" />
+            <span :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'truncate']">Lihat Toko Depan</span>
           </Link>
         </nav>
       </div>
 
-      <!-- Sidebar Footer / Template Owner & Profile -->
-      <div :class="[isSidebarCollapsed ? 'lg:p-2' : 'p-4', 'border-t border-slate-800/80 bg-slate-950/50']">
-        <!-- Template Owner & Collapse Toggle Row -->
-        <div :class="[isSidebarCollapsed ? 'lg:px-0 lg:justify-center' : 'px-2 justify-between', 'mb-4 flex items-center text-xxs text-slate-500 font-bold uppercase tracking-wider transition-opacity duration-300']">
-          <div v-if="!isSidebarCollapsed" class="flex items-center gap-1">
-            <a href="https://hasanarofid.site" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition-colors normal-case">
-              @hasanarofid.site
-            </a>
+      <!-- User Profile & Logout Section in Sidebar -->
+      <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/60">
+        <div class="flex items-center gap-3 p-2 rounded-xl bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center font-bold text-sm shrink-0">
+            {{ user.name ? user.name.charAt(0).toUpperCase() : 'U' }}
           </div>
-          <!-- Collapse Toggle for Desktop -->
-          <div class="hidden lg:block">
-            <button 
-              @click="isSidebarCollapsed = !isSidebarCollapsed"
-              class="p-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-lg text-slate-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <ChevronLeft v-if="!isSidebarCollapsed" class="w-4 h-4" />
-              <ChevronRight v-else class="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        <div :class="[isSidebarCollapsed ? 'lg:px-0 lg:justify-center' : 'px-2 gap-3', 'flex items-center pt-3 border-t border-slate-800/60']">
-          <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-indigo-400 border border-slate-700 shrink-0">
-            {{ user.name.charAt(0).toUpperCase() }}
-          </div>
-          <div :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'flex-1 min-w-0 transition-opacity duration-300']">
-            <p class="text-sm font-semibold text-slate-200 truncate">{{ user.name }}</p>
-            <p class="text-xs text-slate-550 truncate">{{ user.email }}</p>
+          <div :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'overflow-hidden flex-1']">
+            <p class="text-xs font-semibold text-slate-900 dark:text-white truncate">{{ user.name }}</p>
+            <span class="inline-block px-1.5 py-0.2 text-[10px] rounded bg-amber-500/10 text-amber-700 dark:text-amber-300 font-mono uppercase">
+              {{ user.role || 'kasir' }}
+            </span>
           </div>
           <button 
-            :class="[isSidebarCollapsed ? 'lg:hidden' : 'block']"
-            @click="logout" 
-            title="Keluar"
-            class="p-2 text-slate-500 rounded-lg hover:bg-slate-900 hover:text-rose-400 transition-colors"
+            @click="logout"
+            title="Keluar / Logout"
+            class="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
           >
-            <LogOut class="w-5 h-5" />
+            <LogOut class="w-4 h-4" />
           </button>
         </div>
       </div>
     </aside>
 
-    <!-- Main Content Wrapper -->
-    <div 
-      :class="[
-        isSidebarCollapsed ? 'lg:pl-20' : 'lg:pl-72',
-        'flex flex-col min-h-screen transition-all duration-300 ease-in-out'
-      ]"
-    >
-      <!-- Top header bar (Sticky Glassmorphic) -->
-      <header class="flex items-center justify-between h-20 px-6 md:px-8 border-b border-slate-800/80 bg-slate-950/40 backdrop-blur sticky top-0 z-30">
-        <div class="flex items-center gap-6 flex-1 max-w-md">
+    <!-- Main Content Area -->
+    <div :class="[isSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-72', 'flex-1 flex flex-col min-h-screen transition-all duration-300']">
+      <!-- Top Navbar -->
+      <header class="h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between sticky top-0 z-30 transition-colors duration-300">
+        <div class="flex items-center gap-4">
           <button 
             @click="isSidebarOpen = true" 
-            class="p-2 text-slate-400 rounded-lg hover:bg-slate-800 hover:text-white lg:hidden"
+            class="p-2 text-slate-600 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden"
           >
             <Menu class="w-6 h-6" />
           </button>
-          
-          <!-- Floating search bar -->
-          <div class="relative w-full hidden sm:block">
-            <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
-              <Search class="w-4 h-4" />
+
+          <!-- Store Identity Header -->
+          <div class="hidden sm:flex items-center gap-2 text-xs">
+            <span class="px-2.5 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1.5">
+              <Store class="w-3.5 h-3.5" />
+              Toko Mas Permata Abadi
             </span>
-            <input 
-              type="text" 
-              placeholder="Ketik '/' untuk mencari..."
-              class="w-full bg-slate-900/60 border border-slate-800 rounded-xl pl-10 pr-4 py-2.5 text-xs text-slate-250 placeholder-slate-550 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
-            />
-            <span class="absolute right-3.5 top-1/2 -translate-y-1/2 px-1.5 py-0.5 bg-slate-800 text-[10px] font-bold text-slate-500 rounded border border-slate-700">
-              /
-            </span>
+            <span class="text-slate-300 dark:text-slate-600">|</span>
+            <span class="text-slate-500 dark:text-slate-400 font-mono">{{ new Date().toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }) }}</span>
           </div>
         </div>
 
-        <!-- Right Header Elements -->
-        <div class="flex items-center gap-6">
-          <!-- Server Status Indicator -->
-          <div class="flex items-center gap-2 px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-[10px] font-bold text-emerald-450 uppercase tracking-wider">
-            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
-            Server: Online
-          </div>
+        <!-- Right Quick Actions: ThemeToggle, Storefront, Logout -->
+        <div class="flex items-center gap-3">
+          <ThemeToggle />
 
-          <!-- Profile dropdown -->
-          <div class="relative">
-            <button 
-              @click="isUserMenuOpen = !isUserMenuOpen"
-              class="flex items-center gap-2.5 px-3 py-2 rounded-xl hover:bg-slate-850 border border-transparent hover:border-slate-800/80 transition-all text-slate-200"
-            >
-              <div class="w-7 h-7 rounded-lg bg-indigo-600/10 border border-indigo-500/20 text-indigo-400 font-bold flex items-center justify-center text-xs">
-                {{ user.name.charAt(0).toUpperCase() }}
-              </div>
-              <span class="text-xs font-semibold hidden md:inline-block">{{ user.name }}</span>
-              <ChevronDown class="w-4 h-4 text-slate-500 transition-transform duration-200" :class="{ 'rotate-180': isUserMenuOpen }" />
-            </button>
-            <div 
-              v-if="isUserMenuOpen" 
-              @click="isUserMenuOpen = false" 
-              class="fixed inset-0 z-10"
-            ></div>
-            <div 
-              v-if="isUserMenuOpen" 
-              class="absolute right-0 mt-2 w-48 rounded-2xl bg-slate-950 border border-slate-800 shadow-xl shadow-slate-950/50 py-1.5 z-20 overflow-hidden transform origin-top-right transition-all"
-            >
-              <Link 
-                :href="route('profile.edit')" 
-                class="block px-4 py-2.5 text-xs font-semibold text-slate-350 hover:bg-slate-900 transition-colors"
-              >
-                Profile Settings
-              </Link>
-              <button 
-                @click="logout" 
-                class="w-full text-left block px-4 py-2.5 text-xs font-bold text-rose-400 hover:bg-slate-900 transition-colors border-t border-slate-850"
-              >
-                Sign Out
-              </button>
-            </div>
-          </div>
+          <Link 
+            href="/" 
+            target="_blank"
+            class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 text-xs font-medium transition-colors"
+          >
+            <Store class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+            <span>Katalog Depan</span>
+          </Link>
+
+          <button 
+            @click="logout"
+            class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/20 text-xs font-semibold transition-colors cursor-pointer"
+          >
+            <LogOut class="w-3.5 h-3.5" />
+            <span>Keluar</span>
+          </button>
         </div>
       </header>
 
-      <!-- Main Panel Page -->
-      <main class="flex-1 p-6 md:p-8 bg-slate-900/60">
-        <!-- Toast Notification Alert if session contains flash success/error -->
-        <div v-if="$page.props.flash?.success" class="mb-6 p-4 bg-emerald-600/10 border border-emerald-500/20 text-emerald-400 rounded-xl flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-            <span class="text-sm font-medium">{{ $page.props.flash.success }}</span>
-          </div>
-        </div>
-        <div v-if="$page.props.flash?.error" class="mb-6 p-4 bg-rose-600/10 border border-rose-500/20 text-rose-400 rounded-xl flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-            <span class="text-sm font-medium">{{ $page.props.flash.error }}</span>
-          </div>
-        </div>
-
+      <!-- Main Body Content -->
+      <main class="flex-1 p-6 md:p-8 max-w-7xl w-full mx-auto space-y-8">
         <slot />
       </main>
+
+      <!-- Footer -->
+      <footer class="py-4 px-8 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 text-center transition-colors duration-300">
+        e-Emas POS &copy; 2026 Toko Mas Permata Abadi. Presisi Gramasi & Transparansi Kadar Emas.
+      </footer>
     </div>
   </div>
 </template>

@@ -1,24 +1,25 @@
-# Aturan Proyek: Cahaya Ornamen CMS
+# Aturan Proyek: e-Emas POS & Management System
 
-Proyek ini adalah CMS (Content Management System) khusus untuk bisnis Ornamen Arsitektur & Fabrikasi GRC Cahaya Ornamen. Sistem dibangun menggunakan Laravel 11, Vue 3 (Inertia.js), dan Tailwind CSS.
+Proyek ini adalah sistem manajemen kasir (POS) dan operasional khusus toko perhiasan emas dan logam mulia. Sistem dibangun menggunakan Laravel 11, Vue 3 (Inertia.js), dan Tailwind CSS.
 
 ## Panduan Pengembangan:
-1. **Fokus Bisnis Proses**: 
-   - Sistem ini dirancang spesifik untuk perusahaan arsitek (menampilkan portofolio desain, layanan jasa, testimoni klien, dan blog/artikel).
-   - Seperti WordPress namun khusus untuk Arsitek.
+1. **Fokus Bisnis Proses (Toko Emas)**:
+   - Terinspirasi dari operasional nyata toko emas Indonesia (seperti software-toko-emas.id).
+   - Fitur inti: Master Kadar & Karat (24K, 22K, 17K/700, 16K, 375, dll.), Live Update Harga Emas Harian, Manajemen Baki/Nampan Etalase, Barcode & Foto Perhiasan, POS Penjualan Cepat, Generator Surat Emas Resmi (cetak nota A5/Thermal 80mm), Buyback / Tukar Tambah (Trade-in), dan Stock Opname Baki.
+   - Presisi desimal gramasi perhiasan: wajib mendukung 3 digit desimal (`0.001` gram).
 
 2. **Kustomisasi Dinamis (Admin Panel)**:
-   - **Tampilan Identitas**: Admin harus bisa mengubah Logo dan Warna Utama (Primary Color) website dari halaman pengaturan, dan perubahan ini harus langsung tercermin pada frontend.
-   - **Manajemen Halaman Depan**: Panel-panel atau seksi pada halaman depan (Hero, About, Portfolio, Services, Testimonials) harus bersifat dinamis. Admin bisa mengatur urutan, mengaktifkan/menonaktifkan, atau mengubah kontennya.
-   - **Default Template**: Sediakan tampilan awal (default layout) yang sudah terlihat premium dan siap pakai, namun dapat dicustom oleh admin kapan saja.
+   - **Tampilan Identitas**: Admin bisa mengubah Logo, Nama Toko, Alamat, Kontak, dan Warna Utama (Primary Gold Accent) dari halaman pengaturan toko.
+   - **Harga Harian & Kadar**: Admin dapat mengubah harga pasar emas harian per kadar yang langsung mengkalkulasi harga jual/beli otomatis di POS kasir.
 
-3. **Desain & UI/UX**:
-   - Gunakan pendekatan desain modern, elegan, dan clean yang merepresentasikan profesionalisme seorang arsitek.
-   - Panel admin menggunakan dark mode atau desain profesional yang bersih, berbasis Tailwind CSS.
+3. **Desain & UI/UX (Bukan AI Slop)**:
+   - Tema eksklusif "Modern Jewelry Atelier": Paduan elegan Obsidian Slate (`#0F172A`), Champagne Gold (`#D4AF37`), dan border halus.
+   - Ergonomi kasir: Input autofocus scanner barcode, navigasi keyboard shortcuts cepat, nota surat emas rapi dan siap cetak.
 
 4. **Teknis**:
    - Frontend: Vue 3 dengan Composition API dan Inertia.js.
-   - Styling: Tailwind CSS (terapkan CSS Variables untuk dynamic primary color).
-   - Backend: Laravel 11.
-   - Database: MySQL/PostgreSQL (Gunakan migration dan seeder yang lengkap untuk data awal).
-   - Manajemen State: Gunakan composables di Vue 3 atau props dari Inertia.
+   - Styling: Tailwind CSS (terapkan CSS Variables untuk dynamic gold accent).
+   - Backend: Laravel 11 (PHP 8.3).
+   - Database: MySQL (Gunakan migration dan seeder yang lengkap untuk data awal).
+   - Manajemen State: Composables di Vue 3 / Pinia / props dari Inertia.
+   - Target Server: aaPanel @ `emas.nolimitstraining.id` via Git SSH Deploy Key / CI/CD.

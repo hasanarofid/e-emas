@@ -5,8 +5,13 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
+import { useTheme } from './Composables/useTheme';
 
-const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
+const appName = import.meta.env.VITE_APP_NAME || 'e-Emas POS';
+
+// Inisialisasi status Dark / Light Mode saat bootstrap
+const { initTheme } = useTheme();
+initTheme();
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
@@ -22,6 +27,6 @@ createInertiaApp({
             .mount(el);
     },
     progress: {
-        color: '#4B5563',
+        color: '#D4AF37',
     },
 });

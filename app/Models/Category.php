@@ -2,64 +2,33 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'name',
         'slug',
-        'type',
+        'icon',
         'description',
-        'image',
-        'order',
         'is_active',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
-        'order' => 'integer',
     ];
 
-    /**
-     * Scope query by category type.
-     */
-    public function scopeOfType(Builder $query, string $type): Builder
+    public function items(): HasMany
     {
-        return $query->where('type', $type);
+        return $this->hasMany(Item::class);
     }
 
-    /**
-     * Scope query active categories.
-     */
-    public function scopeActive(Builder $query): Builder
+    public function trays(): HasMany
     {
-        return $query->where('is_active', true)->orderBy('order');
-    }
-
-    /**
-     * Relasi ke Produk.
-     */
-    public function products(): HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
-
-    /**
-     * Relasi ke Portofolio.
-     */
-    public function portfolios(): HasMany
-    {
-        return $this->hasMany(Portfolio::class);
-    }
-
-    /**
-     * Relasi ke Artikel / Posts.
-     */
-    public function posts(): HasMany
-    {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Tray::class);
     }
 }

@@ -2,45 +2,30 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Cache;
 
 class Setting extends Model
 {
-    protected $fillable = ['key', 'value', 'type'];
+    use HasFactory;
 
-    /**
-     * Get a setting value by key.
-     *
-     * @param string $key
-     * @param mixed $default
-     * @return mixed
-     */
-    public static function getValue(string $key, $default = null)
+    protected $fillable = [
+        'key',
+        'value',
+        'group',
+    ];
+
+    public static function get(string $key, mixed $default = null): mixed
     {
-        return Cache::rememberForever("setting.{$key}", function () use ($key, $default) {
-            $setting = self::where('key', $key)->first();
-            return $setting ? $setting->value : $default;
-        });
+        $setting = static::where('key', $key)->first();
+        return $setting ? $setting->value : $default;
     }
 
-    /**
-     * Set/update a setting value.
-     *
-     * @param string $key
-     * @param mixed $value
-     * @param string $type
-     * @return self
-     */
-    public static function setValue(string $key, $value, string $type = 'text')
+    public static function set(string $key, mixed $value, string $group = 'general'): void
     {
-        $setting = self::updateOrCreate(
+        static::updateOrCreate(
             ['key' => $key],
-            ['value' => $value, 'type' => $type]
+            ['value' => $value, 'group' => $group]
         );
-
-        Cache::forget("setting.{$key}");
-
-        return $setting;
     }
 }

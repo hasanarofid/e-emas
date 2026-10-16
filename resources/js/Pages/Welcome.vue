@@ -1,267 +1,336 @@
 <script setup>
-import { Head, Link, usePage } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
 import { 
-  Phone, 
-  Download, 
-  ArrowUpRight, 
-  CheckCircle, 
-  MessageSquare, 
+  Sparkles, 
+  CircleDot, 
+  Gem, 
   Layers, 
-  User, 
-  ChevronRight 
-} from '@lucide/vue';
+  ShieldCheck, 
+  Scale, 
+  QrCode, 
+  ArrowUpRight, 
+  Coins, 
+  Store, 
+  Phone, 
+  MapPin, 
+  Clock, 
+  ChevronRight,
+  TrendingUp,
+  LogIn
+} from 'lucide-vue-next';
+import ThemeToggle from '@/Components/ThemeToggle.vue';
 
 const props = defineProps({
-  settings: {
-    type: Object,
-    required: true
-  },
-  navigation: {
-    type: Array,
-    required: true
-  },
-  page: {
-    type: Object,
-    default: null
-  },
-  posts: {
+  goldRates: {
     type: Array,
     default: () => []
+  },
+  categories: {
+    type: Array,
+    default: () => []
+  },
+  featuredItems: {
+    type: Array,
+    default: () => []
+  },
+  trays: {
+    type: Array,
+    default: () => []
+  },
+  storeSettings: {
+    type: Object,
+    default: () => ({})
+  },
+  auth: {
+    type: Object,
+    default: () => ({})
   }
 });
 
-const pageData = usePage();
-const user = pageData.props.auth?.user;
-
-// Helper to find specific section by key
-const getSection = (key) => {
-  if (!props.page || !props.page.sections) return null;
-  return props.page.sections.find(s => s.key === key && s.is_active);
+const formatRupiah = (val) => {
+  return new Intl.NumberFormat('id-ID', {
+    style: 'currency',
+    currency: 'IDR',
+    maximumFractionDigits: 0
+  }).format(val || 0);
 };
 
-const heroSection = getSection('hero');
-const featuresSection = getSection('features');
-const testimonialsSection = getSection('testimonials');
+const formatWeight = (val) => {
+  return parseFloat(val || 0).toFixed(3) + ' gr';
+};
 </script>
 
 <template>
-  <Head :title="page?.title || 'Selamat Datang'" />
+  <Head :title="storeSettings.store_name || 'e-Emas - Sistem Kasir & Manajemen Toko Emas'" />
 
-  <div class="min-h-screen bg-slate-950 text-slate-100 font-sans selection:bg-indigo-500 selection:text-white relative overflow-hidden">
-    <!-- Background Glow Blobs -->
-    <div class="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none"></div>
-    <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full bg-indigo-900/10 blur-[120px] pointer-events-none"></div>
+  <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950 transition-colors duration-300">
+    <!-- Live Gold Rates Ticker Bar (Auto-Sliding Marquee) -->
+    <div class="bg-amber-500/10 dark:bg-slate-950 border-b border-amber-500/20 py-2 px-4 text-xs overflow-hidden relative z-50 flex items-center transition-colors duration-300">
+      <!-- Fixed Left Label with Gradient Fade -->
+      <div class="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wider shrink-0 z-20 bg-amber-50/90 dark:bg-slate-950/95 pr-4 py-0.5">
+        <span class="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span class="text-[11px] sm:text-xs">Harga Emas Hari Ini:</span>
+      </div>
 
-    <!-- Sticky Glassmorphic Navbar -->
-    <nav class="sticky top-0 z-50 bg-slate-950/70 backdrop-blur-md border-b border-slate-900/80 transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <!-- Logo -->
-        <Link href="/" class="flex items-center gap-3 group">
-          <div v-if="settings.site_logo_url" class="h-10 w-auto flex items-center">
-            <img :src="settings.site_logo_url" :alt="settings.site_name" class="h-8 object-contain" />
-          </div>
-          <div v-else class="p-2 bg-indigo-600 rounded-xl">
-            <Layers class="w-5 h-5 text-white" />
-          </div>
-          <span class="font-extrabold text-xl tracking-tight text-white group-hover:text-indigo-400 transition-colors">
-            {{ settings.site_name || 'CMS Boilerplate' }}
-          </span>
-        </Link>
-
-        <!-- Navigation Pages from Database -->
-        <div class="hidden md:flex items-center gap-8">
-          <Link 
-            v-for="nav in navigation" 
-            :key="nav.id" 
-            :href="nav.slug === 'home' ? '/' : `/${nav.slug}`"
-            class="text-sm font-medium text-slate-400 hover:text-white transition-colors"
+      <!-- Marquee Track Wrapper -->
+      <div class="relative w-full overflow-hidden flex items-center select-none marquee-mask">
+        <!-- Inner Sliding Strip (Double list for seamless infinite loop) -->
+        <div class="flex items-center gap-4 animate-marquee whitespace-nowrap shrink-0 hover:pause cursor-pointer">
+          <div 
+            v-for="(rate, idx) in [...goldRates, ...goldRates, ...goldRates]" 
+            :key="`${rate.id}-${idx}`"
+            class="flex items-center gap-2 bg-white dark:bg-slate-900 px-3.5 py-1 rounded-full border border-amber-500/20 shadow-sm text-xs shrink-0"
           >
-            {{ nav.title }}
-          </Link>
+            <span class="font-bold text-amber-700 dark:text-amber-300">{{ rate.code }}</span>
+            <span class="text-slate-500 dark:text-slate-400">Jual:</span>
+            <span class="font-semibold text-slate-900 dark:text-slate-100">{{ formatRupiah(rate.sell_price_per_gram) }}</span>
+            <span class="text-slate-300 dark:text-slate-600">|</span>
+            <span class="text-slate-500 dark:text-slate-400">Beli:</span>
+            <span class="font-semibold text-amber-700 dark:text-amber-200">{{ formatRupiah(rate.buy_price_per_gram) }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800/80 transition-colors duration-300">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <!-- Logo & Store Name -->
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-400 to-yellow-200 p-0.5 shadow-lg shadow-amber-500/20">
+            <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
+              <Gem class="w-5 h-5 text-amber-400" />
+            </div>
+          </div>
+          <div>
+            <h1 class="font-bold text-base sm:text-lg tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+              {{ storeSettings.store_name }}
+              <span class="text-[10px] bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 px-2 py-0.5 rounded-full font-mono uppercase tracking-wider">POS v1.0</span>
+            </h1>
+            <p class="text-xs text-slate-500 dark:text-slate-400 font-mono">{{ storeSettings.store_legal_name }}</p>
+          </div>
         </div>
 
-        <!-- Auth Actions -->
-        <div class="flex items-center gap-4">
-          <Link 
-            v-if="user" 
-            :href="route('admin.dashboard')" 
-            class="inline-flex items-center justify-center px-4 py-2 bg-indigo-650 hover:bg-indigo-700 text-xs font-semibold text-white rounded-xl shadow-lg shadow-indigo-600/20 transition-all duration-200"
-          >
-            Dashboard Admin
-            <ArrowUpRight class="w-3.5 h-3.5 ml-1" />
-          </Link>
+        <!-- Right Quick Actions: ThemeToggle & Login/Backoffice -->
+        <div class="flex items-center gap-3">
+          <ThemeToggle />
+
+          <template v-if="auth.user">
+            <Link 
+              href="/admin/dashboard" 
+              class="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs sm:text-sm shadow-md shadow-amber-500/20 hover:brightness-110 transition-all"
+            >
+              <Store class="w-4 h-4" />
+              <span>Buka Backoffice</span>
+            </Link>
+          </template>
           <template v-else>
             <Link 
-              :href="route('login')" 
-              class="text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+              href="/login" 
+              class="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-xs sm:text-sm shadow-md shadow-amber-500/20 hover:brightness-110 transition-all"
             >
-              Sign In
-            </Link>
-            <Link 
-              :href="route('register')" 
-              class="hidden sm:inline-flex items-center justify-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-xs font-semibold text-white rounded-xl shadow-lg shadow-indigo-600/20 transition-all duration-200"
-            >
-              Daftar Gratis
+              <LogIn class="w-4 h-4" />
+              <span>Masuk Kasir</span>
             </Link>
           </template>
         </div>
       </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <header v-if="heroSection" class="relative max-w-7xl mx-auto px-6 pt-16 pb-24 md:pt-24 md:pb-36">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-        <!-- Content -->
-        <div class="lg:col-span-7 space-y-8 text-left">
-          <div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-500/10 border border-indigo-500/20 rounded-full text-indigo-400 text-xs font-semibold">
-            <span class="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-pulse"></span>
-            Siap Digunakan Untuk Bisnis Anda
-          </div>
-
-          <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.1] md:leading-[1.15]">
-            <span class="bg-gradient-to-r from-white via-slate-100 to-indigo-400 bg-clip-text text-transparent">
-              {{ heroSection.content.headline }}
-            </span>
-          </h1>
-
-          <p class="text-lg text-slate-400 font-medium max-w-xl">
-            {{ heroSection.content.subheadline }}
-          </p>
-
-          <!-- CTAs -->
-          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
-            <a 
-              v-if="heroSection.content.cta_url"
-              :href="heroSection.content.cta_url" 
-              target="_blank"
-              class="inline-flex items-center justify-center px-6 py-4 bg-indigo-650 hover:bg-indigo-750 text-sm font-semibold text-white rounded-xl shadow-xl shadow-indigo-600/30 hover:scale-[1.02] hover:shadow-indigo-600/40 active:scale-[0.98] transition-all duration-200"
-            >
-              <Phone class="w-4 h-4 mr-2" />
-              {{ heroSection.content.cta_text || 'Hubungi WhatsApp' }}
-            </a>
-
-            <a 
-              v-if="settings.playstore_link"
-              :href="settings.playstore_link" 
-              target="_blank"
-              class="inline-flex items-center justify-center px-6 py-4 bg-slate-900 hover:bg-slate-850 border border-slate-800 hover:border-slate-700 text-sm font-semibold text-slate-200 rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
-            >
-              <Download class="w-4 h-4 mr-2 text-indigo-400" />
-              Download Play Store
-            </a>
-          </div>
-        </div>
-
-        <!-- Visual / Graphic Mockup -->
-        <div class="lg:col-span-5 relative flex justify-center">
-          <div class="w-72 h-[540px] rounded-[36px] bg-slate-950 border-8 border-slate-900 shadow-2xl overflow-hidden relative shadow-indigo-950/20">
-            <!-- Top Notch -->
-            <div class="absolute top-0 inset-x-0 h-5 bg-slate-900 flex justify-center items-center z-20">
-              <div class="w-20 h-3.5 bg-slate-950 rounded-b-xl"></div>
-            </div>
-
-            <!-- Dynamic Demo Screen content -->
-            <div class="w-full h-full bg-slate-900 p-6 pt-10 flex flex-col justify-between text-left">
-              <div class="space-y-4">
-                <div class="flex items-center justify-between">
-                  <div class="space-y-1">
-                    <span class="text-xxs text-slate-500 font-bold uppercase">Ringkasan</span>
-                    <h4 class="text-sm font-bold text-white">Pendapatan Hari Ini</h4>
-                  </div>
-                  <span class="text-xxs px-2 py-0.5 bg-emerald-500/10 text-emerald-400 rounded border border-emerald-500/25 font-bold">+24%</span>
-                </div>
-                <div class="h-24 bg-slate-950 border border-slate-800 rounded-2xl flex items-center justify-center relative overflow-hidden p-4">
-                  <div class="text-center">
-                    <span class="text-xxs text-slate-500 uppercase tracking-wider font-bold">Total Penjualan</span>
-                    <p class="text-lg font-black text-white mt-1">Rp 4.850.000</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="space-y-3">
-                <div class="flex items-center gap-2 p-2.5 bg-indigo-600/10 border border-indigo-500/20 rounded-xl">
-                  <CheckCircle class="w-4 h-4 text-indigo-400 shrink-0" />
-                  <span class="text-xxs text-indigo-300 font-semibold">Integrasi Cloud Lancar</span>
-                </div>
-                <div class="flex items-center gap-2 p-2.5 bg-slate-950 border border-slate-800 rounded-xl">
-                  <CheckCircle class="w-4 h-4 text-emerald-400 shrink-0" />
-                  <span class="text-xxs text-slate-400 font-semibold">Semua Laporan Tersinkron</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
     </header>
 
-    <!-- Dynamic Features Section -->
-    <section v-if="featuresSection" class="py-24 border-t border-slate-900 bg-slate-950/40 relative">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
-          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Keunggulan</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            {{ featuresSection.content.title }}
-          </h2>
-          <p class="text-sm text-slate-450">
-            Didesain khusus untuk memberikan performa maksimal demi kesuksesan operasional Anda.
-          </p>
-        </div>
+    <!-- Hero Section -->
+    <section class="relative py-16 sm:py-20 px-6 border-b border-slate-200 dark:border-slate-800/80 overflow-hidden">
+      <div class="max-w-7xl mx-auto relative z-10 grid lg:grid-cols-12 gap-12 items-center">
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-800 dark:text-amber-300 text-xs font-semibold">
+            <Sparkles class="w-3.5 h-3.5 text-amber-500" />
+            <span>Sistem Operasional Kasir & Perhiasan Emas Presisi Tinggi</span>
+          </div>
 
-        <!-- Dynamic Grid Features (1 col Mobile, 3 cols Desktop) with auto-height cards -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div 
-            v-for="(item, idx) in featuresSection.content.items" 
-            :key="idx"
-            class="bg-slate-950 border border-slate-900 rounded-3xl p-8 hover:border-indigo-500/40 hover:scale-[1.02] shadow-xl hover:shadow-indigo-950/10 transition-all duration-300 flex flex-col justify-between group"
-          >
-            <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-indigo-600/10 text-indigo-400 flex items-center justify-center border border-indigo-500/20 group-hover:bg-indigo-650 group-hover:text-white transition-all duration-300">
-                <CheckCircle class="w-6 h-6" />
-              </div>
-              <h3 class="text-xl font-bold text-white group-hover:text-indigo-400 transition-colors">
-                {{ item.title }}
-              </h3>
-              <p class="text-sm text-slate-400 leading-relaxed font-medium">
-                {{ item.description }}
-              </p>
+          <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 dark:text-white leading-tight">
+            Transparansi Kadar, <br />
+            <span class="bg-gradient-to-r from-amber-600 via-amber-500 to-yellow-500 dark:from-amber-300 dark:via-amber-200 dark:to-yellow-400 bg-clip-text text-transparent">
+              Presisi Gramasi 0.001 gr
+            </span>
+          </h2>
+
+          <p class="text-slate-600 dark:text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+            Didukung fitur manajemen baki etalase, pelacakan barcode perhiasan, live update harga emas harian, kalkulasi buyback transparan, serta cetak surat jaminan emas resmi.
+          </p>
+
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a 
+              href="#gold-rates-table" 
+              class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold text-sm transition-all shadow-md shadow-amber-500/20 flex items-center gap-2"
+            >
+              <TrendingUp class="w-4 h-4" />
+              <span>Pantau Kurs Emas Hari Ini</span>
+            </a>
+            <a 
+              href="#trays-overview" 
+              class="px-6 py-3.5 rounded-xl bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200 border border-slate-300 dark:border-slate-700/80 font-medium text-sm transition-all flex items-center gap-2 shadow-sm"
+            >
+              <Layers class="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <span>Lihat Status Baki Etalase</span>
+            </a>
+          </div>
+
+          <!-- Quick Feature Badges -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6 border-t border-slate-200 dark:border-slate-800/80 text-xs">
+            <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+              <Scale class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>Timbangan Bersih (Gross - Stone)</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+              <QrCode class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>Scan Barcode Baki Cepat</span>
+            </div>
+            <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+              <ShieldCheck class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>Surat Jaminan Emas Sah</span>
             </div>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- Dynamic Testimonials Section -->
-    <section v-if="testimonialsSection" class="py-24 border-t border-slate-900 relative">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center max-w-2xl mx-auto space-y-3 mb-16">
-          <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Testimoni</span>
-          <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            {{ testimonialsSection.content.title }}
-          </h2>
-          <p class="text-sm text-slate-450">
-            Dengarkan ulasan jujur dari pengusaha yang telah bertransformasi bersama kami.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-          <div 
-            v-for="(item, idx) in testimonialsSection.content.items" 
-            :key="idx"
-            class="bg-slate-950 border border-slate-900 rounded-3xl p-8 space-y-6 relative hover:border-slate-800 transition-all"
-          >
-            <div class="absolute top-6 right-8 text-indigo-900/40">
-              <MessageSquare class="w-12 h-12" />
-            </div>
-            <p class="text-base text-slate-350 italic leading-relaxed relative z-10 font-medium">
-              "{{ item.comment }}"
-            </p>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center font-bold text-indigo-400 border border-slate-700 text-sm">
-                {{ item.name.charAt(0) }}
-              </div>
+        <!-- Hero Card / Live Rates Summary -->
+        <div class="lg:col-span-5">
+          <div class="bg-white dark:bg-gradient-to-b dark:from-slate-900 dark:to-slate-950 p-6 rounded-2xl border border-amber-500/30 shadow-xl dark:shadow-2xl relative overflow-hidden transition-colors duration-300">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
               <div>
-                <h4 class="text-sm font-bold text-white">{{ item.name }}</h4>
-                <p class="text-xs text-slate-500 font-semibold">{{ item.role }}</p>
+                <p class="text-xs text-amber-700 dark:text-amber-400 font-semibold uppercase tracking-wider">Live Rates Toko</p>
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white">Kurs Beli & Jual Hari Ini</h3>
+              </div>
+              <span class="text-xs text-slate-500 dark:text-slate-400 font-mono">{{ new Date().toLocaleDateString('id-ID', { dateStyle: 'medium' }) }}</span>
+            </div>
+
+            <div class="divide-y divide-slate-100 dark:divide-slate-800/80 mt-2">
+              <div 
+                v-for="rate in goldRates.slice(0, 5)" 
+                :key="rate.id"
+                class="py-3 flex items-center justify-between text-sm"
+              >
+                <div>
+                  <p class="font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    {{ rate.name }}
+                    <span class="text-[10px] text-amber-700 dark:text-amber-400/90 font-mono font-normal">({{ rate.percentage }}%)</span>
+                  </p>
+                  <p class="text-[11px] text-slate-500 dark:text-slate-400">Buyback: <span class="text-amber-700 dark:text-amber-300 font-semibold">{{ formatRupiah(rate.buy_price_per_gram) }}/gr</span></p>
+                </div>
+                <div class="text-right">
+                  <span class="text-base font-extrabold text-amber-600 dark:text-amber-400">{{ formatRupiah(rate.sell_price_per_gram) }}</span>
+                  <p class="text-[10px] text-slate-400 dark:text-slate-500">per gram dasar</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+              <span>* Harga dasar belum termasuk ongkos bikin</span>
+              <a href="#gold-rates-table" class="text-amber-600 dark:text-amber-400 font-semibold hover:underline flex items-center gap-1">
+                Selengkapnya <ChevronRight class="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 1: Tabel Lengkap Kurs Emas Harian -->
+    <section id="gold-rates-table" class="py-16 px-6 max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-semibold text-amber-700 dark:text-amber-400 tracking-wider uppercase">Daftar Kadar & Kemurnian</span>
+          <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">Harga Patokan Emas Harian</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Digunakan secara otomatis di kasir POS untuk perhitungan harga jual dan buyback.</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 shadow-sm backdrop-blur transition-colors duration-300">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-slate-50 dark:bg-slate-950/80 text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-800">
+            <tr>
+              <th class="py-4 px-6">Kadar / Karat</th>
+              <th class="py-4 px-6">Persentase Emas</th>
+              <th class="py-4 px-6 text-right">Harga Beli (Buyback) / gr</th>
+              <th class="py-4 px-6 text-right">Harga Jual Dasar / gr</th>
+              <th class="py-4 px-6 text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100 dark:divide-slate-800/80 text-slate-700 dark:text-slate-200">
+            <tr v-for="rate in goldRates" :key="rate.id" class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+              <td class="py-4 px-6 font-semibold text-slate-900 dark:text-white">
+                <div class="flex items-center gap-2">
+                  <div class="w-7 h-7 rounded-lg bg-amber-500/10 border border-amber-500/20 text-amber-700 dark:text-amber-400 flex items-center justify-center font-bold text-xs">
+                    {{ rate.code }}
+                  </div>
+                  <span>{{ rate.name }}</span>
+                </div>
+              </td>
+              <td class="py-4 px-6 text-slate-600 dark:text-slate-300 font-mono">{{ rate.percentage }}%</td>
+              <td class="py-4 px-6 text-right font-semibold text-amber-700 dark:text-amber-300">{{ formatRupiah(rate.buy_price_per_gram) }}</td>
+              <td class="py-4 px-6 text-right font-bold text-slate-900 dark:text-white">{{ formatRupiah(rate.sell_price_per_gram) }}</td>
+              <td class="py-4 px-6 text-center">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Aktif
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Section 2: Ringkasan Baki & Etalase Toko -->
+    <section id="trays-overview" class="py-16 px-6 bg-slate-100/60 dark:bg-slate-900/30 border-y border-slate-200 dark:border-slate-800/80 transition-colors duration-300">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+          <div>
+            <span class="text-xs font-semibold text-amber-700 dark:text-amber-400 tracking-wider uppercase">Manajemen Etalase</span>
+            <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">Status Baki & Nampan Emas</h3>
+            <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Pantau kapasitas terisi dan total gramasi fisik di setiap baki etalase.</p>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div 
+            v-for="tray in trays" 
+            :key="tray.id"
+            class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 rounded-2xl p-5 shadow-sm transition-all group"
+          >
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
+              <span class="font-mono text-xs font-bold text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-500/20">
+                {{ tray.code }}
+              </span>
+              <span class="text-xs text-slate-500 dark:text-slate-400">{{ tray.showcase_location || 'Etalase' }}</span>
+            </div>
+
+            <h4 class="font-bold text-slate-900 dark:text-white text-base mt-3 group-hover:text-amber-600 dark:group-hover:text-amber-300 transition-colors">
+              {{ tray.name }}
+            </h4>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+              Kategori: <span class="text-slate-800 dark:text-slate-200 font-medium">{{ tray.category ? tray.category.name : 'Campuran' }}</span>
+            </p>
+
+            <div class="grid grid-cols-2 gap-3 mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 text-xs">
+              <div class="bg-slate-50 dark:bg-slate-950/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                <span class="text-slate-500 dark:text-slate-400 text-[11px] block">Isi Perhiasan:</span>
+                <span class="font-bold text-slate-900 dark:text-white text-sm">{{ tray.total_items }} / {{ tray.capacity }} item</span>
+              </div>
+              <div class="bg-slate-50 dark:bg-slate-950/60 p-2.5 rounded-xl border border-slate-200 dark:border-slate-800">
+                <span class="text-slate-500 dark:text-slate-400 text-[11px] block">Total Bobot:</span>
+                <span class="font-bold text-amber-700 dark:text-amber-400 text-sm">{{ formatWeight(tray.total_weight) }}</span>
+              </div>
+            </div>
+
+            <!-- Capacity Progress Bar -->
+            <div class="mt-4">
+              <div class="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 mb-1">
+                <span>Kapasitas Slot</span>
+                <span>{{ Math.round((tray.total_items / (tray.capacity || 1)) * 100) }}%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-950 rounded-full h-1.5 overflow-hidden">
+                <div 
+                  class="bg-gradient-to-r from-amber-500 to-yellow-400 h-1.5 rounded-full" 
+                  :style="{ width: Math.min(100, Math.round((tray.total_items / (tray.capacity || 1)) * 100)) + '%' }"
+                ></div>
               </div>
             </div>
           </div>
@@ -269,59 +338,52 @@ const testimonialsSection = getSection('testimonials');
       </div>
     </section>
 
-    <!-- Blog / Articles Grid Section -->
-    <section v-if="posts && posts.length > 0" class="py-24 border-t border-slate-900 bg-slate-950/40 relative">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-16">
-          <div class="space-y-3">
-            <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">Artikel & Berita</span>
-            <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Kabar Terbaru</h2>
-            <p class="text-sm text-slate-450">Dapatkan wawasan seputar dunia bisnis kuliner dan pengembangan teknologi terbaru.</p>
-          </div>
+    <!-- Section 3: Sampel Perhiasan Siap Jual -->
+    <section class="py-16 px-6 max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+        <div>
+          <span class="text-xs font-semibold text-amber-700 dark:text-amber-400 tracking-wider uppercase">Inventaris Siap Jual</span>
+          <h3 class="text-2xl sm:text-3xl font-bold text-slate-900 dark:text-white mt-1">Koleksi Perhiasan di Etalase</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">Setiap barang memiliki kode SKU/Barcode unik untuk scan transaksi kasir.</p>
         </div>
+      </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div 
-            v-for="post in posts" 
-            :key="post.id"
-            class="bg-slate-950 border border-slate-900 rounded-3xl overflow-hidden group hover:border-indigo-500/35 transition-all duration-300 flex flex-col justify-between"
-          >
-            <div>
-              <!-- Cover image wrapper -->
-              <div class="h-48 bg-slate-900 relative overflow-hidden">
-                <img 
-                  v-if="post.image_url" 
-                  :src="post.image_url" 
-                  :alt="post.title" 
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div v-else class="w-full h-full flex items-center justify-center bg-slate-900 text-slate-700">
-                  <Layers class="w-12 h-12" />
-                </div>
-                <!-- Category badge -->
-                <span class="absolute top-4 left-4 text-xxs font-bold text-indigo-400 px-2.5 py-1 bg-slate-950/80 border border-slate-800 backdrop-blur rounded-full uppercase tracking-wider">
-                  {{ post.category?.name || 'Umum' }}
-                </span>
-              </div>
-
-              <!-- Post body -->
-              <div class="p-6 space-y-3 text-left">
-                <p class="text-xxs text-slate-500 font-semibold">
-                  {{ new Date(post.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) }}
-                </p>
-                <h3 class="text-lg font-bold text-white group-hover:text-indigo-400 transition-colors line-clamp-2">
-                  {{ post.title }}
-                </h3>
-                <p class="text-xs text-slate-450 line-clamp-3 font-medium">
-                  {{ post.content }}
-                </p>
-              </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div 
+          v-for="item in featuredItems" 
+          :key="item.id"
+          class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-amber-500/50 rounded-2xl p-5 shadow-sm transition-all flex flex-col justify-between"
+        >
+          <div>
+            <div class="flex items-center justify-between text-xs mb-3">
+              <span class="font-mono text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">{{ item.sku }}</span>
+              <span class="text-slate-500 dark:text-slate-400 font-semibold">{{ item.gold_rate ? item.gold_rate.code : '' }}</span>
             </div>
 
-            <div class="p-6 pt-0 text-left">
-              <span class="text-xs font-bold text-indigo-400 hover:text-indigo-300 flex items-center gap-1 cursor-pointer">
-                Baca Selengkapnya <ChevronRight class="w-4 h-4" />
-              </span>
+            <h4 class="font-bold text-slate-900 dark:text-white text-sm line-clamp-2 leading-snug">
+              {{ item.name }}
+            </h4>
+
+            <div class="mt-3 space-y-1 text-xs text-slate-600 dark:text-slate-300">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Berat Kotor:</span>
+                <span class="font-mono font-medium">{{ formatWeight(item.gross_weight) }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Berat Bersih:</span>
+                <span class="font-mono font-bold text-amber-700 dark:text-amber-300">{{ formatWeight(item.net_weight) }}</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Baki:</span>
+                <span class="text-slate-700 dark:text-slate-300">{{ item.tray ? item.tray.code : '-' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between">
+            <div>
+              <span class="text-[10px] text-slate-400 block">Estimasi Harga:</span>
+              <span class="text-base font-extrabold text-amber-700 dark:text-amber-400">{{ formatRupiah(item.total_price) }}</span>
             </div>
           </div>
         </div>
@@ -329,59 +391,65 @@ const testimonialsSection = getSection('testimonials');
     </section>
 
     <!-- Footer -->
-    <footer class="border-t border-slate-900 bg-slate-950 py-16 text-slate-500 text-sm relative z-10">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-12 text-left mb-12">
-          <!-- Column 1: Info -->
-          <div class="md:col-span-2 space-y-4">
-            <span class="font-extrabold text-lg text-white tracking-tight">
-              {{ settings.site_name || 'CMS Boilerplate' }}
-            </span>
-            <p class="text-xs text-slate-450 leading-relaxed max-w-sm">
-              {{ settings.site_description || 'Boilerplate CMS premium berbasis Laravel 11, Vue 3, Inertia.js, dan Tailwind CSS.' }}
-            </p>
-          </div>
-
-          <!-- Column 2: Tautan Halaman -->
-          <div class="space-y-4">
-            <h4 class="text-xs font-bold text-slate-350 uppercase tracking-widest">Halaman</h4>
-            <ul class="space-y-2 text-xs">
-              <li v-for="nav in navigation" :key="nav.id">
-                <Link :href="nav.slug === 'home' ? '/' : `/${nav.slug}`" class="hover:text-white transition-colors">
-                  {{ nav.title }}
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Column 3: Kontak & Hak Cipta -->
-          <div class="space-y-4">
-            <h4 class="text-xs font-bold text-slate-350 uppercase tracking-widest">Kontak</h4>
-            <ul class="space-y-2 text-xs">
-              <li v-if="settings.whatsapp_number" class="flex items-center gap-1.5">
-                <Phone class="w-3.5 h-3.5 text-indigo-400" />
-                <span>+{{ settings.whatsapp_number }}</span>
-              </li>
-              <li>
-                <span>Email: support@cms.com</span>
-              </li>
-            </ul>
-          </div>
+    <footer class="bg-white dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800/80 py-12 px-6 text-slate-500 dark:text-slate-400 text-xs transition-colors duration-300">
+      <div class="max-w-7xl mx-auto grid md:grid-cols-3 gap-8">
+        <div>
+          <h5 class="text-slate-900 dark:text-white font-bold text-sm mb-2">{{ storeSettings.store_name }}</h5>
+          <p class="leading-relaxed">{{ storeSettings.store_legal_name }}</p>
+          <p class="text-amber-700 dark:text-amber-400/80 font-mono mt-1">{{ storeSettings.store_permit_number }}</p>
         </div>
-
-        <!-- Lower Footer -->
-        <div class="pt-8 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p class="text-xs text-slate-600">
-            &copy; {{ new Date().getFullYear() }} {{ settings.site_name || 'CMS Boilerplate' }}. All rights reserved.
+        <div>
+          <h5 class="text-slate-900 dark:text-white font-bold text-sm mb-2">Lokasi & Kontak Toko</h5>
+          <p class="flex items-start gap-2">
+            <MapPin class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+            <span>{{ storeSettings.store_address }}</span>
           </p>
-          <p class="text-xs text-slate-600">
-            Template Owner: 
-            <a href="https://hasanarofid.site" target="_blank" class="text-indigo-500/80 hover:text-indigo-400 transition-colors font-bold">
-              @hasanarofid.site
-            </a>
+          <p class="flex items-center gap-2 mt-2">
+            <Phone class="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+            <span>{{ storeSettings.store_phone }}</span>
           </p>
         </div>
+        <div>
+          <h5 class="text-slate-900 dark:text-white font-bold text-sm mb-2">Sistem Operasional e-Emas</h5>
+          <p class="leading-relaxed">
+            Platform modern kasir (POS), inventaris per baki, live gold rates, dan cetak surat emas jaminan.
+          </p>
+          <div class="mt-3">
+            <Link href="/login" class="text-amber-700 dark:text-amber-400 hover:underline flex items-center gap-1 font-semibold">
+              Buka Login Kasir / Admin <ArrowUpRight class="w-3.5 h-3.5" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div class="max-w-7xl mx-auto mt-8 pt-6 border-t border-slate-100 dark:border-slate-900 text-center text-slate-400 dark:text-slate-500">
+        &copy; 2026 {{ storeSettings.store_name }}. Seluruh hak cipta dilindungi undang-undang.
       </div>
     </footer>
   </div>
 </template>
+
+<style scoped>
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(-33.333333%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-scroll 28s linear infinite;
+  will-change: transform;
+}
+
+.hover\:pause:hover {
+  animation-play-state: paused;
+}
+
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 30px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20px, black calc(100% - 30px), transparent 100%);
+}
+</style>

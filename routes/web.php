@@ -1,71 +1,67 @@
 <?php
 
-use App\Http\Controllers\ArticleController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\PortfolioController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\GoldRateController;
+use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\SettingController;
-use App\Http\Controllers\Admin\PageController;
-use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\TrayController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
-| Public Routes - Cahaya Ornamen
+| Public Routes - e-Emas POS & Jewelry Management
 |--------------------------------------------------------------------------
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-// Katalog Produk Ornamen
-Route::get('/katalog', [ProductController::class, 'index'])->name('products.index');
-Route::get('/katalog/{slug}', [ProductController::class, 'show'])->name('products.show');
-
-// Portofolio Proyek Terpasang
-Route::get('/portofolio', [PortfolioController::class, 'index'])->name('portfolios.index');
-Route::get('/portofolio/{slug}', [PortfolioController::class, 'show'])->name('portfolios.show');
-
-// Artikel & Tips Arsitektur (SEO)
-Route::get('/artikel', [ArticleController::class, 'index'])->name('articles.index');
-Route::get('/artikel/{slug}', [ArticleController::class, 'show'])->name('articles.show');
-
-// Kontak & Form Konsultasi Lead
-Route::get('/kontak', [ContactController::class, 'index'])->name('contact.index');
-Route::post('/konsultasi', [ContactController::class, 'store'])->name('inquiries.store');
-
 /*
 |--------------------------------------------------------------------------
-| Auth & Admin CMS Routes
+| Authenticated User & POS Routes
 |--------------------------------------------------------------------------
 */
-Route::get('/dashboard', function () {
-    return redirect()->route('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', function () {
+        return redirect()->route('admin.dashboard');
+    })->name('dashboard');
 
-Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Admin CMS Routes
+/*
+|--------------------------------------------------------------------------
+| Admin & Backoffice Routes (e-Emas Management)
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // 1. Dashboard Ringkasan
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // Settings
+
+    // 2. Kurs Harga Emas Harian (Live Gold Rates)
+    Route::get('/gold-rates', [GoldRateController::class, 'index'])->name('gold-rates.index');
+    Route::post('/gold-rates/update-prices', [GoldRateController::class, 'updatePrices'])->name('gold-rates.update-prices');
+
+    // 3. Manajemen Baki Etalase (Trays)
+    Route::get('/trays', [TrayController::class, 'index'])->name('trays.index');
+    Route::post('/trays', [TrayController::class, 'store'])->name('trays.store');
+    Route::get('/trays/{tray}', [TrayController::class, 'show'])->name('trays.show');
+    Route::put('/trays/{tray}', [TrayController::class, 'update'])->name('trays.update');
+    Route::post('/trays/move-item', [TrayController::class, 'moveItem'])->name('trays.move-item');
+    Route::delete('/trays/{tray}', [TrayController::class, 'destroy'])->name('trays.destroy');
+
+    // 4. Katalog Inventaris Perhiasan (Items & Barcode)
+    Route::get('/items', [ItemController::class, 'index'])->name('items.index');
+    Route::post('/items', [ItemController::class, 'store'])->name('items.store');
+    Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
+    Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
+    Route::get('/items/{item}/print-tag', [ItemController::class, 'printTag'])->name('items.print-tag');
+
+    // 5. Pengaturan Identitas Toko & Surat Emas (Settings)
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
-
-    // Pages
-    Route::resource('pages', PageController::class);
-    Route::put('pages/{page}/sections/{section}', [PageController::class, 'updateSection'])->name('pages.sections.update');
-
-    // Posts & Categories
-    Route::resource('posts', PostController::class);
-    Route::post('categories', [PostController::class, 'storeCategory'])->name('categories.store');
-    Route::delete('categories/{category}', [PostController::class, 'destroyCategory'])->name('categories.destroy');
 });
 
 require __DIR__.'/auth.php';
