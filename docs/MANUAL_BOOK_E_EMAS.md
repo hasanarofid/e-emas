@@ -1,5 +1,5 @@
 # 📖 BUKU PANDUAN PENGGUNA (MANUAL BOOK)
-# SISTEM POS & MANAJEMEN TOKO EMAS (e-Emas)
+# SISTEM POS & MANAJEMEN TOKO EMAS (POS Emas)
 
 > **Versi:** 1.0.0  
 > **Target Aplikasi:** Toko Perhiasan & Logam Mulia  
@@ -27,7 +27,7 @@
 
 ## 1. Pendahuluan & Konsep Bisnis
 
-**e-Emas** dirancang khusus untuk memecahkan tantangan khas manajemen toko emas di Indonesia:
+**POS Emas** dirancang khusus untuk memecahkan tantangan khas manajemen toko emas di Indonesia:
 1. **Presisi Gramasi 3 Desimal:** Setiap penimbangan wajib mencatat hingga **0.001 gram** (misal: `3.250 gr`) untuk membedakan berat kotor (*gross weight*), berat batu/permata (*stone weight*), dan berat bersih emas murni (*net gold weight*).
 2. **Kalkulasi Dinamis:** Harga jual perhiasan dihitung otomatis dari:  
    $$\text{Harga Jual} = (\text{Berat Bersih} \times \text{Kurs Jual Hari Ini}) + \text{Ongkos Bikin}$$
@@ -38,7 +38,7 @@
 
 ## 2. Akses Masuk & Kredensial Pengguna
 
-Buka sistem melalui browser di alamat URL toko Anda (Lokal: `http://127.0.0.1:8002/login` atau Produksi: `https://emas.nolimitstraining.id/login`).
+Buka sistem melalui browser di alamat URL toko Anda (Lokal: `http://127.0.0.1:8002/login` atau Produksi: `https://posemas.web.id/login`).
 
 Tersedia 2 peran (*Role*) bawaan:
 * **Owner (Pemilik Toko):**
@@ -210,4 +210,4 @@ Untuk mempercepat pelayanan kasir saat toko sedang ramai, gunakan tombol pintasa
 
 ---
 
-*e-Emas POS & Management System © 2026 Toko Mas Permata Abadi. Presisi Gramasi & Transparansi Kadar Emas.*
+*POS Emas - POS & Management System © 2026 Toko Mas Permata Abadi. Presisi Gramasi & Transparansi Kadar Emas.*

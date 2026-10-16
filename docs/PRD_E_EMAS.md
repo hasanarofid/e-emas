@@ -1,7 +1,7 @@
 # Product Requirement Document (PRD): e-Emas POS & Management System
 
 > **Versi:** 1.0.0  
-> **Target Rilis:** Produksi (`https://emas.nolimitstraining.id`)  
+> **Target Rilis:** Produksi (`https://posemas.web.id`)  
 > **Repository GitHub:** `https://github.com/hasanarofid/e-emas.git`  
 > **Server Hosting:** aaPanel Linux (PHP 8.3, Nginx, MySQL) @ `43.134.77.167`  
 > **Tech Stack:** Laravel 11, Vue 3 (Inertia.js), Tailwind CSS, MySQL, Pinia, Lucide Icons
@@ -131,8 +131,8 @@ Menghindari tampilan generic AI yang monoton, e-Emas mengusung gaya **"Modern Je
 ---
 
 ### FASE 7: Setup Server aaPanel & Konfigurasi SSH Key Auto-Deploy
-- [ ] **7.1 Konfigurasi Nginx & Website di aaPanel (`emas.nolimitstraining.id`)**
-  - Root directory diset ke: `/www/wwwroot/emas.nolimitstraining.id/public`.
+- [ ] **7.1 Konfigurasi Nginx & Website di aaPanel (`posemas.web.id`)**
+  - Root directory diset ke: `/www/wwwroot/posemas.web.id/public`.
   - Pasang SSL / Let's Encrypt gratis via panel aaPanel.
   - Set Nginx rewrite rules untuk Laravel:
     ```nginx
@@ -143,7 +143,7 @@ Menghindari tampilan generic AI yang monoton, e-Emas mengusung gaya **"Modern Je
 - [ ] **7.2 Pembuatan SSH Key & Konfigurasi Deploy Key di Server**
   - Generate SSH Keypair di server untuk akses GitHub:
     ```bash
-    ssh-keygen -t ed25519 -C "deploy@emas.nolimitstraining.id" -f ~/.ssh/id_ed25519_emas
+    ssh-keygen -t ed25519 -C "deploy@posemas.web.id" -f ~/.ssh/id_ed25519_emas
     ```
   - Masukkan Public Key (`~/.ssh/id_ed25519_emas.pub`) ke **GitHub Repo -> Settings -> Deploy Keys** (centang *Allow write access* jika dibutuhkan).
 - [ ] **7.3 Otomatisasi CI/CD Auto-Deploy via GitHub Actions**
@@ -178,9 +178,9 @@ Menghindari tampilan generic AI yang monoton, e-Emas mengusung gaya **"Modern Je
 5. Buka GitHub: `https://github.com/hasanarofid/e-emas/settings/keys`, klik **Add deploy key**, tempelkan isi public key tadi.
 6. Masuk ke direktori web aaPanel dan clone repository:
    ```bash
-   cd /www/wwwroot/emas.nolimitstraining.id
+   cd /www/wwwroot/posemas.web.id
    git clone git@github.com:hasanarofid/e-emas.git .
-   chown -R www:www /www/wwwroot/emas.nolimitstraining.id
+   chown -R www:www /www/wwwroot/posemas.web.id
    chmod -R 775 storage bootstrap/cache
    ```
 
@@ -208,7 +208,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SERVER_PORT || 22 }}
           script: |
-            cd /www/wwwroot/emas.nolimitstraining.id
+            cd /www/wwwroot/posemas.web.id
             git pull origin main
             composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
             php artisan migrate --force
@@ -216,7 +216,7 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            chown -R www:www /www/wwwroot/emas.nolimitstraining.id/storage /www/wwwroot/emas.nolimitstraining.id/bootstrap/cache
+            chown -R www:www /www/wwwroot/posemas.web.id/storage /www/wwwroot/posemas.web.id/bootstrap/cache
 ```
 
 ### C. Alternatif: Auto-Deploy via Webhook URL (Instant tanpa GitHub Runner)
