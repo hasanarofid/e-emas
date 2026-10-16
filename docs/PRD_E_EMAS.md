@@ -99,10 +99,10 @@ Menghindari tampilan generic AI yang monoton, e-Emas mengusung gaya **"Modern Je
 ---
 
 ### FASE 4: Modul Buyback (Beli Kembali) & Tukar Tambah
-- [ ] **4.1 Pencarian Nota Penjualan Lama**
+- [x] **4.1 Pencarian Nota Penjualan Lama**
   - Kasir mencari nomor nota atau scan QR surat emas pelanggan.
   - Verifikasi keaslian data (berat awal di nota vs berat aktual saat ditimbang ulang).
-- [ ] **4.2 Form Hitung Potongan & Arus Kas Buyback**
+- [x] **4.2 Form Hitung Potongan & Arus Kas Buyback**
   - Otomatisasi hitung potongan ongkos, susut berat, atau batu lepas.
   - Cetak Bukti Pembelian Kembali (Kuitansi Buyback).
   - Alokasi stok buyback: masuk ke Baki Emas Bekas (Second-hand) atau Gudang Peleburan.

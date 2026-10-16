@@ -82,7 +82,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         return back()->with('success', 'Rekening bank berhasil dihapus!');
     })->name('bank-accounts.destroy');
 
-    // 7. Pengaturan Identitas Toko & Surat Emas (Settings)
+    // 7. Modul Buyback & Beli Kembali Emas (FASE 4)
+    Route::get('/buybacks', [\App\Http\Controllers\Admin\BuybackController::class, 'index'])->name('buybacks.index');
+    Route::get('/buybacks/create', [\App\Http\Controllers\Admin\BuybackController::class, 'create'])->name('buybacks.create');
+    Route::get('/buybacks/search-sale', [\App\Http\Controllers\Admin\BuybackController::class, 'searchSale'])->name('buybacks.search-sale');
+    Route::post('/buybacks', [\App\Http\Controllers\Admin\BuybackController::class, 'store'])->name('buybacks.store');
+    Route::get('/buybacks/{buyback}/receipt', [\App\Http\Controllers\Admin\BuybackController::class, 'receipt'])->name('buybacks.receipt');
+
+    // 8. Pengaturan Identitas Toko & Surat Emas (Settings)
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
