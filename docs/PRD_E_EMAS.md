@@ -121,10 +121,11 @@ Menghindari tampilan generic AI yang monoton, e-Emas mengusung gaya **"Modern Je
 ---
 
 ### FASE 6: Pengujian Lokal & Persiapan Rilis
-- [ ] **6.1 Seeder Data Demo Realistis**
-  - Seeder mencakup: 1 Toko Emas default, 5 Kadar (24K, 22K, 17K/700, 16K, 375), 6 Baki Etalase, 20+ item perhiasan contoh dengan barcode siap scan.
-- [ ] **6.2 Testing Alur End-to-End di Lingkungan Lokal**
-  - Uji alur: Input Item -> Cek Baki -> POS Kasir -> Cetak Surat Emas -> Buyback -> Stock Opname.
+- [x] **6.1 Seeder Data Demo Realistis**
+  - Seeder mencakup: 1 Toko Emas default, 7 Kadar (24K, 22K, 18K, 17K/700, 16K, 9K/375, 8K/300), 6 Baki Etalase, 22 item perhiasan contoh dengan barcode siap scan.
+- [x] **6.2 Testing Alur End-to-End di Lingkungan Lokal & Buku Panduan**
+  - Uji alur: Input Item -> Cek Baki -> POS Kasir -> Cetak Surat Emas -> Buyback -> Stock Opname -> Laporan.
+  - Buku Panduan Pengguna Lengkap (`docs/MANUAL_BOOK_E_EMAS.md`).
   - Build aset frontend: `npm run build` dan validasi bundle bebas error.
 
 ---
