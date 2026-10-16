@@ -17,6 +17,9 @@ import ThemeToggle from '@/Components/ThemeToggle.vue';
 const page = usePage();
 const user = page.props.auth?.user || {};
 
+const isSidebarOpen = ref(false);
+const isSidebarCollapsed = ref(false);
+
 const navigation = [
   { name: 'Dashboard', href: route('admin.dashboard'), icon: LayoutDashboard, current: route().current('admin.dashboard') },
   { name: 'Kurs Harga Emas', href: route('admin.gold-rates.index'), icon: TrendingUp, current: route().current('admin.gold-rates.*') },
