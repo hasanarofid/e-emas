@@ -203,7 +203,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <Head title="Catat Transaksi Beli Kembali Emas - e-Emas" />
+  <Head title="Catat Transaksi Beli Kembali Emas - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-6 max-w-6xl mx-auto">

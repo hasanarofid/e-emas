@@ -17,7 +17,7 @@ import ThemeToggle from '@/Components/ThemeToggle.vue';
 
     <!-- Card Container -->
     <div class="w-full sm:max-w-md bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 backdrop-blur-xl shadow-xl dark:shadow-2xl dark:shadow-slate-950/60 rounded-3xl p-8 relative z-10 space-y-6 transition-colors duration-300">
-      <!-- Branding e-Emas POS -->
+      <!-- Branding POS Emas -->
       <div class="flex flex-col items-center gap-3">
         <Link href="/" class="group flex items-center justify-center">
           <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-600 via-amber-400 to-yellow-200 p-0.5 shadow-lg shadow-amber-500/30 group-hover:scale-105 transition-all">
@@ -31,7 +31,7 @@ import ThemeToggle from '@/Components/ThemeToggle.vue';
             <Sparkles class="w-3 h-3 text-amber-500 dark:text-amber-400" />
             <span>Toko Mas Permata Abadi</span>
           </div>
-          <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">e-Emas POS</h2>
+          <h2 class="text-xl font-bold text-slate-900 dark:text-white tracking-tight">POS Emas</h2>
           <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Sistem Kasir & Manajemen Toko Emas</p>
         </div>
       </div>

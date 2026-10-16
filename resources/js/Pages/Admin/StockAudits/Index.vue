@@ -47,7 +47,7 @@ const startAudit = () => {
 </script>
 
 <template>
-  <Head title="Stock Opname Baki Etalase - e-Emas" />
+  <Head title="Stock Opname Baki Etalase - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-6">

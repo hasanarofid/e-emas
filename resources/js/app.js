@@ -7,7 +7,7 @@ import { createApp, h } from 'vue';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { useTheme } from './Composables/useTheme';
 
-const appName = import.meta.env.VITE_APP_NAME || 'e-Emas POS';
+const appName = import.meta.env.VITE_APP_NAME || 'POS Emas';
 
 // Inisialisasi status Dark / Light Mode saat bootstrap
 const { initTheme } = useTheme();

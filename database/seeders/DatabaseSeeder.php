@@ -43,8 +43,9 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // 2. Pengaturan Toko Emas
+        // 2. Pengaturan Toko Emas & Website
         $settings = [
+            'site_name' => 'POS Emas',
             'store_name' => 'Toko Mas Permata Abadi',
             'store_legal_name' => 'UD. Permata Abadi Gold & Jewelry',
             'store_phone' => '0812-3456-7890',

@@ -121,7 +121,7 @@ const formatWeight = (val) => {
 </script>
 
 <template>
-  <Head title="Manajemen Baki Etalase - e-Emas" />
+  <Head title="Manajemen Baki Etalase - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-8">

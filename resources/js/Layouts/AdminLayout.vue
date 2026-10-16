@@ -69,7 +69,7 @@ const logout = () => {
             </div>
             <div :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'transition-opacity duration-300']">
               <h1 class="text-sm font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                e-Emas POS
+                POS Emas
                 <span class="text-[9px] bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.2 rounded font-mono">v1.0</span>
               </h1>
               <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Permata Abadi Gold</p>
@@ -198,7 +198,7 @@ const logout = () => {
 
       <!-- Footer -->
       <footer class="py-4 px-8 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 text-center transition-colors duration-300">
-        e-Emas POS &copy; 2026 Toko Mas Permata Abadi. Presisi Gramasi & Transparansi Kadar Emas.
+        POS Emas &copy; 2026 Toko Mas Permata Abadi. Presisi Gramasi & Transparansi Kadar Emas.
       </footer>
     </div>
   </div>

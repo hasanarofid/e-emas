@@ -49,7 +49,7 @@ const formatWeight = (val) => {
 </script>
 
 <template>
-  <Head title="Dashboard Manajemen - e-Emas" />
+  <Head title="Dashboard Manajemen - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-8">

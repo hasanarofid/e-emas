@@ -59,7 +59,7 @@ const formatWeight = (val) => {
 </script>
 
 <template>
-  <Head title="Manajemen Buyback & Beli Kembali Emas - e-Emas" />
+  <Head title="Manajemen Buyback & Beli Kembali Emas - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-6">

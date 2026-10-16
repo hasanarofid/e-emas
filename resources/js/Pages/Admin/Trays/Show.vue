@@ -68,7 +68,7 @@ const formatWeight = (val) => {
 </script>
 
 <template>
-  <Head :title="`Detail Baki ${tray.code} - e-Emas`" />
+  <Head :title="`Detail Baki ${tray.code} - POS Emas`" />
 
   <AdminLayout>
     <div class="space-y-8">

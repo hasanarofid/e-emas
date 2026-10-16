@@ -39,7 +39,7 @@ const submitSettings = () => {
 </script>
 
 <template>
-  <Head title="Pengaturan Toko & Surat Emas - e-Emas" />
+  <Head title="Pengaturan Toko & Surat Emas - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-8">

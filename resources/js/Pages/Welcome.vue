@@ -61,7 +61,7 @@ const formatWeight = (val) => {
 </script>
 
 <template>
-  <Head :title="storeSettings.store_name || 'e-Emas - Sistem Kasir & Manajemen Toko Emas'" />
+  <Head :title="storeSettings.store_name || 'POS Emas - Sistem Kasir & Manajemen Toko Emas'" />
 
   <div class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans selection:bg-amber-500 selection:text-slate-950 transition-colors duration-300">
     <!-- Live Gold Rates Ticker Bar (Auto-Sliding Marquee) -->
@@ -410,7 +410,7 @@ const formatWeight = (val) => {
           </p>
         </div>
         <div>
-          <h5 class="text-slate-900 dark:text-white font-bold text-sm mb-2">Sistem Operasional e-Emas</h5>
+          <h5 class="text-slate-900 dark:text-white font-bold text-sm mb-2">Sistem Operasional POS Emas</h5>
           <p class="leading-relaxed">
             Platform modern kasir (POS), inventaris per baki, live gold rates, dan cetak surat emas jaminan.
           </p>

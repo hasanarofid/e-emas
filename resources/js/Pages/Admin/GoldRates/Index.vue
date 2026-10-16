@@ -61,7 +61,7 @@ const submitPrices = () => {
 </script>
 
 <template>
-  <Head title="Kurs Harga Emas Harian - e-Emas" />
+  <Head title="Kurs Harga Emas Harian - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-8">

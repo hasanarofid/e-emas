@@ -37,7 +37,7 @@ const submit = () => {
 
 <template>
   <GuestLayout>
-    <Head title="Masuk Sistem Kasir - e-Emas" />
+    <Head title="Masuk Sistem Kasir - POS Emas" />
 
     <div v-if="status" class="mb-4 text-xs font-medium text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 border border-emerald-200 dark:border-emerald-500/20 p-3 rounded-xl">
       {{ status }}

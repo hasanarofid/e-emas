@@ -254,7 +254,7 @@ const submitCheckout = () => {
 </script>
 
 <template>
-  <Head title="Kasir POS Penjualan Emas - e-Emas" />
+  <Head title="Kasir POS Penjualan Emas - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-6">

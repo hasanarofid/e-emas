@@ -87,7 +87,7 @@ const maxDailyVal = Math.max(
 </script>
 
 <template>
-  <Head title="Laporan & Statistik Penjualan Emas - e-Emas" />
+  <Head title="Laporan & Statistik Penjualan Emas - POS Emas" />
 
   <AdminLayout>
     <div class="space-y-6">

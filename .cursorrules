@@ -1,4 +1,4 @@
-# Aturan Proyek: e-Emas POS & Management System
+# Aturan Proyek: POS Emas - POS & Management System
 
 Proyek ini adalah sistem manajemen kasir (POS) dan operasional khusus toko perhiasan emas dan logam mulia. Sistem dibangun menggunakan Laravel 11, Vue 3 (Inertia.js), dan Tailwind CSS.
 
@@ -22,4 +22,5 @@ Proyek ini adalah sistem manajemen kasir (POS) dan operasional khusus toko perhi
    - Backend: Laravel 11 (PHP 8.3).
    - Database: MySQL (Gunakan migration dan seeder yang lengkap untuk data awal).
    - Manajemen State: Composables di Vue 3 / Pinia / props dari Inertia.
-   - Target Server: aaPanel @ `emas.nolimitstraining.id` via Git SSH Deploy Key / CI/CD.
+   - Target Server: aaPanel @ `posemas.web.id` via Git SSH Deploy Key / CI/CD GitHub Actions.
+

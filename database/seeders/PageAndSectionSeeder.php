@@ -17,7 +17,7 @@ class PageAndSectionSeeder extends Seeder
             ['slug' => 'home'],
             [
                 'title' => 'Home',
-                'meta_description' => 'Halaman utama dari dynamic CMS boilerplate Laravel 11 & Vue 3.',
+                'meta_description' => 'Sistem POS Kasir dan Manajemen Toko Emas & Perhiasan Modern - posemas.web.id',
                 'is_active' => true
             ]
         );
