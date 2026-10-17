@@ -7,66 +7,26 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
     steps:
-      - name: Deploy to Server via Native SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SERVER_HOST: ${{ secrets.SERVER_HOST }}
-          SERVER_USER: ${{ secrets.SERVER_USER }}
-          SERVER_PORT: ${{ secrets.SERVER_PORT || 22 }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPO: ${{ github.repository }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-          echo "🔌 Menghubungkan ke server $SERVER_HOST..."
-          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=30 -p "$SERVER_PORT" "$SERVER_USER@$SERVER_HOST" "bash -s" << EOF
-            set -e
-            export PATH=/usr/local/bin:/usr/bin:/bin:/www/server/php/83/bin:/www/server/php/82/bin:/www/server/php/81/bin:\$PATH
-
-            if [ -d "/www/wwwroot/posemas.web.id" ]; then
-              APP_DIR="/www/wwwroot/posemas.web.id"
-            elif [ -d "/www/wwwroot/emas.nolimitstraining.id" ]; then
-              APP_DIR="/www/wwwroot/emas.nolimitstraining.id"
-            else
-              echo "❌ Folder website tidak ditemukan di /www/wwwroot! Daftar folder yang ada:"
-              ls -la /www/wwwroot/
-              exit 1
-            fi
-
-            echo "📁 Direktori target: \$APP_DIR"
-            cd "\$APP_DIR"
-            git config --global --add safe.directory "\$APP_DIR"
-
-            echo "📥 Mengambil kode terbaru dari GitHub..."
-            git fetch https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPO}.git main
-            git reset --hard FETCH_HEAD
-
-            echo "📌 Commit yang aktif di server:"
-            git log -1 --oneline
-
-            echo "📦 Update dependencies composer..."
+      - name: Deploy to Server via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          script: |
+            cd /www/wwwroot/posemas.web.id
+            git config --global --add safe.directory /www/wwwroot/posemas.web.id
+            git reset --hard HEAD
+            git pull origin main
             composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
-
-            echo "🗄️ Menjalankan migrasi database..."
             php artisan migrate --force
-
-            echo "🔗 Membuat storage link..."
             php artisan storage:link --quiet || true
-
-            echo "⚡ Membersihkan dan menyegarkan cache Laravel..."
             php artisan optimize:clear
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-
-            echo "🔒 Mengatur hak akses folder..."
-            chown -R www:www "\$APP_DIR"
-            chmod -R 775 "\$APP_DIR/storage" "\$APP_DIR/bootstrap/cache"
-
-            echo "🚀 Deployment ke \$APP_DIR BERHASIL 100%!"
-          EOF
+            chown -R www:www /www/wwwroot/posemas.web.id
+            chmod -R 775 /www/wwwroot/posemas.web.id/storage /www/wwwroot/posemas.web.id/bootstrap/cache
+            echo "🚀 Deployment to posemas.web.id successful!"
