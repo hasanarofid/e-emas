@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\BuybackDeduction;
+use App\Models\Category;
 use App\Models\GoldRate;
 use App\Models\Supplier;
 use Illuminate\Database\Seeder;
@@ -89,26 +90,40 @@ class PurchaseAndSupplierSeeder extends Seeder
             Supplier::firstOrCreate(['code' => $s['code']], $s);
         }
 
-        // 2. Master Potongan Buyback Per Kadar Emas
-        $rates = GoldRate::all();
-        $defaultRules = [
-            '24K' => ['pct' => 2.50, 'fee' => 10000, 'notes' => 'Potongan 2.5% + Rp 10.000/gr dari harga pasar beli kembali hari berjalan.'],
-            '22K' => ['pct' => 3.00, 'fee' => 15000, 'notes' => 'Potongan 3% + susut lebur Rp 15.000/gr. Ongkos pembuatan hangus.'],
-            '17K' => ['pct' => 4.00, 'fee' => 20000, 'notes' => 'Kadar 700/750. Potongan 4% + susut Rp 20.000/gr.'],
-            '16K' => ['pct' => 5.00, 'fee' => 25000, 'notes' => 'Kadar tua 700. Potongan 5% + susut Rp 25.000/gr.'],
-            '9K'  => ['pct' => 7.00, 'fee' => 30000, 'notes' => 'Kadar muda 375. Potongan 7% + susut Rp 30.000/gr.'],
+        // 2. Master Potongan Buyback Persis Sitokmas
+        $kalung = Category::where('name', 'like', '%KALUNG%')->first();
+        $cincin = Category::where('name', 'like', '%CINCIN%')->first();
+        $rate23k = GoldRate::where('name', 'like', '%22K%')->orWhere('name', 'like', '%24K%')->first();
+
+        $sitokmasRules = [
+            ['condition_status' => 'Siap Jual', 'category_id' => null, 'gold_rate_id' => null, 'deduction_amount' => 200000, 'deduction_type' => 'nominal', 'deduct_by_weight' => false],
+            ['condition_status' => 'Jual Baik', 'category_id' => null, 'gold_rate_id' => null, 'deduction_amount' => 100000, 'deduction_type' => 'nominal', 'deduct_by_weight' => false],
+            ['condition_status' => 'Jual Ancur', 'category_id' => null, 'gold_rate_id' => null, 'deduction_amount' => 10, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'Rusak Jual Ancur', 'category_id' => null, 'gold_rate_id' => null, 'deduction_amount' => 15, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'Rusak Total', 'category_id' => null, 'gold_rate_id' => null, 'deduction_amount' => 20, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'Tukar Ancur', 'category_id' => null, 'gold_rate_id' => $rate23k?->id, 'deduction_amount' => 10, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'Tukar Baik', 'category_id' => $kalung?->id, 'gold_rate_id' => null, 'deduction_amount' => 5, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'Rusak Jual Baik', 'category_id' => null, 'gold_rate_id' => null, 'deduction_amount' => 10, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'Potong', 'category_id' => $kalung?->id, 'gold_rate_id' => null, 'deduction_amount' => 10, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'KOMBINASI', 'category_id' => null, 'gold_rate_id' => null, 'deduction_amount' => 5, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'Potong Cincin', 'category_id' => $cincin?->id, 'gold_rate_id' => null, 'deduction_amount' => 20, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
+            ['condition_status' => 'BAIK', 'category_id' => null, 'gold_rate_id' => null, 'deduction_amount' => 0, 'deduction_type' => 'percentage', 'deduct_by_weight' => false],
         ];
 
-        foreach ($rates as $rate) {
-            $rule = $defaultRules[$rate->code] ?? ['pct' => 5.00, 'fee' => 20000, 'notes' => 'Standar potongan buyback emas resmi.'];
-            
-            BuybackDeduction::firstOrCreate(
-                ['gold_rate_id' => $rate->id],
+        foreach ($sitokmasRules as $rule) {
+            BuybackDeduction::updateOrCreate(
                 [
-                    'deduction_percentage' => $rule['pct'],
-                    'deduction_fee_per_gram' => $rule['fee'],
+                    'condition_status' => $rule['condition_status'],
+                    'category_id' => $rule['category_id'],
+                    'gold_rate_id' => $rule['gold_rate_id'],
+                ],
+                [
+                    'deduction_amount' => $rule['deduction_amount'],
+                    'deduction_type' => $rule['deduction_type'],
+                    'deduct_by_weight' => $rule['deduct_by_weight'],
+                    'deduction_percentage' => $rule['deduction_type'] === 'percentage' ? $rule['deduction_amount'] : 0,
+                    'deduction_fee_per_gram' => $rule['deduction_type'] === 'nominal' ? $rule['deduction_amount'] : 0,
                     'crafting_fee_deducted' => true,
-                    'condition_notes' => $rule['notes'],
                 ]
             );
         }

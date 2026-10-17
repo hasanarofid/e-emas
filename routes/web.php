@@ -117,8 +117,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // 7b. Modul Pembelian & Supplier Sitokmas (FASE 3)
     Route::resource('suppliers', SupplierController::class);
     Route::resource('purchases', PurchaseController::class)->only(['index', 'create', 'store', 'destroy']);
-    Route::get('/buyback-deductions', [BuybackDeductionController::class, 'index'])->name('buyback-deductions.index');
-    Route::put('/buyback-deductions/{buybackDeduction}', [BuybackDeductionController::class, 'update'])->name('buyback-deductions.update');
+    Route::resource('buyback-deductions', BuybackDeductionController::class)->only(['index', 'store', 'update', 'destroy']);
 
     // 7c. Modul Transaksi Khusus Toko Emas Sitokmas (FASE 4)
     Route::resource('pawns', \App\Http\Controllers\Admin\PawnController::class)->only(['index', 'create', 'store', 'destroy']);
