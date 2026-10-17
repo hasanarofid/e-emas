@@ -36,11 +36,16 @@ class FinanceReportController extends Controller
         $salesQuery = Sale::query();
         $applyPeriod($salesQuery);
         $totalSales = (float) $salesQuery->sum('grand_total');
-        $totalCraftingFee = (float) $salesQuery->sum('total_crafting_fee');
+        $totalCraftingFee = (float) \App\Models\SaleItem::whereHas('sale', function ($q) use ($year, $month) {
+            $q->whereYear('created_at', $year);
+            if ($month) {
+                $q->whereMonth('created_at', $month);
+            }
+        })->sum('crafting_fee');
 
-        $servicesQuery = JewelryService::where('status', 'selesai');
+        $servicesQuery = JewelryService::whereIn('status', ['ready', 'picked_up']);
         $applyPeriod($servicesQuery);
-        $totalServices = (float) $servicesQuery->sum('service_fee');
+        $totalServices = (float) $servicesQuery->sum('estimated_cost');
 
         // Total Omset / Pendapatan Kotor
         $totalRevenue = $totalSales + $totalServices;
@@ -48,11 +53,11 @@ class FinanceReportController extends Controller
         // 2. BEBAN POKOK PENJUALAN (HPP & BUYBACK)
         $purchasesQuery = Purchase::query();
         $applyPeriod($purchasesQuery);
-        $totalSupplierPurchases = (float) $purchasesQuery->sum('total_amount');
+        $totalSupplierPurchases = (float) $purchasesQuery->sum('grand_total');
 
         $buybacksQuery = Buyback::query();
         $applyPeriod($buybacksQuery);
-        $totalBuybackCost = (float) $buybacksQuery->sum('total_payout');
+        $totalBuybackCost = (float) $buybacksQuery->sum('grand_total');
 
         $totalCogs = $totalSupplierPurchases + $totalBuybackCost;
         $grossProfit = $totalRevenue - $totalCogs;
