@@ -282,15 +282,18 @@ const logout = () => {
                 <Circle class="w-1.5 h-1.5 fill-current" />
                 <span>Beli Kembali (Buyback)</span>
               </Link>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Supplier & Pabrik
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Faktur Pembelian
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Potongan Master Buyback
-              </span>
+              <Link :href="route('admin.suppliers.index')" :class="[isRoute('admin.suppliers.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Supplier & Pabrik Emas</span>
+              </Link>
+              <Link :href="route('admin.purchases.index')" :class="[isRoute('admin.purchases.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Faktur Pembelian</span>
+              </Link>
+              <Link :href="route('admin.buyback-deductions.index')" :class="[isRoute('admin.buyback-deductions.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Potongan Master Buyback</span>
+              </Link>
             </div>
           </div>
 

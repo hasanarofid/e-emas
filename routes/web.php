@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\BuybackDeductionController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoldRateController;
 use App\Http\Controllers\Admin\ItemController;
+use App\Http\Controllers\Admin\PurchaseController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\StockMovementController;
+use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TrayController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\WarehouseController;
@@ -110,6 +113,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/buybacks/search-sale', [\App\Http\Controllers\Admin\BuybackController::class, 'searchSale'])->name('buybacks.search-sale');
     Route::post('/buybacks', [\App\Http\Controllers\Admin\BuybackController::class, 'store'])->name('buybacks.store');
     Route::get('/buybacks/{buyback}/receipt', [\App\Http\Controllers\Admin\BuybackController::class, 'receipt'])->name('buybacks.receipt');
+
+    // 7b. Modul Pembelian & Supplier Sitokmas (FASE 3)
+    Route::resource('suppliers', SupplierController::class);
+    Route::resource('purchases', PurchaseController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::get('/buyback-deductions', [BuybackDeductionController::class, 'index'])->name('buyback-deductions.index');
+    Route::put('/buyback-deductions/{buybackDeduction}', [BuybackDeductionController::class, 'update'])->name('buyback-deductions.update');
 
     // 8. Stock Opname & Audit Baki (FASE 5)
     Route::get('/stock-audits', [\App\Http\Controllers\Admin\StockAuditController::class, 'index'])->name('stock-audits.index');
