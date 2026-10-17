@@ -7,6 +7,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Deploy to Server via SSH
         uses: appleboy/ssh-action@v1.0.3
@@ -17,12 +19,13 @@ jobs:
           port: ${{ secrets.SERVER_PORT || 22 }}
           script: |
             set -e
+            export PATH=/usr/local/bin:/usr/bin:/bin:/www/server/php/83/bin:/www/server/php/82/bin:/www/server/php/81/bin:$PATH
             cd /www/wwwroot/posemas.web.id
             git config --global --add safe.directory /www/wwwroot/posemas.web.id
-            echo "📥 Fetching latest changes from main..."
-            git fetch origin main
-            git reset --hard origin/main
-            echo "📌 Current commit deployed:"
+            echo "📥 Mengambil kode terbaru via token GitHub..."
+            git fetch https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
+            git reset --hard FETCH_HEAD
+            echo "📌 Commit aktif di server:"
             git log -1 --oneline
             composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
             php artisan migrate --force
