@@ -16,6 +16,9 @@ class Item extends Model
         'name',
         'category_id',
         'gold_rate_id',
+        'brand_id',
+        'unit_id',
+        'warehouse_id',
         'tray_id',
         'gross_weight',
         'stone_weight',
@@ -50,9 +53,29 @@ class Item extends Model
         return $this->belongsTo(Tray::class);
     }
 
+    public function brand(): BelongsTo
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function unit(): BelongsTo
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function warehouse(): BelongsTo
+    {
+        return $this->belongsTo(Warehouse::class);
+    }
+
     public function movements(): HasMany
     {
         return $this->hasMany(TrayMovement::class);
+    }
+
+    public function stockMovements(): HasMany
+    {
+        return $this->hasMany(StockMovement::class);
     }
 
     /**

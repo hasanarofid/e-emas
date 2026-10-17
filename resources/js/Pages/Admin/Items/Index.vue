@@ -35,6 +35,18 @@ const props = defineProps({
     type: Array,
     default: () => []
   },
+  brands: {
+    type: Array,
+    default: () => []
+  },
+  units: {
+    type: Array,
+    default: () => []
+  },
+  warehouses: {
+    type: Array,
+    default: () => []
+  },
   filters: {
     type: Object,
     default: () => ({})
@@ -50,6 +62,8 @@ const search = ref(props.filters.search || '');
 const categoryId = ref(props.filters.category_id || '');
 const goldRateId = ref(props.filters.gold_rate_id || '');
 const trayId = ref(props.filters.tray_id || '');
+const brandId = ref(props.filters.brand_id || '');
+const warehouseId = ref(props.filters.warehouse_id || '');
 const status = ref(props.filters.status || 'available');
 
 const applyFilter = () => {
@@ -58,6 +72,8 @@ const applyFilter = () => {
     category_id: categoryId.value,
     gold_rate_id: goldRateId.value,
     tray_id: trayId.value,
+    brand_id: brandId.value,
+    warehouse_id: warehouseId.value,
     status: status.value,
   }, {
     preserveState: true,
@@ -75,6 +91,9 @@ const itemForm = useForm({
   name: '',
   category_id: '',
   gold_rate_id: '',
+  brand_id: '',
+  unit_id: '',
+  warehouse_id: '',
   tray_id: '',
   gross_weight: '',
   stone_weight: '0',
@@ -107,6 +126,9 @@ const openCreateModal = () => {
   itemForm.status = 'available';
   if (props.categories.length) itemForm.category_id = props.categories[0].id;
   if (props.goldRates.length) itemForm.gold_rate_id = props.goldRates[0].id;
+  if (props.brands.length) itemForm.brand_id = props.brands[0].id;
+  if (props.units.length) itemForm.unit_id = props.units[0].id;
+  if (props.warehouses.length) itemForm.warehouse_id = props.warehouses[0].id;
   isModalOpen.value = true;
 };
 
@@ -117,6 +139,9 @@ const openEditModal = (item) => {
   itemForm.name = item.name;
   itemForm.category_id = item.category_id;
   itemForm.gold_rate_id = item.gold_rate_id;
+  itemForm.brand_id = item.brand_id || '';
+  itemForm.unit_id = item.unit_id || '';
+  itemForm.warehouse_id = item.warehouse_id || '';
   itemForm.tray_id = item.tray_id || '';
   itemForm.gross_weight = item.gross_weight;
   itemForm.stone_weight = item.stone_weight;
@@ -287,8 +312,11 @@ const formatWeight = (val) => {
                     <span>{{ item.sku }}</span>
                   </div>
                 </td>
-                <td class="py-3.5 px-4 font-semibold text-slate-900 dark:text-white max-w-[200px] truncate">
-                  {{ item.name }}
+                <td class="py-3.5 px-4 max-w-[220px]">
+                  <div class="font-semibold text-slate-900 dark:text-white truncate">{{ item.name }}</div>
+                  <div v-if="item.brand" class="text-[10px] text-amber-600 dark:text-amber-400 font-medium">
+                    Merk: {{ item.brand.name }}
+                  </div>
                 </td>
                 <td class="py-3.5 px-4 font-bold text-slate-800 dark:text-slate-200">
                   <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 font-mono text-[10px]">
@@ -447,6 +475,42 @@ const formatWeight = (val) => {
               >
                 <option value="">-- Tanpa Baki / Brankas --</option>
                 <option v-for="t in trays" :key="t.id" :value="t.id">{{ t.code }} - {{ t.name }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2b: Brand, Satuan, Gudang (Master Persediaan Sitokmas) -->
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Brand / Pabrikan</label>
+              <select 
+                v-model="itemForm.brand_id"
+                class="w-full text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-900 dark:text-white py-2 px-3 focus:border-amber-500 focus:ring-amber-500"
+              >
+                <option value="">-- Tanpa Brand / Lokal --</option>
+                <option v-for="b in brands" :key="b.id" :value="b.id">{{ b.code }} - {{ b.name }}</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Satuan Barang</label>
+              <select 
+                v-model="itemForm.unit_id"
+                class="w-full text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-900 dark:text-white py-2 px-3 focus:border-amber-500 focus:ring-amber-500"
+              >
+                <option value="">-- Standar (Gram) --</option>
+                <option v-for="u in units" :key="u.id" :value="u.id">{{ u.symbol }} ({{ u.name }})</option>
+              </select>
+            </div>
+
+            <div>
+              <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Gudang / Brankas</label>
+              <select 
+                v-model="itemForm.warehouse_id"
+                class="w-full text-xs rounded-xl bg-slate-50 dark:bg-slate-950 border-slate-300 dark:border-slate-800 text-slate-900 dark:text-white py-2 px-3 focus:border-amber-500 focus:ring-amber-500"
+              >
+                <option value="">-- Pilih Gudang Simpan --</option>
+                <option v-for="w in warehouses" :key="w.id" :value="w.id">{{ w.code }} - {{ w.name }}</option>
               </select>
             </div>
           </div>

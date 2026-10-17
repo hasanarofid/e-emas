@@ -21,6 +21,7 @@ Proyek ini adalah sistem manajemen kasir (POS) dan operasional khusus toko perhi
    - Styling: Tailwind CSS (terapkan CSS Variables untuk dynamic gold accent).
    - Backend: Laravel 11 (PHP 8.3).
    - Database: MySQL (Gunakan migration dan seeder yang lengkap untuk data awal).
+   - Soft Deletes: Terapkan SoftDeletes (Illuminate\Database\Eloquent\SoftDeletes & $table->softDeletes()) untuk seluruh modul operasional (Pelanggan, Penjualan, Buyback, Items, Supplier, dll) demi integritas data riwayat keuangan dan audit.
    - Manajemen State: Composables di Vue 3 / Pinia / props dari Inertia.
    - Target Server: aaPanel @ `posemas.web.id` via Git SSH Deploy Key / CI/CD GitHub Actions.
 

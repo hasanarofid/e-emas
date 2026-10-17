@@ -1,20 +1,37 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { Link, router, usePage } from '@inertiajs/vue3';
 import { 
   LayoutDashboard, 
   Menu, 
   X, 
   LogOut, 
-  Gem,
-  Store,
-  TrendingUp,
-  Layers,
-  Settings as SettingsIcon,
-  ShoppingBag,
-  ArrowRightLeft,
-  ClipboardCheck,
+  Gem, 
+  Store, 
+  TrendingUp, 
+  Layers, 
+  Settings as SettingsIcon, 
+  ShoppingBag, 
+  ArrowRightLeft, 
+  ClipboardCheck, 
   BarChart3,
+  Sliders,
+  Box,
+  Users,
+  FileText,
+  Zap,
+  CreditCard,
+  Repeat,
+  Wrench,
+  Scale,
+  UserCheck,
+  Calculator,
+  ChevronDown,
+  ChevronRight,
+  Search,
+  Circle,
+  Building2,
+  Award
 } from 'lucide-vue-next';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
 
@@ -23,18 +40,35 @@ const user = page.props.auth?.user || {};
 
 const isSidebarOpen = ref(false);
 const isSidebarCollapsed = ref(false);
+const menuSearch = ref('');
 
-const navigation = [
-  { name: 'Dashboard', href: route('admin.dashboard'), icon: LayoutDashboard, current: route().current('admin.dashboard') },
-  { name: 'Kasir POS Penjualan', href: route('admin.pos.index'), icon: ShoppingBag, current: route().current('admin.pos.*'), highlight: true },
-  { name: 'Beli Kembali (Buyback)', href: route('admin.buybacks.index'), icon: ArrowRightLeft, current: route().current('admin.buybacks.*') },
-  { name: 'Kurs Harga Emas', href: route('admin.gold-rates.index'), icon: TrendingUp, current: route().current('admin.gold-rates.*') },
-  { name: 'Baki & Etalase', href: route('admin.trays.index'), icon: Layers, current: route().current('admin.trays.*') },
-  { name: 'Inventaris Perhiasan', href: route('admin.items.index'), icon: Gem, current: route().current('admin.items.*') },
-  { name: 'Stock Opname Baki', href: route('admin.stock-audits.index'), icon: ClipboardCheck, current: route().current('admin.stock-audits.*') },
-  { name: 'Laporan & Statistik', href: route('admin.reports.index'), icon: BarChart3, current: route().current('admin.reports.*') },
-  { name: 'Pengaturan Toko', href: route('admin.settings.index'), icon: SettingsIcon, current: route().current('admin.settings.*') },
-];
+const isRoute = (pattern) => {
+  try {
+    return route().current(pattern);
+  } catch (e) {
+    return false;
+  }
+};
+
+// State accordion: hanya terbuka ke menu yang sedang aktif/tertuju. Saat di Dashboard, semua tertutup.
+const openGroups = ref({
+  utilitas: isRoute('admin.settings.*'),
+  persediaan: isRoute('admin.brands.*') || isRoute('admin.units.*') || isRoute('admin.warehouses.*') || isRoute('admin.gold-rates.*') || isRoute('admin.items.*') || isRoute('admin.trays.*') || isRoute('admin.inventory.*') || isRoute('admin.stock-audits.*'),
+  pelanggan: isRoute('admin.customers.*'),
+  pembelian: isRoute('admin.buybacks.*') || isRoute('admin.purchases.*') || isRoute('admin.suppliers.*'),
+  pembelianCepat: false,
+  penjualan: isRoute('admin.pos.*') || isRoute('admin.sales.*'),
+  gadai: isRoute('admin.pawns.*'),
+  tukarTambah: isRoute('admin.trade-ins.*'),
+  servis: isRoute('admin.services.*'),
+  timbangBaki: false,
+  pegawai: isRoute('admin.employees.*'),
+  keuangan: isRoute('admin.finance.*'),
+});
+
+const toggleGroup = (groupKey) => {
+  openGroups.value[groupKey] = !openGroups.value[groupKey];
+};
 
 const logout = () => {
   router.post(route('logout'));
@@ -50,97 +84,433 @@ const logout = () => {
       class="fixed inset-0 z-40 bg-slate-950/80 backdrop-blur-sm lg:hidden transition-opacity"
     ></div>
 
-    <!-- Sidebar -->
+    <!-- Sidebar Multi-Level Sitokmas Edition -->
     <aside 
       :class="[
         isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
         isSidebarCollapsed ? 'lg:w-20' : 'lg:w-72',
-        'fixed top-0 bottom-0 left-0 z-50 w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 transition-all duration-300 ease-in-out flex flex-col justify-between shadow-sm'
+        'fixed top-0 bottom-0 left-0 z-50 w-72 bg-[#1B1B38] text-slate-200 border-r border-[#2A2A4E] transition-all duration-300 ease-in-out flex flex-col justify-between shadow-xl'
       ]"
     >
-      <div>
+      <div class="flex flex-col h-full overflow-hidden">
         <!-- Sidebar Header / Logo -->
-        <div :class="[isSidebarCollapsed ? 'lg:px-0 lg:justify-center' : 'px-6 justify-between', 'flex items-center h-20 border-b border-slate-200 dark:border-slate-800']">
+        <div class="flex items-center justify-between h-16 px-5 border-b border-[#2A2A4E] shrink-0 bg-[#15152D]">
           <Link :href="route('admin.dashboard')" class="flex items-center gap-3 group">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 via-amber-400 to-yellow-200 p-0.5 shadow-md shadow-amber-500/20 shrink-0">
-              <div class="w-full h-full bg-slate-950 rounded-[10px] flex items-center justify-center">
-                <Gem class="w-5 h-5 text-amber-400" />
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-amber-500 via-amber-300 to-yellow-100 p-0.5 shadow-md shadow-amber-500/20 shrink-0">
+              <div class="w-full h-full bg-[#15152D] rounded-[10px] flex items-center justify-center">
+                <Gem class="w-4 h-4 text-amber-400" />
               </div>
             </div>
-            <div :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'transition-opacity duration-300']">
-              <h1 class="text-sm font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+            <div>
+              <h1 class="text-sm font-bold tracking-tight text-white flex items-center gap-1.5">
                 POS Emas
-                <span class="text-[9px] bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 px-1.5 py-0.2 rounded font-mono">v1.0</span>
+                <span class="text-[9px] bg-amber-500/20 text-amber-300 border border-amber-500/30 px-1.5 py-0.2 rounded font-mono">PRO</span>
               </h1>
-              <p class="text-[11px] text-slate-500 dark:text-slate-400 truncate">Permata Abadi Gold</p>
+              <p class="text-[10px] text-slate-400 truncate">Toko Mas Permata Abadi</p>
             </div>
           </Link>
           <button 
             @click="isSidebarOpen = false" 
-            class="p-2 text-slate-500 dark:text-slate-400 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden"
+            class="p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-[#232348] lg:hidden"
           >
             <X class="w-5 h-5" />
           </button>
         </div>
 
-        <!-- Main Navigation Links -->
-        <nav class="p-4 space-y-1.5">
-          <div :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'px-3 pt-2 pb-1 text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 font-mono']">
-            Menu Operasional
+        <!-- Search Bar Menu -->
+        <div class="px-4 py-3 border-b border-[#2A2A4E] bg-[#171732]">
+          <div class="relative">
+            <Search class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+            <input 
+              v-model="menuSearch"
+              type="text" 
+              placeholder="Cari menu..."
+              class="w-full pl-8 pr-3 py-1.5 bg-[#1F1F40] border border-[#2E2E56] rounded-lg text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 transition-colors"
+            />
           </div>
+        </div>
 
+        <!-- Navigation Scrollable Area -->
+        <nav class="flex-1 overflow-y-auto px-3 py-3 space-y-1 text-xs select-none scrollbar-thin scrollbar-thumb-slate-700">
+          
+          <!-- 1. DASHBOARD -->
           <Link 
-            v-for="item in navigation" 
-            :key="item.name" 
-            :href="item.href"
+            :href="route('admin.dashboard')"
             :class="[
-              item.current 
-                ? 'bg-amber-500/10 text-amber-800 dark:text-amber-300 border-amber-500/30' 
-                : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-slate-900 dark:hover:text-white border-transparent',
-              'flex items-center gap-3 px-3.5 py-2.5 rounded-xl border text-sm font-medium transition-all group'
+              isRoute('admin.dashboard') ? 'bg-amber-500 text-slate-950 font-bold shadow-md shadow-amber-500/20' : 'text-slate-300 hover:bg-[#25254B] hover:text-white',
+              'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all'
             ]"
           >
-            <component 
-              :is="item.icon" 
-              :class="[
-                item.current ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400 dark:text-slate-500 group-hover:text-slate-700 dark:group-hover:text-slate-200', 
-                'w-5 h-5 shrink-0 transition-colors'
-              ]" 
-            />
-            <span :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'truncate']">{{ item.name }}</span>
+            <LayoutDashboard class="w-4 h-4 shrink-0" />
+            <span class="truncate">Dashboard</span>
           </Link>
 
-          <!-- Quick Action to Storefront -->
+          <!-- 2. UTILITAS -->
+          <div>
+            <button 
+              @click="toggleGroup('utilitas')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <Sliders class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Utilitas</span>
+              </div>
+              <ChevronDown :class="[openGroups.utilitas ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.utilitas" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link :href="route('admin.settings.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Profil Toko</span>
+              </Link>
+              <Link :href="route('admin.settings.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Pengaturan Toko</span>
+              </Link>
+              <Link :href="route('admin.settings.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Bank Transfer</span>
+              </Link>
+            </div>
+          </div>
+
+          <!-- 3. PERSEDIAAN (BADGE 18, 57) -->
+          <div>
+            <button 
+              @click="toggleGroup('persediaan')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <Box class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Persediaan</span>
+                <div class="flex items-center gap-1">
+                  <span class="px-1.5 py-0.2 rounded-full bg-rose-500/80 text-[10px] text-white font-mono font-bold">18</span>
+                  <span class="px-1.5 py-0.2 rounded-full bg-amber-500/80 text-[10px] text-slate-950 font-mono font-bold">57</span>
+                </div>
+              </div>
+              <ChevronDown :class="[openGroups.persediaan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.persediaan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link :href="route('admin.brands.index')" :class="[isRoute('admin.brands.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Brand & Merk</span>
+              </Link>
+              <Link :href="route('admin.units.index')" :class="[isRoute('admin.units.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Satuan Barang</span>
+              </Link>
+              <Link :href="route('admin.warehouses.index')" :class="[isRoute('admin.warehouses.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Gudang & Brankas</span>
+              </Link>
+              <Link :href="route('admin.gold-rates.index')" :class="[isRoute('admin.gold-rates.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Kadar & Kurs Emas</span>
+              </Link>
+              <Link :href="route('admin.items.index')" :class="[isRoute('admin.items.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Data Barang & Barcode</span>
+              </Link>
+              <Link :href="route('admin.trays.index')" :class="[isRoute('admin.trays.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Baki & Etalase</span>
+              </Link>
+              <Link :href="route('admin.inventory.mutations')" :class="[isRoute('admin.inventory.mutations') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Mutasi Baki Barang</span>
+              </Link>
+              <Link :href="route('admin.stock-audits.index')" :class="[isRoute('admin.stock-audits.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Stok Opname Baki</span>
+              </Link>
+              <Link :href="route('admin.inventory.movements')" :class="[isRoute('admin.inventory.movements') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Keluar Masuk Barang</span>
+              </Link>
+              <Link :href="route('admin.reports.index')" :class="[isRoute('admin.reports.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Laporan Persediaan</span>
+              </Link>
+            </div>
+          </div>
+
+          <!-- 4. PELANGGAN -->
+          <div>
+            <button 
+              @click="toggleGroup('pelanggan')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <Users class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Pelanggan</span>
+              </div>
+              <ChevronDown :class="[openGroups.pelanggan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.pelanggan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link :href="route('admin.customers.create')" :class="[isRoute('admin.customers.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Tambah Pelanggan</span>
+              </Link>
+              <Link :href="route('admin.customers.index')" :class="[isRoute('admin.customers.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Data Pelanggan</span>
+              </Link>
+              <Link :href="route('admin.customers.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Point & Member</span>
+              </Link>
+            </div>
+          </div>
+
+          <!-- 5. PEMBELIAN -->
+          <div>
+            <button 
+              @click="toggleGroup('pembelian')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <FileText class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Pembelian</span>
+              </div>
+              <ChevronDown :class="[openGroups.pembelian ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.pembelian" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link :href="route('admin.buybacks.index')" :class="[isRoute('admin.buybacks.*') ? 'text-amber-400 font-semibold' : 'text-slate-400', 'flex items-center gap-2 py-1.5 px-2 rounded-lg hover:text-white hover:bg-[#25254B]']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Beli Kembali (Buyback)</span>
+              </Link>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Supplier & Pabrik
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Faktur Pembelian
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Potongan Master Buyback
+              </span>
+            </div>
+          </div>
+
+          <!-- 6. PEMBELIAN CEPAT -->
           <Link 
-            href="/" 
-            target="_blank"
-            class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 hover:text-amber-600 dark:hover:text-amber-300 border border-transparent text-sm font-medium transition-all group"
+            :href="route('admin.buybacks.create')"
+            class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
           >
-            <Store class="w-5 h-5 text-slate-400 group-hover:text-amber-500 shrink-0" />
-            <span :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'truncate']">Lihat Toko Depan</span>
+            <div class="flex items-center gap-3">
+              <Zap class="w-4 h-4 text-amber-400 shrink-0" />
+              <span>Pembelian Cepat</span>
+            </div>
+            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 rounded font-mono">KASIR</span>
           </Link>
-        </nav>
-      </div>
 
-      <!-- User Profile & Logout Section in Sidebar -->
-      <div class="p-4 border-t border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/60">
-        <div class="flex items-center gap-3 p-2 rounded-xl bg-white dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 shadow-sm">
-          <div class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center font-bold text-sm shrink-0">
-            {{ user.name ? user.name.charAt(0).toUpperCase() : 'U' }}
+          <!-- 7. PENJUALAN (POS KASIR RESMI) -->
+          <div>
+            <button 
+              @click="toggleGroup('penjualan')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <ShoppingBag class="w-4 h-4 text-amber-400 shrink-0" />
+                <span class="font-semibold text-amber-300">Penjualan (POS)</span>
+              </div>
+              <ChevronDown :class="[openGroups.penjualan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.penjualan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link :href="route('admin.pos.index')" :class="[isRoute('admin.pos.*') ? 'text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30' : 'text-slate-400 hover:text-white', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current text-amber-400" />
+                <span>Kasir POS & Cetak Nota</span>
+              </Link>
+              <Link :href="route('admin.reports.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Data & Laporan Penjualan</span>
+              </Link>
+            </div>
           </div>
-          <div :class="[isSidebarCollapsed ? 'lg:hidden' : 'block', 'overflow-hidden flex-1']">
-            <p class="text-xs font-semibold text-slate-900 dark:text-white truncate">{{ user.name }}</p>
-            <span class="inline-block px-1.5 py-0.2 text-[10px] rounded bg-amber-500/10 text-amber-700 dark:text-amber-300 font-mono uppercase">
-              {{ user.role || 'kasir' }}
-            </span>
+
+          <!-- 8. GADAI PERHIASAN -->
+          <div>
+            <button 
+              @click="toggleGroup('gadai')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <CreditCard class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Gadai Perhiasan</span>
+                <span class="px-1.5 py-0.2 rounded-full bg-slate-700 text-[10px] text-slate-300 font-mono">0</span>
+              </div>
+              <ChevronDown :class="[openGroups.gadai ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.gadai" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Gadai Baru
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Data Gadai Perhiasan
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Laporan Gadai Harian
+              </span>
+            </div>
           </div>
-          <button 
-            @click="logout"
-            title="Keluar / Logout"
-            class="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-          >
-            <LogOut class="w-4 h-4" />
-          </button>
+
+          <!-- 9. TUKAR TAMBAH -->
+          <div>
+            <button 
+              @click="toggleGroup('tukarTambah')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <Repeat class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Tukar Tambah</span>
+              </div>
+              <ChevronDown :class="[openGroups.tukarTambah ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.tukarTambah" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Tukar Tambah Baru
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Laporan Tukar Tambah
+              </span>
+            </div>
+          </div>
+
+          <!-- 10. SERVIS PERHIASAN -->
+          <div>
+            <button 
+              @click="toggleGroup('servis')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <Wrench class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Servis Perhiasan</span>
+              </div>
+              <ChevronDown :class="[openGroups.servis ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.servis" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Servis Baru (Cuci / Patri)
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Data Servis Perhiasan
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Jenis Servis
+              </span>
+            </div>
+          </div>
+
+          <!-- 11. TIMBANG BAKI -->
+          <div>
+            <button 
+              @click="toggleGroup('timbangBaki')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <Scale class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Timbang Baki</span>
+              </div>
+              <ChevronDown :class="[openGroups.timbangBaki ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.timbangBaki" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link :href="route('admin.trays.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Data Baki & Etalase</span>
+              </Link>
+              <Link :href="route('admin.stock-audits.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Audit & Timbang Baki</span>
+              </Link>
+            </div>
+          </div>
+
+          <!-- 12. PEGAWAI -->
+          <div>
+            <button 
+              @click="toggleGroup('pegawai')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <UserCheck class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Pegawai</span>
+              </div>
+              <ChevronDown :class="[openGroups.pegawai ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.pegawai" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Tambah Pegawai
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Data Pegawai & Kasir
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Penggajian
+              </span>
+            </div>
+          </div>
+
+          <!-- 13. KEUANGAN (BADGE 46, 12) -->
+          <div>
+            <button 
+              @click="toggleGroup('keuangan')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <Calculator class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Keuangan</span>
+                <div class="flex items-center gap-1">
+                  <span class="px-1.5 py-0.2 rounded-full bg-rose-500/80 text-[10px] text-white font-mono font-bold">46</span>
+                  <span class="px-1.5 py-0.2 rounded-full bg-amber-500/80 text-[10px] text-slate-950 font-mono font-bold">12</span>
+                </div>
+              </div>
+              <ChevronDown :class="[openGroups.keuangan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.keuangan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link :href="route('admin.reports.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Buku Kas Toko</span>
+              </Link>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Pengeluaran Harian & Bulanan
+              </span>
+              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
+                Rekapitulasi Laba Rugi
+              </span>
+            </div>
+          </div>
+
+        </nav>
+
+        <!-- User Profile & Footer Sidebar -->
+        <div class="p-3 border-t border-[#2A2A4E] bg-[#15152D] shrink-0">
+          <div class="flex items-center gap-3 p-2 rounded-xl bg-[#1E1E3F] border border-[#2D2D54]">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/20 text-amber-300 flex items-center justify-center font-bold text-xs shrink-0">
+              {{ user.name ? user.name.charAt(0).toUpperCase() : 'U' }}
+            </div>
+            <div class="overflow-hidden flex-1">
+              <p class="text-xs font-semibold text-white truncate">{{ user.name }}</p>
+              <span class="inline-block px-1.5 py-0.2 text-[9px] rounded bg-amber-500/20 text-amber-300 font-mono uppercase">
+                {{ user.role || 'kasir' }}
+              </span>
+            </div>
+            <button 
+              @click="logout"
+              title="Keluar / Logout"
+              class="p-1.5 text-slate-400 hover:text-rose-400 hover:bg-[#2A2A56] rounded-lg transition-colors cursor-pointer"
+            >
+              <LogOut class="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </aside>
@@ -148,13 +518,13 @@ const logout = () => {
     <!-- Main Content Area -->
     <div :class="[isSidebarCollapsed ? 'lg:ml-20' : 'lg:ml-72', 'flex-1 flex flex-col min-h-screen transition-all duration-300']">
       <!-- Top Navbar -->
-      <header class="h-20 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between sticky top-0 z-30 transition-colors duration-300">
+      <header class="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 px-6 flex items-center justify-between sticky top-0 z-30 transition-colors duration-300">
         <div class="flex items-center gap-4">
           <button 
             @click="isSidebarOpen = true" 
             class="p-2 text-slate-600 dark:text-slate-400 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 lg:hidden"
           >
-            <Menu class="w-6 h-6" />
+            <Menu class="w-5 h-5" />
           </button>
 
           <!-- Store Identity Header -->
@@ -168,9 +538,17 @@ const logout = () => {
           </div>
         </div>
 
-        <!-- Right Quick Actions: ThemeToggle, Storefront, Logout -->
+        <!-- Right Quick Actions: ThemeToggle, Storefront, POS Kasir Shortcut -->
         <div class="flex items-center gap-3">
           <ThemeToggle />
+
+          <Link 
+            :href="route('admin.pos.index')"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold shadow-sm shadow-amber-500/20 transition-all"
+          >
+            <ShoppingBag class="w-3.5 h-3.5" />
+            <span>Kasir POS</span>
+          </Link>
 
           <Link 
             href="/" 
@@ -180,14 +558,6 @@ const logout = () => {
             <Store class="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
             <span>Katalog Depan</span>
           </Link>
-
-          <button 
-            @click="logout"
-            class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 border border-rose-500/20 text-xs font-semibold transition-colors cursor-pointer"
-          >
-            <LogOut class="w-3.5 h-3.5" />
-            <span>Keluar</span>
-          </button>
         </div>
       </header>
 

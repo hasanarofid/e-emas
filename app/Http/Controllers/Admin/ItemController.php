@@ -22,7 +22,7 @@ class ItemController extends Controller
      */
     public function index(Request $request): Response
     {
-        $query = Item::with(['category', 'goldRate', 'tray']);
+        $query = Item::with(['category', 'goldRate', 'tray', 'brand', 'unit', 'warehouse']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -40,6 +40,14 @@ class ItemController extends Controller
             $query->where('gold_rate_id', $request->gold_rate_id);
         }
 
+        if ($request->filled('brand_id')) {
+            $query->where('brand_id', $request->brand_id);
+        }
+
+        if ($request->filled('warehouse_id')) {
+            $query->where('warehouse_id', $request->warehouse_id);
+        }
+
         if ($request->filled('tray_id')) {
             $query->where('tray_id', $request->tray_id);
         }
@@ -55,13 +63,19 @@ class ItemController extends Controller
         $categories = Category::where('is_active', true)->get();
         $goldRates = GoldRate::where('is_active', true)->orderByDesc('percentage')->get();
         $trays = Tray::where('status', 'active')->orderBy('code')->get();
+        $brands = \App\Models\Brand::where('is_active', true)->orderBy('name')->get();
+        $units = \App\Models\Unit::where('is_active', true)->orderBy('name')->get();
+        $warehouses = \App\Models\Warehouse::where('is_active', true)->orderBy('name')->get();
 
         return Inertia::render('Admin/Items/Index', [
             'items' => $items,
             'categories' => $categories,
             'goldRates' => $goldRates,
             'trays' => $trays,
-            'filters' => $request->only(['search', 'category_id', 'gold_rate_id', 'tray_id', 'status']),
+            'brands' => $brands,
+            'units' => $units,
+            'warehouses' => $warehouses,
+            'filters' => $request->only(['search', 'category_id', 'gold_rate_id', 'brand_id', 'warehouse_id', 'tray_id', 'status']),
             'stats' => [
                 'total_available' => Item::where('status', 'available')->count(),
                 'total_weight' => (float)Item::where('status', 'available')->sum('gross_weight'),
@@ -80,6 +94,9 @@ class ItemController extends Controller
             'name' => 'required|string|max:150',
             'category_id' => 'required|exists:categories,id',
             'gold_rate_id' => 'required|exists:gold_rates,id',
+            'brand_id' => 'nullable|exists:brands,id',
+            'unit_id' => 'nullable|exists:units,id',
+            'warehouse_id' => 'nullable|exists:warehouses,id',
             'tray_id' => 'nullable|exists:trays,id',
             'gross_weight' => 'required|numeric|min:0.001',
             'stone_weight' => 'nullable|numeric|min:0',
@@ -107,6 +124,9 @@ class ItemController extends Controller
             'name' => $validated['name'],
             'category_id' => $validated['category_id'],
             'gold_rate_id' => $validated['gold_rate_id'],
+            'brand_id' => $validated['brand_id'] ?? null,
+            'unit_id' => $validated['unit_id'] ?? null,
+            'warehouse_id' => $validated['warehouse_id'] ?? null,
             'tray_id' => $validated['tray_id'] ?? null,
             'gross_weight' => $gross,
             'stone_weight' => $stone,
@@ -144,6 +164,9 @@ class ItemController extends Controller
             'name' => 'required|string|max:150',
             'category_id' => 'required|exists:categories,id',
             'gold_rate_id' => 'required|exists:gold_rates,id',
+            'brand_id' => 'nullable|exists:brands,id',
+            'unit_id' => 'nullable|exists:units,id',
+            'warehouse_id' => 'nullable|exists:warehouses,id',
             'tray_id' => 'nullable|exists:trays,id',
             'gross_weight' => 'required|numeric|min:0.001',
             'stone_weight' => 'nullable|numeric|min:0',
@@ -168,6 +191,9 @@ class ItemController extends Controller
             'name' => $validated['name'],
             'category_id' => $validated['category_id'],
             'gold_rate_id' => $validated['gold_rate_id'],
+            'brand_id' => $validated['brand_id'] ?? null,
+            'unit_id' => $validated['unit_id'] ?? null,
+            'warehouse_id' => $validated['warehouse_id'] ?? null,
             'tray_id' => $newTrayId,
             'gross_weight' => $gross,
             'stone_weight' => $stone,

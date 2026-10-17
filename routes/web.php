@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\GoldRateController;
 use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\SettingController;
+use App\Http\Controllers\Admin\StockMovementController;
 use App\Http\Controllers\Admin\TrayController;
+use App\Http\Controllers\Admin\UnitController;
+use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +63,23 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/items/{item}', [ItemController::class, 'update'])->name('items.update');
     Route::delete('/items/{item}', [ItemController::class, 'destroy'])->name('items.destroy');
     Route::get('/items/{item}/print-tag', [ItemController::class, 'printTag'])->name('items.print-tag');
+
+    // 4b. Master Persediaan Sitokmas (Brand, Unit, Warehouse)
+    Route::resource('brands', BrandController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('units', UnitController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('warehouses', WarehouseController::class)->only(['index', 'store', 'update', 'destroy']);
+
+    // 4c. Mutasi Barang & Keluar Masuk Barang
+    Route::get('/inventory/mutations', [StockMovementController::class, 'mutations'])->name('inventory.mutations');
+    Route::get('/inventory/movements', [StockMovementController::class, 'movements'])->name('inventory.movements');
+    Route::post('/inventory/movements', [StockMovementController::class, 'storeMovement'])->name('inventory.movements.store');
+
+    // 4d. Modul Pelanggan & Point Sitokmas (FASE 2)
+    Route::get('/customers/export', [CustomerController::class, 'export'])->name('customers.export');
+    Route::get('/customers/{customer}/transactions', [CustomerController::class, 'transactions'])->name('customers.transactions');
+    Route::post('/customers/{customer}/redeem-reward', [CustomerController::class, 'redeemReward'])->name('customers.redeem-reward');
+    Route::get('/customers/{customer}/print-card', [CustomerController::class, 'printCard'])->name('customers.print-card');
+    Route::resource('customers', CustomerController::class);
 
     // 5. Kasir POS Penjualan & Cetak Surat Emas (FASE 3)
     Route::get('/pos', [\App\Http\Controllers\Admin\PosController::class, 'index'])->name('pos.index');
