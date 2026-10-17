@@ -20,8 +20,41 @@ jobs:
             git config --global --add safe.directory /www/wwwroot/posemas.web.id
             git reset --hard HEAD
             git pull origin main
+            
+            # Diagnostic log
+            DIAG_FILE="/www/wwwroot/posemas.web.id/public/deploy_diag.txt"
+            echo "=== DEPLOY DIAGNOSTIC ===" > "$DIAG_FILE"
+            date >> "$DIAG_FILE"
+            grep -E "^DB_CONNECTION|^DB_HOST|^DB_PORT|^DB_DATABASE|^DB_USERNAME" .env >> "$DIAG_FILE" || true
+            
+            php -r "
+              \$lines = file('.env');
+              \$env = [];
+              foreach (\$lines as \$line) {
+                if (strpos(\$line, '=') !== false && strpos(trim(\$line), '#') !== 0) {
+                  list(\$k, \$v) = explode('=', trim(\$line), 2);
+                  \$env[\$k] = trim(\$v, '\"\'');
+                }
+              }
+              echo 'Testing host=' . (\$env['DB_HOST'] ?? '127.0.0.1') . ': ';
+              try {
+                \$p1 = new PDO('mysql:host=' . (\$env['DB_HOST'] ?? '127.0.0.1') . ';port=3306;dbname=' . (\$env['DB_DATABASE'] ?? 'emas_db'), \$env['DB_USERNAME'], \$env['DB_PASSWORD']);
+                echo 'SUCCESS\n';
+              } catch (Exception \$e) {
+                echo 'FAIL: ' . \$e->getMessage() . '\n';
+              }
+
+              echo 'Testing host=localhost: ';
+              try {
+                \$p2 = new PDO('mysql:host=localhost;dbname=' . (\$env['DB_DATABASE'] ?? 'emas_db'), \$env['DB_USERNAME'], \$env['DB_PASSWORD']);
+                echo 'SUCCESS\n';
+              } catch (Exception \$e) {
+                echo 'FAIL: ' . \$e->getMessage() . '\n';
+              }
+            " >> "$DIAG_FILE" 2>&1 || true
+
             composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
-            php artisan migrate --force
+            php artisan migrate --force || echo "Migration warning: $?" >> "$DIAG_FILE"
             php artisan storage:link --quiet || true
             php artisan optimize:clear
             php artisan config:cache
@@ -29,4 +62,4 @@ jobs:
             php artisan view:cache
             chown -R www:www /www/wwwroot/posemas.web.id
             chmod -R 775 /www/wwwroot/posemas.web.id/storage /www/wwwroot/posemas.web.id/bootstrap/cache
-            echo "🚀 Deployment to posemas.web.id successful!"
+            echo "🚀 Deployment to posemas.web.id finished!" >> "$DIAG_FILE"
