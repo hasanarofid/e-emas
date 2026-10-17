@@ -97,21 +97,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/pos/certificate/{sale}', [\App\Http\Controllers\Admin\PosController::class, 'certificate'])->name('pos.certificate');
 
     // 6. Master Bank & Pembayaran Kasir (Ref: SITOKMAS)
-    Route::post('/bank-accounts', function (\Illuminate\Http\Request $request) {
-        $validated = $request->validate([
-            'bank_name' => 'required|string|max:100',
-            'account_number' => 'required|string|max:100',
-            'account_holder' => 'required|string|max:255',
-            'notes' => 'nullable|string|max:255',
-        ]);
-        \App\Models\BankAccount::create($validated);
-        return back()->with('success', 'Rekening bank pembayaran berhasil ditambahkan!');
-    })->name('bank-accounts.store');
-
-    Route::delete('/bank-accounts/{bankAccount}', function (\App\Models\BankAccount $bankAccount) {
-        $bankAccount->delete();
-        return back()->with('success', 'Rekening bank berhasil dihapus!');
-    })->name('bank-accounts.destroy');
+    Route::resource('bank-accounts', \App\Http\Controllers\Admin\BankAccountController::class)->only(['index', 'store', 'update', 'destroy']);
 
     // 7. Modul Buyback & Beli Kembali Emas (FASE 4)
     Route::get('/buybacks', [\App\Http\Controllers\Admin\BuybackController::class, 'index'])->name('buybacks.index');

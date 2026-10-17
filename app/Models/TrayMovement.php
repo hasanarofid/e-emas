@@ -33,6 +33,11 @@ class TrayMovement extends Model
         return $this->belongsTo(Tray::class, 'to_tray_id');
     }
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'moved_by');
+    }
+
     public function movedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'moved_by');

@@ -62,7 +62,7 @@ const isRoute = (pattern) => {
 
 // State accordion: hanya terbuka ke menu yang sedang aktif/tertuju. Saat di Dashboard, semua tertutup.
 const openGroups = ref({
-  utilitas: isRoute('admin.settings.*'),
+  utilitas: isRoute('admin.settings.*') || isRoute('admin.bank-accounts.*'),
   persediaan: isRoute('admin.brands.*') || isRoute('admin.units.*') || isRoute('admin.warehouses.*') || isRoute('admin.gold-rates.*') || isRoute('admin.items.*') || isRoute('admin.trays.*') || isRoute('admin.inventory.*') || isRoute('admin.stock-audits.*'),
   pelanggan: isRoute('admin.customers.*'),
   pembelian: isRoute('admin.purchases.*') || isRoute('admin.suppliers.*') || isRoute('admin.buyback-deductions.*'),
@@ -181,15 +181,15 @@ const logout = () => {
               <ChevronDown :class="[openGroups.utilitas ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
             <div v-show="openGroups.utilitas" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
-              <Link :href="route('admin.settings.index')" class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors">
+              <Link :href="route('admin.settings.index')" :class="[isRoute('admin.settings.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Profil Toko</span>
               </Link>
-              <Link :href="route('admin.settings.index')" class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors">
+              <Link :href="route('admin.settings.index')" :class="[isRoute('admin.settings.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Pengaturan Toko</span>
               </Link>
-              <Link :href="route('admin.settings.index')" class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors">
+              <Link :href="route('admin.bank-accounts.index')" :class="[isRoute('admin.bank-accounts.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Bank Transfer</span>
               </Link>
