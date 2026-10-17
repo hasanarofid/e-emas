@@ -13,6 +13,8 @@ use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\TrayController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\WarehouseController;
+use App\Http\Controllers\Admin\EmployeeController;
+use App\Http\Controllers\Admin\PayrollController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -127,6 +129,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::patch('/services/{service}/status', [\App\Http\Controllers\Admin\JewelryServiceController::class, 'updateStatus'])->name('services.update-status');
 
     Route::resource('tray-scales', \App\Http\Controllers\Admin\TrayScaleController::class)->only(['index', 'create', 'store']);
+
+    // 7d. Modul Pegawai & Penggajian Toko Emas (FASE 5)
+    Route::resource('employees', EmployeeController::class);
+    Route::resource('payrolls', PayrollController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
 
     // 8. Stock Opname & Audit Baki (FASE 5)
     Route::get('/stock-audits', [\App\Http\Controllers\Admin\StockAuditController::class, 'index'])->name('stock-audits.index');

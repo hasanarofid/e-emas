@@ -505,5 +505,10 @@ class DatabaseSeeder extends Seeder
         foreach ($trayModels as $tray) {
             $tray->recalculateTotals();
         }
+
+        // 8. Seeder Pegawai & Riwayat Penggajian (Fase 5)
+        $this->call([
+            \Database\Seeders\EmployeeAndPayrollSeeder::class,
+        ]);
     }
 }

@@ -63,7 +63,7 @@ const openGroups = ref({
   tukarTambah: isRoute('admin.trade-ins.*'),
   servis: isRoute('admin.services.*'),
   timbangBaki: false,
-  pegawai: isRoute('admin.employees.*'),
+  pegawai: isRoute('admin.employees.*') || isRoute('admin.payrolls.*'),
   keuangan: isRoute('admin.finance.*'),
 });
 
@@ -476,7 +476,7 @@ const logout = () => {
             </div>
           </div>
 
-          <!-- 12. PEGAWAI -->
+          <!-- 12. PEGAWAI (ACCORDION SITOKMAS EDITION) -->
           <div>
             <button 
               @click="toggleGroup('pegawai')" 
@@ -490,15 +490,37 @@ const logout = () => {
               <ChevronDown :class="[openGroups.pegawai ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
             <div v-show="openGroups.pegawai" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Tambah Pegawai
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Data Pegawai & Kasir
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Penggajian
-              </span>
+              <Link 
+                :href="route('admin.employees.create')" 
+                :class="[isRoute('admin.employees.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+              >
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Tambah Pegawai</span>
+              </Link>
+              <Link 
+                :href="route('admin.employees.index')" 
+                :class="[isRoute('admin.employees.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+              >
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Data Pegawai</span>
+              </Link>
+              <div class="pt-1.5 border-t border-[#25254B] mt-1 space-y-1">
+                <span class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider block">Penggajian</span>
+                <Link 
+                  :href="route('admin.payrolls.create')" 
+                  :class="[isRoute('admin.payrolls.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Proses Penggajian</span>
+                </Link>
+                <Link 
+                  :href="route('admin.payrolls.index')" 
+                  :class="[isRoute('admin.payrolls.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Data Penggajian</span>
+                </Link>
+              </div>
             </div>
           </div>
 
