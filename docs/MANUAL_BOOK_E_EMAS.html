@@ -26,287 +26,521 @@
     <body for="html-export">
       <div class="crossnote markdown-preview  ">
       
-<h1 id="-buku-panduan-pengguna-manual-book">📖 BUKU PANDUAN PENGGUNA (MANUAL BOOK) </h1>
-<h1 id="sistem-pos--manajemen-toko-emas-pos-emas">SISTEM POS &amp; MANAJEMEN TOKO EMAS (POS Emas) </h1>
+<h1 id="-buku-panduan-pengguna-manual-book">📖 BUKU PANDUAN PENGGUNA (MANUAL BOOK)</h1>
+<h1 id="sistem-pos--manajemen-toko-emas-pos-emas">SISTEM POS &amp; MANAJEMEN TOKO EMAS (POS Emas)</h1>
 <blockquote>
-<p><strong>Versi:</strong> 1.0.0<br>
-<strong>Target Aplikasi:</strong> Toko Perhiasan &amp; Logam Mulia<br>
+<p><strong>Versi:</strong> 2.0.0 (Sitokmas Gold Standard Edition)<br>
+<strong>Target Aplikasi:</strong> Toko Perhiasan, Logam Mulia, Gadai, Servis, &amp; Finansial Toko Emas<br>
 <strong>Teknologi:</strong> Laravel 11, Vue 3 (Inertia.js), Tailwind CSS, MySQL<br>
-<strong>Kompatibilitas Printer:</strong> Printer Thermal 58mm/80mm, Printer Barcode Halter Roll (TSC, Zebra, Xprinter), Printer Dokumen Inkjet/Laser A5</p>
+<strong>Live Demo:</strong> <a href="https://posemas.web.id">https://posemas.web.id</a><br>
+<strong>Kompatibilitas Hardware:</strong> Printer Thermal 58mm/80mm, Printer Barcode Halter/Dumbbell Tag (TSC, Zebra, Xprinter), Timbangan Digital Presisi 3 Desimal, Printer Dokumen A5/Kuarto</p>
 </blockquote>
 <hr>
-<h2 id="-daftar-isi">📑 DAFTAR ISI </h2>
+
+<h2 id="-daftar-isi">📑 DAFTAR ISI LENGKAP</h2>
 <ol>
-<li><a href="#1-pendahuluan--konsep-bisnis">Pendahuluan &amp; Konsep Bisnis</a></li>
+<li><a href="#1-pendahuluan--konsep-bisnis">Pendahuluan &amp; Konsep Bisnis Toko Emas</a></li>
 <li><a href="#2-akses-masuk--kredensial-pengguna">Akses Masuk &amp; Kredensial Pengguna</a></li>
-<li><a href="#3-panduan-modul-operasional">Panduan Modul Operasional</a>
-<ul>
-<li><a href="#31-kurs-harga-emas-harian">3.1 Kurs Harga Emas Harian</a></li>
-<li><a href="#32-manajemen-baki--etalase-toko">3.2 Manajemen Baki &amp; Etalase Toko</a></li>
-<li><a href="#33-inventaris--cetak-stiker-halter-dumbbell-tag">3.3 Inventaris &amp; Cetak Stiker Halter (Dumbbell Tag)</a></li>
-<li><a href="#34-kasir-pos--penerbitan-surat-emas-resmi">3.4 Kasir POS &amp; Penerbitan Surat Emas Resmi</a></li>
-<li><a href="#35-pembelian-kembali-buyback--tukar-tambah">3.5 Pembelian Kembali (Buyback) &amp; Tukar Tambah</a></li>
-<li><a href="#36-stock-opname-harian-audit-baki-barcode">3.6 Stock Opname Harian (Audit Baki Barcode)</a></li>
-<li><a href="#37-laporan-statistik--neraca-gramasi">3.7 Laporan Statistik &amp; Neraca Gramasi</a></li>
-<li><a href="#38-pengaturan-identitas-toko--rekening-bank">3.8 Pengaturan Identitas Toko &amp; Rekening Bank</a></li>
-</ul>
+<li><a href="#3-dashboard-utama">Dashboard Utama &amp; Statistik Realtime</a></li>
+<li><a href="#4-modul-utilitas">Modul Utilitas &amp; Pengaturan Toko</a>
+  <ul>
+    <li><a href="#41-pengaturan-identitas-toko--kop-surat">4.1 Pengaturan Identitas Toko &amp; Kop Surat Resmi</a></li>
+    <li><a href="#42-master-rekening-bank--qris">4.2 Master Rekening Bank &amp; QRIS Kasir</a></li>
+  </ul>
 </li>
-<li><a href="#4-panduan-cetak--integrasi-perangkat-keras">Panduan Cetak &amp; Integrasi Perangkat Keras</a></li>
-<li><a href="#5-daftar-pintasan-keyboard-shortcuts">Daftar Pintasan Keyboard (Shortcuts)</a></li>
+<li><a href="#5-modul-persediaan-inventaris">Modul Persediaan &amp; Inventaris Emas</a>
+  <ul>
+    <li><a href="#51-brand--merk-emas">5.1 Brand &amp; Merk Emas</a></li>
+    <li><a href="#52-satuan-barang-uom">5.2 Satuan Barang (UoM)</a></li>
+    <li><a href="#53-gudang--brankas-penyimpanan">5.3 Gudang &amp; Brankas Penyimpanan</a></li>
+    <li><a href="#54-kadar--kurs-harga-emas-harian">5.4 Kadar &amp; Kurs Harga Emas Harian (Live Gold Rate)</a></li>
+    <li><a href="#55-data-barang--cetak-label-halter-dumbbell-tag">5.5 Data Barang &amp; Cetak Label Halter (Dumbbell Tag)</a></li>
+    <li><a href="#56-baki--etalase-visual">5.6 Baki &amp; Etalase Visual</a></li>
+    <li><a href="#57-mutasi-baki-barang">5.7 Mutasi Baki Barang</a></li>
+    <li><a href="#58-stok-opname-baki-audit-barcode">5.8 Stok Opname Baki (Audit Barcode Scanner)</a></li>
+    <li><a href="#59-keluar-masuk-barang">5.9 Keluar Masuk Barang (Penerimaan Pabrik &amp; Peleburan)</a></li>
+    <li><a href="#510-laporan-persediaan">5.10 Laporan Persediaan &amp; Rekap Gramasi</a></li>
+  </ul>
+</li>
+<li><a href="#6-modul-pelanggan--crm">Modul Pelanggan &amp; CRM (Loyalty Point)</a></li>
+<li><a href="#7-modul-pembelian-supplier">Modul Pembelian (Supplier / Pabrik Emas)</a>
+  <ul>
+    <li><a href="#71-data-supplier--pengrajin">7.1 Data Supplier &amp; Pengrajin Emas</a></li>
+    <li><a href="#72-faktur-pembelian-supplier">7.2 Faktur Pembelian Supplier &amp; Stok Masuk</a></li>
+  </ul>
+</li>
+<li><a href="#8-modul-pembelian-cepat-buyback">Modul Pembelian Cepat (Buyback Pelanggan)</a>
+  <ul>
+    <li><a href="#81-transaksi-buyback-beli-kembali">8.1 Transaksi Buyback / Beli Kembali Emas</a></li>
+    <li><a href="#82-master-potongan-pembelian-cepat">8.2 Master Potongan Pembelian Cepat (Kerusakan, Surat, Kadar)</a></li>
+  </ul>
+</li>
+<li><a href="#9-modul-penjualan-kasir-pos">Modul Penjualan (Kasir POS &amp; Surat Emas)</a>
+  <ul>
+    <li><a href="#91-terminal-kasir-pos-modern">9.1 Terminal Kasir POS Modern &amp; Multi-Metode Bayar</a></li>
+    <li><a href="#92-surat-jaminan-emas-resmi-a5">9.2 Surat Jaminan Emas Resmi (Format A5 Landscape)</a></li>
+  </ul>
+</li>
+<li><a href="#10-modul-gadai-perhiasan">Modul Gadai Perhiasan (Pawn System)</a></li>
+<li><a href="#11-modul-servis-perhiasan">Modul Servis Perhiasan (Reparasi, Cuci &amp; Sepuh)</a></li>
+<li><a href="#12-modul-timbang-baki-harian">Modul Timbang Baki Harian (Rekap Gramasi Buka/Tutup)</a></li>
+<li><a href="#13-modul-pegawai--penggajian">Modul Pegawai &amp; Penggajian (Payroll &amp; Komisi)</a></li>
+<li><a href="#14-modul-keuangan--akuntansi-toko-emas">Modul Keuangan &amp; Akuntansi Toko Emas</a>
+  <ul>
+    <li><a href="#141-buku-kas--mutasi-harian">14.1 Buku Kas &amp; Mutasi Kasir Harian</a></li>
+    <li><a href="#142-biaya-operasional-toko-expenses">14.2 Biaya Operasional Toko (Expenses)</a></li>
+    <li><a href="#143-buku-hutang-supplier">14.3 Buku Hutang Supplier &amp; Jatuh Tempo</a></li>
+    <li><a href="#144-laporan-laba-rugi-dan-pajak">14.4 Laporan Laba Rugi Komprehensif &amp; Laporan Pajak</a></li>
+  </ul>
+</li>
+<li><a href="#15-panduan-cetak--integrasi-perangkat-keras">Panduan Cetak &amp; Integrasi Hardware Printer</a></li>
+<li><a href="#16-daftar-pintasan-keyboard-shortcuts">Daftar Pintasan Keyboard (Shortcuts)</a></li>
 </ol>
 <hr>
-<h2 id="1-pendahuluan--konsep-bisnis">1. Pendahuluan &amp; Konsep Bisnis </h2>
-<p><strong>POS Emas</strong> dirancang khusus untuk memecahkan tantangan khas manajemen toko emas di Indonesia:</p>
+
+<h2 id="1-pendahuluan--konsep-bisnis">1. Pendahuluan &amp; Konsep Bisnis Toko Emas</h2>
+<p><strong>POS Emas</strong> dibangun khusus dengan mengadopsi standar operasional terbaik industri retail perhiasan emas di Indonesia:</p>
 <ol>
-<li><strong>Presisi Gramasi 3 Desimal:</strong> Setiap penimbangan wajib mencatat hingga <strong>0.001 gram</strong> (misal: <code>3.250 gr</code>) untuk membedakan berat kotor (<em>gross weight</em>), berat batu/permata (<em>stone weight</em>), dan berat bersih emas murni (<em>net gold weight</em>).</li>
-<li><strong>Kalkulasi Dinamis:</strong> Harga jual perhiasan dihitung otomatis dari:<br>
-<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Harga&nbsp;Jual</mtext><mo>=</mo><mo stretchy="false">(</mo><mtext>Berat&nbsp;Bersih</mtext><mo>×</mo><mtext>Kurs&nbsp;Jual&nbsp;Hari&nbsp;Ini</mtext><mo stretchy="false">)</mo><mo>+</mo><mtext>Ongkos&nbsp;Bikin</mtext></mrow><annotation encoding="application/x-tex">\text{Harga Jual} = (\text{Berat Bersih} \times \text{Kurs Jual Hari Ini}) + \text{Ongkos Bikin}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Harga&nbsp;Jual</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">Berat&nbsp;Bersih</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Kurs&nbsp;Jual&nbsp;Hari&nbsp;Ini</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Ongkos&nbsp;Bikin</span></span></span></span></span></span></li>
-<li><strong>Pelacakan Fisik Baki (Tray System):</strong> Perhiasan tidak disimpan acak, melainkan terkelompokkan rapi di baki etalase fisik untuk mempermudah audit harian.</li>
-<li><strong>Surat Jaminan Emas Sah:</strong> Bukti kepemilikan bernilai legal dengan rincian kadar, foto barang, dan klausul jaminan pembelian kembali (<em>buyback guarantee</em>).</li>
+<li><strong>Presisi Gramasi 3 Desimal (Milligram Precision):</strong> Setiap perhiasan wajib ditimbang hingga <code>0.001 gram</code> (contoh: <code>4.125 gr</code>). Sistem secara ketat memisahkan antara <strong>Berat Kotor (Gross Weight)</strong>, <strong>Berat Batu/Mutiara/Zircon (Stone Weight)</strong>, dan <strong>Berat Bersih Emas (Net Weight)</strong>.</li>
+<li><strong>Kalkulasi Nilai Dinamis Terpusat:</strong> Seluruh harga taksiran perhiasan di etalase toko terkoneksi langsung dengan kurs emas harian:<br>
+<span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Harga&nbsp;Jual</mtext><mo>=</mo><mo stretchy="false">(</mo><mtext>Berat&nbsp;Bersih</mtext><mo>×</mo><mtext>Kurs&nbsp;Kadar&nbsp;Hari&nbsp;Ini</mtext><mo stretchy="false">)</mo><mo>+</mo><mtext>Ongkos&nbsp;Bikin/Pembuatan</mtext></mrow><annotation encoding="application/x-tex">\text{Harga Jual} = (\text{Berat Bersih} \times \text{Kurs Kadar Hari Ini}) + \text{Ongkos Bikin/Pembuatan}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Harga&nbsp;Jual</span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">Berat&nbsp;Bersih</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord text"><span class="mord">Kurs&nbsp;Kadar&nbsp;Hari&nbsp;Ini</span></span><span class="mclose">)</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord text"><span class="mord">Ongkos&nbsp;Bikin/Pembuatan</span></span></span></span></span></span></li>
+<li><strong>Sistem Baki &amp; Etalase Fisik (Tray Management):</strong> Barang tidak diletakkan secara acak, melainkan terpetakan pada baki-baki fisik (contoh: <code>BK-CCN-01</code> Baki Cincin Dewasa) dengan pelacakan kapasitas dan rekonsiliasi timbang baki buka/tutup toko.</li>
+<li><strong>Surat Jaminan Emas Resmi Bergaransi:</strong> Bukti kepemilikan sah berkekuatan hukum dengan spesifikasi kadar, berat akurat, foto perhiasan, dan klausul jaminan pembelian kembali (<em>buyback guarantee</em>).</li>
 </ol>
 <hr>
-<h2 id="2-akses-masuk--kredensial-pengguna">2. Akses Masuk &amp; Kredensial Pengguna </h2>
-<p>Buka sistem melalui browser di alamat URL toko Anda: <strong><code>https://posemas.web.id/login</code></strong>.</p>
-<p>Tersedia 2 peran (<em>Role</em>) bawaan:</p>
-<ul>
-<li><strong>Owner (Pemilik Toko):</strong>
-<ul>
-<li><strong>Email:</strong> <code>admin@emas.com</code></li>
-<li><strong>Password:</strong> <code>password123</code></li>
-<li><strong>Hak Akses:</strong> Akses penuh ke seluruh fitur, setting identitas toko, update kurs emas, laporan finansial, audit baki, kasir POS, dan master rekening bank.</li>
-</ul>
-</li>
-<li><strong>Kasir (Staf Penjualan):</strong>
-<ul>
-<li><strong>Email:</strong> <code>kasir@emas.com</code></li>
-<li><strong>Password:</strong> <code>password123</code></li>
-<li><strong>Hak Akses:</strong> Terminal kasir POS penjualan, cetak nota/surat emas, pencatatan buyback, dan scan stock opname baki.</li>
-</ul>
-</li>
-</ul>
-<p><em>(Tersedia tombol Auto-Fill cepat di halaman login untuk kemudahan staf).</em></p>
-<hr>
-<h2 id="3-panduan-modul-operasional">3. Panduan Modul Operasional </h2>
-<h3 id="31-kurs-harga-emas-harian">3.1 Kurs Harga Emas Harian </h3>
-<ul>
-<li><strong>Menu:</strong> Navigasi Sidebar -&gt; <strong>Kurs Harga Emas</strong> (<code>/admin/gold-rates</code>)</li>
-<li><strong>Waktu Eksekusi:</strong> Setiap pagi sebelum toko buka (sekitar pukul 08:30 – 09:00 WIB).</li>
-<li><strong>Langkah Kerja:</strong>
-<ol>
-<li>Masukkan harga dasar <strong>Emas Murni 24K (99.9%)</strong>.</li>
-<li>Sesuaikan harga jual dan harga beli kembali (<em>buy price</em>) untuk kadar lainnya:
-<ul>
-<li>22K (91.6% - Emas Tua Arab/Dubai)</li>
-<li>18K / 750 (75.0% - Emas Berlian / Rose Gold)</li>
-<li>17K / 700 (70.0% - Emas Tua Paling Populer di Indonesia)</li>
-<li>16K (65.0% - Emas Sedang)</li>
-<li>9K / 375 (37.5% - Emas Muda Ekonomis)</li>
-<li>8K / 300 (30.0% - Emas Muda)</li>
-</ul>
-</li>
-<li>Klik tombol <strong>"Simpan Perubahan Harga Emas"</strong>.</li>
-<li><strong>Otomatisasi Sistem:</strong> Seketika itu seluruh harga taksiran ribuan stok perhiasan di etalase dan baki langsung terkalkulasi ulang secara realtime tanpa perlu edit barang satu per satu.</li>
-</ol>
-</li>
-</ul>
-<hr>
-<h3 id="32-manajemen-baki--etalase-toko">3.2 Manajemen Baki &amp; Etalase Toko </h3>
-<ul>
-<li><strong>Menu:</strong> Navigasi Sidebar -&gt; <strong>Baki &amp; Etalase</strong> (<code>/admin/trays</code>)</li>
-<li><strong>Fungsi:</strong> Memetakan nampan beludru fisik yang ada di etalase kaca toko.</li>
-<li><strong>Fitur:</strong>
-<ul>
-<li><strong>Visual Slot:</strong> Menampilkan persentase kapasitas baki terisi vs slot kosong.</li>
-<li><strong>Detail Denah Baki:</strong> Klik baki untuk melihat visual slot perhiasan yang terpasang di baki tersebut.</li>
-<li><strong>Pindah Baki Cepat:</strong> Memindahkan perhiasan dari Baki A ke Baki B cukup dengan scan barcode SKU barang, tanpa bongkar pasang data manual.</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="33-inventaris--cetak-stiker-halter-dumbbell-tag">3.3 Inventaris &amp; Cetak Stiker Halter (Dumbbell Tag) </h3>
-<ul>
-<li><strong>Menu:</strong> Navigasi Sidebar -&gt; <strong>Inventaris Perhiasan</strong> (<code>/admin/items</code>)</li>
-<li><strong>Input Perhiasan Baru:</strong>
-<ol>
-<li>Klik tombol <strong>"Tambah Perhiasan Baru"</strong>.</li>
-<li>Masukkan Kode Barcode / SKU (otomatis di-generate sistem jika dikosongkan).</li>
-<li>Pilih Kategori (Cincin, Kalung, Gelang, Anting, Liontin, Logam Mulia).</li>
-<li>Pilih Baki Etalase dan Kadar Emas.</li>
-<li>Masukkan <strong>Berat Kotor</strong> (timbangan keseluruhan) dan <strong>Berat Batu</strong> (jika ada permata/zircon). Sistem otomatis mengalkulasi <strong>Berat Bersih Emas</strong>.</li>
-<li>Masukkan <strong>Ongkos Bikin / Pembuatan</strong>.</li>
-<li>Klik Simpan.</li>
-</ol>
-</li>
-<li><strong>Cetak Stiker Label Perhiasan (Dumbbell Tag):</strong>
-<ol>
-<li>Pada tabel inventaris, klik tombol <strong>"Cetak Tag"</strong> pada barang yang bersangkutan.</li>
-<li>Tersedia 2 pilihan format stiker:
-<ul>
-<li><strong>Format Dumbbell / Butterfly Tail Tag (Ukuran Roll 2.5" × 1.25"):</strong> Sisi kiri memuat QR Code + Kadar + Berat Bersih, sisi tengah buntut bening non-lem untuk dilingkarkan ke cincin/kalung, sisi kanan memuat Barcode 1D + SKU + Toko + Harga.</li>
-<li><strong>Format Halter Lipat Standar 80mm.</strong></li>
-</ul>
-</li>
-<li>Klik <strong>"Cetak Label Stiker Sekarang"</strong> (<code>Ctrl + P</code>).</li>
-</ol>
-</li>
-</ul>
-<hr>
-<h3 id="34-kasir-pos--penerbitan-surat-emas-resmi">3.4 Kasir POS &amp; Penerbitan Surat Emas Resmi </h3>
-<ul>
-<li><strong>Menu:</strong> Navigasi Sidebar -&gt; <strong>Kasir POS Penjualan</strong> (<code>/admin/pos</code>)</li>
-<li><strong>Langkah Transaksi Penjualan:</strong>
-<ol>
-<li><strong>Scan Barcode (<code>F2</code>):</strong> Arahkan barcode scanner ke label perhiasan atau ketik SKU perhiasan. Item langsung masuk ke keranjang belanja.</li>
-<li><strong>Penyesuaian Ongkos (Opsional):</strong> Kasir dapat menyesuaikan ongkos bikin secara fleksibel di keranjang jika ada negosiasi promo.</li>
-<li><strong>Identitas Pembeli:</strong> Ketik Nama Pembeli (wajib untuk surat jaminan), Nomor WhatsApp, dan Alamat domisili.</li>
-<li><strong>Buka Modal Bayar (<code>F8</code>):</strong>
-<ul>
-<li>Pilih metode pembayaran: <strong>Tunai</strong>, <strong>Transfer Bank</strong>, <strong>QRIS</strong>, atau <strong>EDC Debit</strong>.</li>
-<li>Jika non-tunai, pilih Rekening Tujuan Toko (BCA / Mandiri / QRIS Toko).</li>
-<li>Masukkan jumlah uang tunai yang diterima (tersedia tombol uang pas dan nominal cepat). Sistem otomatis menghitung kembalian.</li>
-</ul>
-</li>
-<li>Klik <strong>"Selesaikan Transaksi"</strong>.</li>
-</ol>
-</li>
-<li><strong>Pilihan Output Cetak Transaksi:</strong>
-<ul>
-<li><strong>Struk Kasir Thermal (58mm / 80mm):</strong> Struk kertas ringkas untuk dibawa pulang pembeli.</li>
-<li><strong>Surat Jaminan Emas Resmi (Kuarto / A5 Landscape):</strong> Sertifikat resmi dengan kop toko, legalitas SIUP, tabel rincian gramasi (kotor, batu, bersih), foto barang, pasal jaminan buyback, dan kolom tanda tangan.</li>
-<li><strong>Kirim WhatsApp:</strong> 1-klik untuk mengirim rincian nota digital rapi ke WhatsApp pembeli.</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="35-pembelian-kembali-buyback--tukar-tambah">3.5 Pembelian Kembali (Buyback) &amp; Tukar Tambah </h3>
-<ul>
-<li><strong>Menu:</strong> Navigasi Sidebar -&gt; <strong>Beli Kembali (Buyback)</strong> (<code>/admin/buybacks</code>)</li>
-<li><strong>Langkah Kerja:</strong>
-<ol>
-<li>Klik tombol <strong>"Catat Buyback Baru"</strong>.</li>
-<li><strong>Verifikasi Nota Lama:</strong> Ketik nomor nota lama (<code>INV-EMAS-...</code>) di kolom pencarian. Klik data nota yang muncul: identitas pembeli dan perhiasan otomatis terisi. <em>(Jika emas luar tanpa nota, lewati pencarian dan isi manual).</em></li>
-<li><strong>Timbang Ulang:</strong> Masukkan berat hasil timbangan air / timbangan presisi hari ini. Sistem otomatis mendeteksi selisih susut fisik dengan nota asli.</li>
-<li><strong>Potongan Kerusakan (Opsional):</strong> Masukkan nominal potongan jika ada permata lepas, pengait patah, atau kotoran berlebih.</li>
-<li><strong>Alokasi Tujuan Emas Bekas:</strong>
-<ul>
-<li><strong>Peleburan / Rongsok Emas (<em>Melt Scrap</em>):</strong> Untuk emas rusak yang akan dilebur kembali menjadi 24K murni.</li>
-<li><strong>Etalase Emas Bekas (<em>Second-Hand</em>):</strong> Untuk perhiasan mulus yang siap dijual kembali setelah disepuh.</li>
-<li><strong>Servis / Reparasi Toko.</strong></li>
-</ul>
-</li>
-<li>Pilih metode pengeluaran kas toko (<strong>Kas Tunai</strong> atau <strong>Transfer Rekening</strong>).</li>
-<li>Klik <strong>"Selesaikan Transaksi &amp; Cetak Kuitansi"</strong> untuk mencetak Kuitansi Buyback resmi format A5.</li>
-</ol>
-</li>
-</ul>
-<hr>
-<h3 id="36-stock-opname-harian-audit-baki-barcode">3.6 Stock Opname Harian (Audit Baki Barcode) </h3>
-<ul>
-<li><strong>Menu:</strong> Navigasi Sidebar -&gt; <strong>Stock Opname Baki</strong> (<code>/admin/stock-audits</code>)</li>
-<li><strong>Fungsi:</strong> Memastikan jumlah fisik perhiasan di baki etalase 100% sama dengan catatan database, mencegah barang hilang atau tertukar.</li>
-<li><strong>Langkah Kerja:</strong>
-<ol>
-<li>Klik <strong>"Mulai Audit Baki Baru"</strong>, pilih baki yang ingin diaudit (misal: Baki Cincin <code>BK-CNC-01</code>).</li>
-<li>Sistem menampilkan daftar seluruh perhiasan yang seharusnya ada di baki tersebut.</li>
-<li>Ambil scanner barcode, scan label perhiasan di baki satu per satu berturut-turut.</li>
-<li>Sistem otomatis membagi barang ke dalam 3 status:
-<ul>
-<li>🟢 <strong>Cocok (<em>Matched</em>):</strong> Fisik perhiasan terbukti ada di baki ini.</li>
-<li>🔴 <strong>Belum Di-scan / Kurang (<em>Missing</em>):</strong> Barang belum ditemukan saat audit.</li>
-<li>🟡 <strong>Salah Baki / Nyasar (<em>Unexpected</em>):</strong> Fisik ada di baki ini, tapi di sistem milik baki lain!</li>
-</ul>
-</li>
-<li>Setelah selesai, klik <strong>"Selesaikan &amp; Kunci Audit"</strong> dan cetak berita acara audit fisik.</li>
-</ol>
-</li>
-</ul>
-<hr>
-<h3 id="37-laporan-statistik--neraca-gramasi">3.7 Laporan Statistik &amp; Neraca Gramasi </h3>
-<ul>
-<li><strong>Menu:</strong> Navigasi Sidebar -&gt; <strong>Laporan &amp; Statistik</strong> (<code>/admin/reports</code>)</li>
-<li><strong>Laporan yang Tersedia:</strong>
-<ul>
-<li><strong>Arus Kas Bersih (<em>Net Cash Flow</em>):</strong> Omzet Penjualan dikurangi Pengeluaran Kas Buyback.</li>
-<li><strong>Neraca Gramasi Emas:</strong> Total gramasi emas fisik yang keluar (terjual) versus emas fisik yang masuk (buyback).</li>
-<li><strong>Grafik Tren Harian:</strong> Memantau hari-hari dengan penjualan atau buyback tertinggi.</li>
-<li><strong>Performa Kategori:</strong> Kategori perhiasan paling laris (Cincin vs Kalung vs Gelang vs LM).</li>
-<li><strong>Performa Kadar Emas:</strong> Kadar emas paling diminati pelanggan (misal: 17K/700 vs 24K Antam).</li>
-<li><strong>Metode Pembayaran:</strong> Rekapitulasi porsi pembayaran Tunai, QRIS, dan Transfer Bank.</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h3 id="38-pengaturan-identitas-toko--rekening-bank">3.8 Pengaturan Identitas Toko &amp; Rekening Bank </h3>
-<ul>
-<li><strong>Menu:</strong> Navigasi Sidebar -&gt; <strong>Pengaturan Toko</strong> (<code>/admin/settings</code>)</li>
-<li><strong>Parameter yang Dapat Diubah:</strong>
-<ul>
-<li>Nama Toko &amp; Nama Badan Usaha (UD / PT / Toko Mas).</li>
-<li>Alamat Lengkap &amp; Nomor Kontak Telepon / WhatsApp.</li>
-<li>Nomor Izin Perdagangan Emas / SIUP resmi (tercetak di kop nota &amp; sertifikat).</li>
-<li>Kalimat Klausul Jaminan Buyback pada Surat Emas.</li>
-<li>Master Rekening Bank Kasir (BCA, Mandiri, BRI, QRIS Kasir).</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="4-panduan-cetak--integrasi-perangkat-keras">4. Panduan Cetak &amp; Integrasi Perangkat Keras </h2>
-<h3 id="a-pengaturan-printer-barcode-thermal-label-halter-perhiasan">A. Pengaturan Printer Barcode Thermal (Label Halter Perhiasan) </h3>
-<ol>
-<li>Gunakan stiker perhiasan jenis <strong>Jewelry Tag Halter / Dumbbell Tag</strong> ukuran roll 2.5" × 1.25" atau 70mm × 15mm.</li>
-<li>Saat dialog print browser muncul (<code>Ctrl + P</code>):
-<ul>
-<li><strong>Destination:</strong> Pilih printer barcode (contoh: <em>TSC TTP-244 Pro</em> atau <em>Xprinter</em>).</li>
-<li><strong>Margins:</strong> Ubah ke <strong>None</strong> (Tanpa Margin).</li>
-<li><strong>Options:</strong> Hapus centang pada <em>Headers and footers</em>.</li>
-</ul>
-</li>
-<li>Hasil cetak akan pas secara presisi di sayap kiri dan sayap kanan stiker.</li>
-</ol>
-<h3 id="b-pengaturan-printer-kasir-thermal-struk-58mm--80mm">B. Pengaturan Printer Kasir Thermal (Struk 58mm / 80mm) </h3>
-<ol>
-<li>Pilih printer kasir thermal (contoh: <em>Epson TM-T82</em>, <em>Xprinter 80mm</em>).</li>
-<li>Paper size: <strong>80mm</strong> (atau <strong>58mm</strong>).</li>
-<li>Margins: <strong>None</strong>.</li>
-</ol>
-<h3 id="c-pengaturan-printer-surat-emas-resmi-a5-landscape">C. Pengaturan Printer Surat Emas Resmi (A5 Landscape) </h3>
-<ol>
-<li>Gunakan kertas kuarto / A5 atau kertas sertifikat bertekstur/watermark.</li>
-<li>Layout: <strong>Landscape</strong>.</li>
-<li>Paper size: <strong>A5</strong> (210mm × 148mm).</li>
-<li>Margins: <strong>Default</strong> atau <strong>Minimum</strong>.</li>
-</ol>
-<hr>
-<h2 id="5-daftar-pintasan-keyboard-shortcuts">5. Daftar Pintasan Keyboard (Shortcuts) </h2>
-<p>Untuk mempercepat pelayanan kasir saat toko sedang ramai, gunakan tombol pintasan berikut pada halaman Kasir POS (<code>/admin/pos</code>):</p>
+
+<h2 id="2-akses-masuk--kredensial-pengguna">2. Akses Masuk &amp; Kredensial Pengguna</h2>
+<p>Akses portal aplikasi dilakukan melalui peramban (browser) di URL: <strong><code>https://posemas.web.id/login</code></strong>.</p>
 <table>
 <thead>
 <tr>
-<th style="text-align:left">Tombol Shortcut</th>
-<th style="text-align:left">Fungsi</th>
+<th style="text-align:left">Peran (Role)</th>
+<th style="text-align:left">Email Login</th>
+<th style="text-align:left">Password</th>
+<th style="text-align:left">Cakupan Akses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Owner / Admin</strong></td>
+<td style="text-align:left"><code>admin@emas.com</code></td>
+<td style="text-align:left"><code>password</code></td>
+<td style="text-align:left">Akses 100% penuh: Kurs Emas, Seluruh Modul Persediaan, Keuangan, Laba Rugi, Pajak, Penggajian, Gadai, Servis, dan Pengaturan Identitas Toko.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Kasir Toko</strong></td>
+<td style="text-align:left"><code>kasir@emas.com</code></td>
+<td style="text-align:left"><code>password</code></td>
+<td style="text-align:left">Terminal Penjualan POS, Cetak Surat Emas, Pembelian Cepat (Buyback), Timbang Baki, dan Pencatatan Biaya Kasir Harian.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+<h2 id="3-dashboard-utama">3. Dashboard Utama &amp; Statistik Realtime</h2>
+<p>Halaman Dashboard (<code>/admin/dashboard</code>) menyajikan indikator bisnis terpenting secara seketika (realtime):</p>
+<ul>
+<li><strong>Ringkasan Finansial:</strong> Total Omzet Penjualan Hari Ini, Total Pembelian/Buyback, dan Laba Kotor Berjalan.</li>
+<li><strong>Neraca Gramasi:</strong> Akumulasi gramasi emas keluar (terjual) versus gramasi emas masuk (buyback/supplier).</li>
+<li><strong>Peringatan Stok &amp; Baki:</strong> Monitoring baki etalase yang mendekati kapasitas maksimum atau butuh pengisian ulang.</li>
+<li><strong>Widget Kurs Live:</strong> Menampilkan fluktuasi harga emas terkini untuk memudahkan negosiasi kasir.</li>
+</ul>
+<hr>
+
+<h2 id="4-modul-utilitas">4. Modul Utilitas &amp; Pengaturan Toko</h2>
+<h3 id="41-pengaturan-identitas-toko--kop-surat">4.1 Pengaturan Identitas Toko &amp; Kop Surat Resmi</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Utilitas</strong> -&gt; <strong>Pengaturan Toko</strong> (<code>/admin/settings</code>)</li>
+<li><strong>Fungsi:</strong> Mengelola data legalitas yang tercetak pada Kop Nota Kasir dan Surat Emas Resmi.</li>
+<li><strong>Kolom Konfigurasi:</strong>
+  <ul>
+    <li>Nama Toko (contoh: <em>Toko Mas Permata Abadi</em>) dan Nama Perusahaan/CV/UD.</li>
+    <li>Alamat Lengkap, Kota, dan Nomor Telepon/WhatsApp Layanan Pelanggan.</li>
+    <li>Nomor Izin Usaha / SIUP Emas Resmi.</li>
+    <li>Teks Syarat &amp; Ketentuan Buyback (klausul potongan nota, kondisi barang rusak, dsb).</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="42-master-rekening-bank--qris">4.2 Master Rekening Bank &amp; QRIS Kasir</h3>
+<ul>
+<li><strong>Fungsi:</strong> Menampung daftar rekening bank operasional kasir untuk menerima pembayaran non-tunai (BCA, Mandiri, BRI, BNI) serta kode statis/dinamis QRIS toko.</li>
+<li>Setiap transaksi transfer atau QRIS di kasir POS akan langsung tercatat mutasinya ke akun rekening yang bersangkutan.</li>
+</ul>
+<hr>
+
+<h2 id="5-modul-persediaan-inventaris">5. Modul Persediaan &amp; Inventaris Emas</h2>
+<h3 id="51-brand--merk-emas">5.1 Brand &amp; Merk Emas</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Brand &amp; Merk</strong> (<code>/admin/brands</code>)</li>
+<li><strong>Fungsi:</strong> Mengelola katalog produsen/pabrikan emas ternama (contoh: <em>UBS Gold</em>, <em>Antam LM</em>, <em>Lotus Archi</em>, <em>King Halim</em>, <em>Hala Gold</em>, <em>HWT</em>). Memudahkan pengelompokan produk dan analisa brand terlaris.</li>
+</ul>
+
+<h3 id="52-satuan-barang-uom">5.2 Satuan Barang (UoM)</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Satuan Barang</strong> (<code>/admin/units</code>)</li>
+<li><strong>Fungsi:</strong> Mengelola satuan ukuran inventaris:
+  <ul>
+    <li><code>gr</code> (Gram) - Satuan bobot baku perhiasan dan emas batangan.</li>
+    <li><code>pcs</code> (Pieces) - Satuan unit barang jadi atau certicard.</li>
+    <li><code>btr</code> (Butir) - Satuan permata, berlian, atau batu zircon.</li>
+    <li><code>set</code> (Set / Pasang) - Satuan perhiasan couple (cincin kawin, anting sepasang).</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="53-gudang--brankas-penyimpanan">5.3 Gudang &amp; Brankas Penyimpanan</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Gudang &amp; Brankas</strong> (<code>/admin/warehouses</code>)</li>
+<li><strong>Fungsi:</strong> Memetakan lokasi fisik penyimpanan emas di toko:
+  <ul>
+    <li><strong>Gudang Utama &amp; Brankas Khazanah (<code>GD-UTAMA</code>):</strong> Ruang brankas lantai 2 untuk menyimpan stok baru, cadangan logam mulia, dan barang belum pajang.</li>
+    <li><strong>Etalase Toko Depan (<code>ETL-DPN</code>):</strong> Area showcase kasir tempat baki-baki perhiasan aktif dipamerkan ke pelanggan.</li>
+    <li><strong>Brankas Siap Lebur / Cuci (<code>BK-LEBUR</code>):</strong> Brankas penampungan perhiasan bekas hasil buyback yang menunggu proses cuci sepuh atau dilebur kembali.</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="54-kadar--kurs-harga-emas-harian">5.4 Kadar &amp; Kurs Harga Emas Harian (Live Gold Rate)</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Kadar &amp; Kurs Emas</strong> (<code>/admin/gold-rates</code>)</li>
+<li><strong>Waktu Update:</strong> Setiap pagi hari sebelum toko beroperasi (pukul 08:30 WIB).</li>
+<li><strong>Kadar Emas yang Didukung:</strong>
+  <ul>
+    <li><code>24K (99.9%)</code> - Emas Murni Batangan / Logam Mulia.</li>
+    <li><code>22K (91.6%)</code> - Emas Tua Kadar Tinggi (Model Dubai/Arab/Kendari).</li>
+    <li><code>17K / 700 (70.0%)</code> - Kadar terpopuler perhiasan di Indonesia (warna awet, kuat, berkilau).</li>
+    <li><code>16K (65.0%)</code> - Emas Sedang.</li>
+    <li><code>9K / 375 (37.5%)</code> - Emas Muda Ekonomis.</li>
+    <li><code>UBS / Antam Certicard</code> - Kurs khusus certieye batangan.</li>
+  </ul>
+</li>
+<li><strong>Fitur Unggulan:</strong> Sekali klik <strong>"Perbarui Kurs Emas"</strong>, taksiran harga jual seluruh ribuan inventaris perhiasan di etalase langsung terupdate secara otomatis dan akurat.</li>
+</ul>
+
+<h3 id="55-data-barang--cetak-label-halter-dumbbell-tag">5.5 Data Barang &amp; Cetak Label Halter (Dumbbell Tag)</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Data Barang &amp; Barcode</strong> (<code>/admin/items</code>)</li>
+<li><strong>Langkah Tambah Perhiasan Baru:</strong>
+  <ol>
+    <li>Klik tombol <strong>"Tambah Perhiasan Baru"</strong>.</li>
+    <li>Barcode SKU terbuat otomatis atau bisa diisi manual (contoh: <code>CCN-UBS-17K-001</code>).</li>
+    <li>Pilih Kategori (Cincin, Gelang, Kalung, Anting, Liontin, Logam Mulia).</li>
+    <li>Pilih Baki Etalase, Brand, dan Kadar Emas.</li>
+    <li>Isi <strong>Berat Kotor</strong> (total timbangan) dan <strong>Berat Batu/Zircon</strong>. Sistem otomatis menghasilkan <strong>Berat Bersih Emas</strong>.</li>
+    <li>Masukkan <strong>Ongkos Bikin</strong>. Taksiran harga jual langsung dihitung otomatis.</li>
+    <li>Upload foto perhiasan untuk dicetak pada sertifikat surat emas.</li>
+  </ol>
+</li>
+<li><strong>Cetak Label Halter (Dumbbell Jewelry Tag):</strong>
+  <ul>
+    <li>Klik icon barcode <strong>"Cetak Tag"</strong>.</li>
+    <li>Pilih ukuran: <strong>Format Dumbbell Butterfly Tail (2.5" × 1.25")</strong> atau <strong>Halter Roll 80mm</strong>.</li>
+    <li>Label sayap kiri memuat QR Code + Kadar + Gramasi Bersih, ekor tengah melingkar di batang cincin, sayap kanan memuat Barcode 1D + SKU + Harga.</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="56-baki--etalase-visual">5.6 Baki &amp; Etalase Visual</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Baki &amp; Etalase</strong> (<code>/admin/trays</code>)</li>
+<li><strong>Fungsi:</strong> Representasi digital dari nampan beludru pajangan toko. Menampilkan kapasitas total slot, jumlah perhiasan terisi, dan akumulasi gramasi baki.</li>
+</ul>
+
+<h3 id="57-mutasi-baki-barang">5.7 Mutasi Baki Barang</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Mutasi Baki Barang</strong> (<code>/admin/inventory/mutations</code>)</li>
+<li><strong>Fungsi:</strong> Mencatat pemindahan perhiasan dari Baki A ke Baki B (contoh: penataan ulang showcase atau pemindahan barang display ke baki promo). Cukup scan barcode perhiasan dan pilih baki tujuan.</li>
+</ul>
+
+<h3 id="58-stok-opname-baki-audit-barcode">5.8 Stok Opname Baki (Audit Barcode Scanner)</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Stok Opname Baki</strong> (<code>/admin/stock-audits</code>)</li>
+<li><strong>Langkah Audit:</strong>
+  <ol>
+    <li>Pilih baki yang akan diaudit (misal: Baki Gelang <code>BK-GLG-01</code>).</li>
+    <li>Ambil scanner barcode, scan seluruh perhiasan yang ada di baki tersebut satu per satu.</li>
+    <li>Sistem memetakan hasil audit secara instan:
+      <ul>
+        <li>🟢 <strong>Matched (Cocok):</strong> Fisik barang ada dan tepat berada di baki ini.</li>
+        <li>🔴 <strong>Missing (Kurang / Hilang):</strong> Tercatat di sistem tapi tidak ditemukan fisiknya saat audit.</li>
+        <li>🟡 <strong>Mismatched (Nyasar):</strong> Barang fisik ada di baki ini, padahal di database terdaftar di baki lain.</li>
+      </ul>
+    </li>
+    <li>Kunci sesi audit dan cetak Berita Acara Rekonsiliasi Opname.</li>
+  </ol>
+</li>
+</ul>
+
+<h3 id="59-keluar-masuk-barang">5.9 Keluar Masuk Barang (Penerimaan Pabrik &amp; Peleburan)</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Keluar Masuk Barang</strong> (<code>/admin/inventory/movements</code>)</li>
+<li><strong>Fungsi:</strong> Buku log mutasi keluar masuk perhiasan non-penjualan:
+  <ul>
+    <li><code>purchase_supplier</code>: Penerimaan stok perhiasan baru dari pengrajin/pabrik.</li>
+    <li><code>melted</code>: Pengeluaran emas model lama untuk dilebur kembali menjadi emas batangan.</li>
+    <li><code>repair_out</code> / <code>repair_in</code>: Pengeluaran/penerimaan barang dari tukang reparasi &amp; sepuh.</li>
+    <li><code>damaged_loss</code>: Pencatatan susut fisik perhiasan.</li>
+  </ul>
+</li>
+</ul>
+
+<h3 id="510-laporan-persediaan">5.10 Laporan Persediaan &amp; Rekap Gramasi</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Persediaan</strong> -&gt; <strong>Laporan Persediaan</strong> (<code>/admin/reports</code>)</li>
+<li>Menampilkan neraca stok, valuasi aset emas berjalan, dan rasio perputaran barang per kategori.</li>
+</ul>
+<hr>
+
+<h2 id="6-modul-pelanggan--crm">6. Modul Pelanggan &amp; CRM (Loyalty Point)</h2>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Pelanggan</strong> (<code>/admin/customers</code>)</li>
+<li><strong>Fitur Utama:</strong>
+  <ul>
+    <li><strong>Tingkatan Member (Membership Tier):</strong> Pengelompokan pelanggan menjadi <em>Silver</em>, <em>Gold</em>, <em>Platinum</em>, dan <em>VIP Priority</em>.</li>
+    <li><strong>Sistem Poin Belanja:</strong> Setiap transaksi penjualan di kasir otomatis menambahkan poin belanja ke akun member pelanggan.</li>
+    <li><strong>Redeem Reward &amp; Diskon:</strong> Poin yang terkumpul dapat ditukar dengan souvenir kotak perhiasan, potongan ongkos bikin, atau voucher belanja.</li>
+    <li><strong>Cetak Kartu Member:</strong> Cetak ID card member pelanggan lengkap dengan barcode ID untuk scan instan di kasir POS.</li>
+  </ul>
+</li>
+</ul>
+<hr>
+
+<h2 id="7-modul-pembelian-supplier">7. Modul Pembelian (Supplier / Pabrik Emas)</h2>
+<h3 id="71-data-supplier--pengrajin">7.1 Data Supplier &amp; Pengrajin Emas</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Pembelian</strong> -&gt; <strong>Data Supplier</strong> (<code>/admin/suppliers</code>)</li>
+<li><strong>Fungsi:</strong> Mengelola direktori supplier pabrik emas (PT UBS, PT Antam, CV Pengrajin Lokal), kontak person, nomor rekening pembayaran, dan termin pembayaran hutang dagang.</li>
+</ul>
+
+<h3 id="72-faktur-pembelian-supplier">7.2 Faktur Pembelian Supplier &amp; Stok Masuk</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Pembelian</strong> -&gt; <strong>Pembelian Supplier</strong> (<code>/admin/purchases</code>)</li>
+<li><strong>Langkah Input Faktur:</strong>
+  <ol>
+    <li>Pilih Supplier dan masukkan Nomor Invoice Pabrik.</li>
+    <li>Input item perhiasan atau emas batangan yang dibeli, kadar emas, berat bersih, dan harga per gram.</li>
+    <li>Pilih metode pembayaran: <strong>Tunai Lunas</strong> atau <strong>Termin Hutang (Tempo)</strong>.</li>
+    <li>Jika tempo, sistem otomatis membuat tagihan di modul <strong>Buku Hutang (Debts)</strong> beserta tanggal jatuh tempo pembayaran.</li>
+  </ol>
+</li>
+</ul>
+<hr>
+
+<h2 id="8-modul-pembelian-cepat-buyback">8. Modul Pembelian Cepat (Buyback Pelanggan)</h2>
+<h3 id="81-transaksi-buyback-beli-kembali">8.1 Transaksi Buyback / Beli Kembali Emas</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Pembelian Cepat</strong> -&gt; <strong>Data Pembelian Cepat</strong> (<code>/admin/buybacks</code>)</li>
+<li><strong>Langkah Kerja Kasir:</strong>
+  <ol>
+    <li>Klik <strong>"Catat Buyback Baru"</strong>.</li>
+    <li><strong>Pencarian Nota Asli:</strong> Ketik nomor nota lama toko (<code>INV-2026...</code>). Data kadar, berat asal, dan nama pelanggan otomatis terpanggil. <em>(Jika perhiasan dari toko lain tanpa surat, kasir dapat memilih opsi Emas Luar Toko).</em></li>
+    <li><strong>Uji Timbang &amp; Kadar Ulang:</strong> Masukkan berat timbangan air/presisi saat ini. Sistem otomatis mendeteksi selisih gramasi susut dengan nota asli.</li>
+    <li><strong>Pilih Potongan Kerusakan:</strong> Pilih parameter potongan (surat hilang, kait patah, permata copot).</li>
+    <li><strong>Alokasi Emas Bekas:</strong>
+      <ul>
+        <li><code>stock_secondary</code>: Perhiasan masih mulus, dialokasikan ke etalase second setelah dicuci.</li>
+        <li><code>melt_scrap</code>: Emas rusak/patah, dialokasikan ke brankas penampungan lebur.</li>
+      </ul>
+    </li>
+    <li>Pilih kas pengeluaran (Tunai Kasir / Transfer Bank Toko) dan cetak <strong>Kuitansi Pembelian Cepat A5</strong>.</li>
+  </ol>
+</li>
+</ul>
+
+<h3 id="82-master-potongan-pembelian-cepat">8.2 Master Potongan Pembelian Cepat</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Pembelian Cepat</strong> -&gt; <strong>Potongan Pembelian Cepat</strong> (<code>/admin/buyback-deductions</code>)</li>
+<li><strong>Fungsi:</strong> Mengatur 25 parameter potongan standar toko agar kalkulasi kasir seragam dan tidak terjadi perdebatan dengan pelanggan (contoh: Nota Asli Hilang Potong Rp 25.000, Pengait Gelang Patah Potong 2%, Permata Lepas Potong Rp 15.000).</li>
+</ul>
+<hr>
+
+<h2 id="9-modul-penjualan-kasir-pos">9. Modul Penjualan (Kasir POS &amp; Surat Emas)</h2>
+<h3 id="91-terminal-kasir-pos-modern">9.1 Terminal Kasir POS Modern &amp; Multi-Metode Bayar</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Penjualan (POS)</strong> -&gt; <strong>Kasir POS</strong> (<code>/admin/pos</code>)</li>
+<li><strong>Alur Transaksi Cepat:</strong>
+  <ol>
+    <li>Tekan tombol shortcut <strong><code>F2</code></strong> untuk langsung fokus pada input barcode.</li>
+    <li>Arahkan barcode scanner ke label halter perhiasan atau pilih dari etalase. Item langsung masuk ke keranjang kasir.</li>
+    <li>Pilih Nama Pelanggan (ketik nama untuk auto-complete member agar mendapatkan poin).</li>
+    <li>Sesuaikan ongkos bikin jika ada diskon promo yang disetujui.</li>
+    <li>Tekan tombol shortcut <strong><code>F8</code></strong> untuk membuka modal checkout pembayaran.</li>
+    <li>Pilih metode pembayaran (Tunai, QRIS, Transfer Bank, Debit EDC). Masukkan nominal uang yang diterima.</li>
+    <li>Klik <strong>"Selesaikan Transaksi"</strong>.</li>
+  </ol>
+</li>
+</ul>
+
+<h3 id="92-surat-jaminan-emas-resmi-a5">9.2 Surat Jaminan Emas Resmi (Format A5 Landscape)</h3>
+<ul>
+<li>Setiap transaksi penjualan otomatis menyediakan 2 pilihan cetak:
+  <ul>
+    <li><strong>Struk Thermal (58mm / 80mm):</strong> Struk ringkas bukti pembayaran kasir.</li>
+    <li><strong>Surat Emas Resmi (A5 Landscape):</strong> Sertifikat eksklusif dengan Kop Toko, Nomor Nota Legal, Tabel Rincian Berat (Kotor, Batu, Bersih), Foto Barang, Barcode Nota, dan Klausul Garansi Pembelian Kembali.</li>
+  </ul>
+</li>
+</ul>
+<hr>
+
+<h2 id="10-modul-gadai-perhiasan">10. Modul Gadai Perhiasan (Pawn System)</h2>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Gadai Perhiasan</strong> (<code>/admin/pawns</code>)</li>
+<li><strong>Fungsi:</strong> Memberikan fasilitas dana talangan / pinjaman tunai dengan agunan perhiasan emas.</li>
+<li><strong>Langkah Transaksi Gadai:</strong>
+  <ol>
+    <li>Klik <strong>"Terima Gadai Baru"</strong>.</li>
+    <li>Pilih Pelanggan, masukkan deskripsi barang agunan, kadar emas, dan berat kotor.</li>
+    <li>Sistem otomatis menghitung <strong>Taksiran Nilai Emas</strong> hari ini berdasarkan kurs berlaku.</li>
+    <li>Tentukan <strong>Plafon Pinjaman Dana</strong> (maksimal 80-85% dari nilai taksiran).</li>
+    <li>Tentukan <strong>Jasa Simpan Bulanan (%)</strong> (contoh: 1.5% per bulan) dan Tanggal Jatuh Tempo pinjaman (30 hari / 60 hari).</li>
+    <li>Cetak <strong>Surat Bukti Gadai Resmi</strong> rangkap 2 (untuk toko dan nasabah).</li>
+    <li>Saat nasabah menebus, klik tombol <strong>"Tebus Gadai"</strong>. Sistem menghitung total pelunasan pokok + akumulasi jasa simpan.</li>
+  </ol>
+</li>
+</ul>
+<hr>
+
+<h2 id="11-modul-servis-perhiasan">11. Modul Servis Perhiasan (Reparasi, Cuci &amp; Sepuh)</h2>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Servis Perhiasan</strong> (<code>/admin/services</code>)</li>
+<li><strong>Fungsi:</strong> Mengelola penerimaan pesanan perbaikan perhiasan pelanggan:
+  <ul>
+    <li>Jenis Servis: <em>Cuci Kilap Emas</em>, <em>Sepuh Ulang Kuning/Rose Gold/Putih</em>, <em>Patri Sambung Putus</em>, <em>Pasang Permata Lepas</em>, <em>Resize Ukuran Cincin</em>.</li>
+  </ul>
+</li>
+<li><strong>Alur Pelayanan:</strong>
+  <ol>
+    <li>Input nama pelanggan, foto barang sebelum diservis, dan berat awal saat diterima toko.</li>
+    <li>Masukkan Estimasi Biaya Servis dan Uang Muka (DP) yang dibayarkan pelanggan.</li>
+    <li>Cetak <strong>Surat Tanda Terima Servis</strong> dengan estimasi tanggal selesai.</li>
+    <li>Kasir dapat memperbarui status: <em>Diterima -&gt; Dikerjakan -&gt; Selesai -&gt; Diambil Pelanggan</em>.</li>
+  </ol>
+</li>
+</ul>
+<hr>
+
+<h2 id="12-modul-timbang-baki-harian">12. Modul Timbang Baki Harian (Rekap Gramasi Buka/Tutup)</h2>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Timbang Baki</strong> (<code>/admin/tray-scales</code>)</li>
+<li><strong>Prosedur Standar Operasional (SOP):</strong>
+  <ol>
+    <li><strong>Sesi Pagi (Buka Toko):</strong> Sebelum etalase dibuka, letakkan seluruh baki satu per satu ke timbangan digital. Input gramasi riil timbangan ke sistem. Sistem memastikan total gramasi 100% klop (matched) dengan data penutupan kemarin.</li>
+    <li><strong>Sesi Malam (Tutup Toko):</strong> Sebelum baki dimasukkan ke brankas, lakukan penimbangan ulang seluruh baki. Sistem membandingkan gramasi fisik vs akumulasi transaksi kasir hari ini. Jika ada selisih (discrepancy) sekecil apa pun, sistem langsung memberikan peringatan warna merah.</li>
+  </ol>
+</li>
+</ul>
+<hr>
+
+<h2 id="13-modul-pegawai--penggajian">13. Modul Pegawai &amp; Penggajian (Payroll &amp; Komisi)</h2>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Pegawai</strong> -&gt; <strong>Data Pegawai</strong> (<code>/admin/employees</code>) &amp; <strong>Penggajian</strong> (<code>/admin/payrolls</code>)</li>
+<li><strong>Fitur Utama:</strong>
+  <ul>
+    <li>Pencatatan NIK, Jabatan (Kepala Toko, Kasir Utama, Staff Penimbangan, Satpam Brankas), Gaji Pokok, dan Tunjangan.</li>
+    <li><strong>Kalkulasi Komisi Penjualan:</strong> Perhitungan bonus komisi otomatis berdasarkan persentase gramasi emas yang berhasil dijual kasir.</li>
+    <li><strong>Generate Slip Gaji:</strong> Penerbitan slip gaji bulanan resmi siap cetak format A5.</li>
+  </ul>
+</li>
+</ul>
+<hr>
+
+<h2 id="14-modul-keuangan--akuntansi-toko-emas">14. Modul Keuangan &amp; Akuntansi Toko Emas</h2>
+<h3 id="141-buku-kas--mutasi-harian">14.1 Buku Kas &amp; Mutasi Kasir Harian</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Keuangan</strong> -&gt; <strong>Buku Kas</strong> (<code>/admin/cash-book</code>)</li>
+<li><strong>Fungsi:</strong> Mencatat seluruh arus uang tunai dan rekening bank toko: penyediaan modal awal kasir pagi hari, penerimaan penjualan kasir, pengeluaran buyback, dan setor uang ke brankas pusat.</li>
+</ul>
+
+<h3 id="142-biaya-operasional-toko-expenses">14.2 Biaya Operasional Toko (Expenses)</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Keuangan</strong> -&gt; <strong>Biaya Operasional</strong> (<code>/admin/expenses</code>)</li>
+<li><strong>Fungsi:</strong> Mencatat pengeluaran rutin toko: tagihan listrik showcase lampu LED, air utilitas, pembelian box beludru/dompet perhiasan souvenir, dan perawatan alat timbangan air.</li>
+</ul>
+
+<h3 id="143-buku-hutang-supplier">14.3 Buku Hutang Supplier &amp; Jatuh Tempo</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Keuangan</strong> -&gt; <strong>Buku Hutang</strong> (<code>/admin/debts</code>)</li>
+<li><strong>Fungsi:</strong> Rekapitulasi tagihan pembelian emas tempo ke supplier pabrik. Menyajikan jadwal jatuh tempo, riwayat cicilan termin, sisa hutang, dan status lunas.</li>
+</ul>
+
+<h3 id="144-laporan-laba-rugi-dan-pajak">14.4 Laporan Laba Rugi Komprehensif &amp; Laporan Pajak</h3>
+<ul>
+<li><strong>Rute:</strong> Sidebar -&gt; <strong>Keuangan</strong> -&gt; <strong>Laporan Laba Rugi</strong> (<code>/admin/finance/profit-loss</code>) &amp; <strong>Laporan Pajak</strong> (<code>/admin/finance/tax-report</code>)</li>
+<li><strong>Analisa Laba Rugi:</strong> Omzet Penjualan Emas + Pendapatan Ongkos Bikin + Bunga Gadai dikurangi HPP Pembelian Emas &amp; Beban Operasional = <strong>Laba Bersih Toko</strong>.</li>
+<li><strong>Laporan Pajak:</strong> Rekapitulasi PPh 22 dan PPN transaksi emas sesuai regulasi perpajakan yang berlaku.</li>
+</ul>
+<hr>
+
+<h2 id="15-panduan-cetak--integrasi-perangkat-keras">15. Panduan Cetak &amp; Integrasi Hardware Printer</h2>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Perangkat / Format</th>
+<th style="text-align:left">Jenis Kertas</th>
+<th style="text-align:left">Pengaturan Dialog Print (Ctrl + P)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left"><strong>Label Halter Perhiasan</strong></td>
+<td style="text-align:left">Dumbbell Roll 2.5" × 1.25"</td>
+<td style="text-align:left">Printer: <em>Barcode Thermal</em>, Margins: <strong>None</strong>, Hapus centang <em>Headers/Footers</em>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Struk Kasir</strong></td>
+<td style="text-align:left">Thermal Roll 58mm / 80mm</td>
+<td style="text-align:left">Printer: <em>Thermal POS Printer</em>, Paper: <strong>80mm / 58mm</strong>, Margins: <strong>None</strong>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Surat Emas Resmi</strong></td>
+<td style="text-align:left">Kertas A5 / Kuarto Bertekstur</td>
+<td style="text-align:left">Printer: <em>Inkjet / Laser</em>, Layout: <strong>Landscape</strong>, Paper Size: <strong>A5</strong>.</td>
+</tr>
+<tr>
+<td style="text-align:left"><strong>Slip Gaji &amp; Kuitansi</strong></td>
+<td style="text-align:left">Kertas A5 / HVS Half</td>
+<td style="text-align:left">Printer: <em>Inkjet / Laser</em>, Layout: <strong>Portrait / Landscape</strong>, Paper Size: <strong>A5</strong>.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+
+<h2 id="16-daftar-pintasan-keyboard-shortcuts">16. Daftar Pintasan Keyboard (Shortcuts)</h2>
+<p>Didesain untuk kecepatan kasir saat melayani antrean pelanggan toko yang padat:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Pintasan (Shortcut)</th>
+<th style="text-align:left">Halaman</th>
+<th style="text-align:left">Fungsi Aksi</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left"><strong><code>F2</code></strong></td>
-<td style="text-align:left">Langsung fokuskan kursor ke input <strong>Scan Barcode / Cari Perhiasan</strong></td>
+<td style="text-align:left">Kasir POS</td>
+<td style="text-align:left">Fokus kursor langsung ke kolom <strong>Scan Barcode / Cari Perhiasan</strong>.</td>
 </tr>
 <tr>
 <td style="text-align:left"><strong><code>F8</code></strong></td>
-<td style="text-align:left">Langsung membuka <strong>Modal Pembayaran Kasir (Checkout)</strong></td>
+<td style="text-align:left">Kasir POS</td>
+<td style="text-align:left">Membuka jendela pop-up <strong>Pembayaran (Checkout Modal)</strong>.</td>
 </tr>
 <tr>
 <td style="text-align:left"><strong><code>Enter</code></strong></td>
-<td style="text-align:left">Memasukkan item yang di-scan ke keranjang belanja</td>
+<td style="text-align:left">Semua Modul</td>
+<td style="text-align:left">Konfirmasi input scan atau submit formulir pencarian.</td>
 </tr>
 <tr>
 <td style="text-align:left"><strong><code>Esc</code></strong></td>
-<td style="text-align:left">Menutup modal pembayaran atau drawer riwayat transaksi</td>
+<td style="text-align:left">Semua Modul</td>
+<td style="text-align:left">Menutup modal dialog / drawer riwayat transaksi secara instan.</td>
 </tr>
 </tbody>
 </table>
 <hr>
-<p><em>POS Emas - POS &amp; Management System © 2026 Toko Mas Permata Abadi. Presisi Gramasi &amp; Transparansi Kadar Emas.</em></p>
+<p><em>POS Emas - Enterprise Gold &amp; Jewelry Management System © 2026 Toko Mas Permata Abadi. Presisi Gramasi &amp; Transparansi Kadar Emas Indonesia.</em></p>
 
       </div>
       
