@@ -506,10 +506,15 @@ class DatabaseSeeder extends Seeder
             $tray->recalculateTotals();
         }
 
-        // 8. Seeder Pegawai & Riwayat Penggajian (Fase 5)
+        // 8. Seeder Menyeluruh Semua Modul & Sub-Menu (Zero Empty Page Demo)
         $this->call([
+            \Database\Seeders\InventoryMasterSeeder::class,
+            \Database\Seeders\CustomerSeeder::class,
+            \Database\Seeders\PurchaseAndSupplierSeeder::class,
+            \Database\Seeders\SpecialOperationsSeeder::class,
             \Database\Seeders\EmployeeAndPayrollSeeder::class,
             \Database\Seeders\FinanceSeeder::class,
+            \Database\Seeders\ComprehensiveDemoSeeder::class,
         ]);
     }
 }
