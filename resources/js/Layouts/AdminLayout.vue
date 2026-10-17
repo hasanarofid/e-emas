@@ -32,7 +32,16 @@ import {
   Circle,
   Building2,
   Award,
-  ShoppingCart
+  ShoppingCart,
+  BookOpen,
+  Undo2,
+  Receipt,
+  Coins,
+  Calendar,
+  CalendarDays,
+  Percent,
+  UserPlus,
+  Wallet
 } from 'lucide-vue-next';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
 
@@ -67,8 +76,20 @@ const openGroups = ref({
   keuangan: isRoute('admin.cash-book.*') || isRoute('admin.expenses.*') || isRoute('admin.debts.*') || isRoute('admin.finance.*'),
 });
 
+// State multi sub-menu berjenjang (nested sub-accordions)
+const openSubGroups = ref({
+  keuanganBukuKas: isRoute('admin.cash-book.*'),
+  keuanganPengeluaran: isRoute('admin.expenses.*'),
+  pegawaiPenggajian: isRoute('admin.payrolls.*'),
+  penjualanFaktur: isRoute('admin.pos.*') || isRoute('admin.sales.*'),
+});
+
 const toggleGroup = (groupKey) => {
   openGroups.value[groupKey] = !openGroups.value[groupKey];
+};
+
+const toggleSubGroup = (subKey) => {
+  openSubGroups.value[subKey] = !openSubGroups.value[subKey];
 };
 
 const logout = () => {
@@ -159,17 +180,17 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.utilitas ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.utilitas" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.settings.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+            <div v-show="openGroups.utilitas" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link :href="route('admin.settings.index')" class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Profil Toko</span>
               </Link>
-              <Link :href="route('admin.settings.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.settings.index')" class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Pengaturan Toko</span>
               </Link>
-              <Link :href="route('admin.settings.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.settings.index')" class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Bank Transfer</span>
               </Link>
             </div>
@@ -192,45 +213,45 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.persediaan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.persediaan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.brands.index')" :class="[isRoute('admin.brands.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+            <div v-show="openGroups.persediaan" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link :href="route('admin.brands.index')" :class="[isRoute('admin.brands.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Brand & Merk</span>
               </Link>
-              <Link :href="route('admin.units.index')" :class="[isRoute('admin.units.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.units.index')" :class="[isRoute('admin.units.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Satuan Barang</span>
               </Link>
-              <Link :href="route('admin.warehouses.index')" :class="[isRoute('admin.warehouses.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.warehouses.index')" :class="[isRoute('admin.warehouses.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Gudang & Brankas</span>
               </Link>
-              <Link :href="route('admin.gold-rates.index')" :class="[isRoute('admin.gold-rates.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.gold-rates.index')" :class="[isRoute('admin.gold-rates.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Kadar & Kurs Emas</span>
               </Link>
-              <Link :href="route('admin.items.index')" :class="[isRoute('admin.items.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.items.index')" :class="[isRoute('admin.items.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Data Barang & Barcode</span>
               </Link>
-              <Link :href="route('admin.trays.index')" :class="[isRoute('admin.trays.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.trays.index')" :class="[isRoute('admin.trays.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Baki & Etalase</span>
               </Link>
-              <Link :href="route('admin.inventory.mutations')" :class="[isRoute('admin.inventory.mutations') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.inventory.mutations')" :class="[isRoute('admin.inventory.mutations') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Mutasi Baki Barang</span>
               </Link>
-              <Link :href="route('admin.stock-audits.index')" :class="[isRoute('admin.stock-audits.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.stock-audits.index')" :class="[isRoute('admin.stock-audits.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Stok Opname Baki</span>
               </Link>
-              <Link :href="route('admin.inventory.movements')" :class="[isRoute('admin.inventory.movements') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.inventory.movements')" :class="[isRoute('admin.inventory.movements') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Keluar Masuk Barang</span>
               </Link>
-              <Link :href="route('admin.reports.index')" :class="[isRoute('admin.reports.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.reports.index')" :class="[isRoute('admin.reports.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Laporan Persediaan</span>
               </Link>
             </div>
@@ -249,17 +270,17 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.pelanggan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.pelanggan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.customers.create')" :class="[isRoute('admin.customers.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+            <div v-show="openGroups.pelanggan" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link :href="route('admin.customers.create')" :class="[isRoute('admin.customers.create') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Tambah Pelanggan</span>
               </Link>
-              <Link :href="route('admin.customers.index')" :class="[isRoute('admin.customers.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.customers.index')" :class="[isRoute('admin.customers.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Data Pelanggan</span>
               </Link>
-              <Link :href="route('admin.customers.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.customers.index')" class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Point & Member</span>
               </Link>
             </div>
@@ -278,17 +299,17 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.pembelian ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.pembelian" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.suppliers.index')" :class="[isRoute('admin.suppliers.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+            <div v-show="openGroups.pembelian" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link :href="route('admin.suppliers.index')" :class="[isRoute('admin.suppliers.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Supplier & Pabrik Emas</span>
               </Link>
-              <Link :href="route('admin.purchases.index')" :class="[isRoute('admin.purchases.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.purchases.index')" :class="[isRoute('admin.purchases.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Faktur Pembelian</span>
               </Link>
-              <Link :href="route('admin.buyback-deductions.index')" :class="[isRoute('admin.buyback-deductions.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link :href="route('admin.buyback-deductions.index')" :class="[isRoute('admin.buyback-deductions.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']">
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Potongan Master Buyback</span>
               </Link>
             </div>
@@ -307,40 +328,40 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.pembelianCepat ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.pembelianCepat" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+            <div v-show="openGroups.pembelianCepat" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
               <Link 
                 :href="route('admin.buybacks.index')" 
-                :class="[isRoute('admin.buybacks.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                :class="[isRoute('admin.buybacks.index') && !route().params.period ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
-                <Circle class="w-1.5 h-1.5 fill-current" />
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Data Pembelian Cepat</span>
               </Link>
               <Link 
                 :href="route('admin.buybacks.create')" 
-                :class="[isRoute('admin.buybacks.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                :class="[isRoute('admin.buybacks.create') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
-                <Circle class="w-1.5 h-1.5 fill-current" />
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Pembelian Baru</span>
               </Link>
               <Link 
                 :href="route('admin.buybacks.index')" 
-                class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
               >
-                <Circle class="w-1.5 h-1.5 fill-current" />
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Laporan Pembelian Cepat</span>
               </Link>
               <Link 
                 :href="route('admin.buybacks.index', { period: 'daily' })" 
-                class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
               >
-                <Circle class="w-1.5 h-1.5 fill-current" />
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Pembelian Harian</span>
               </Link>
               <Link 
                 :href="route('admin.buybacks.index', { period: 'monthly' })" 
-                class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
               >
-                <Circle class="w-1.5 h-1.5 fill-current" />
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Pembelian Bulanan</span>
               </Link>
             </div>
@@ -355,18 +376,82 @@ const logout = () => {
             >
               <div class="flex items-center gap-3">
                 <ShoppingBag class="w-4 h-4 text-amber-400 shrink-0" />
-                <span class="font-semibold text-amber-300">Penjualan (POS)</span>
+                <span class="font-semibold text-amber-300">Penjualan</span>
               </div>
               <ChevronDown :class="[openGroups.penjualan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.penjualan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.pos.index')" :class="[isRoute('admin.pos.*') ? 'text-amber-300 font-bold bg-amber-500/20 border border-amber-500/30' : 'text-slate-400 hover:text-white', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current text-amber-400" />
-                <span>Kasir POS & Cetak Nota</span>
+            <div v-show="openGroups.penjualan" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link 
+                :href="route('admin.customers.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <Users class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Pelanggan Marketer</span>
               </Link>
-              <Link :href="route('admin.reports.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Data & Laporan Penjualan</span>
+
+              <!-- Sub-accordion: Faktur Penjualan -->
+              <button 
+                @click="toggleSubGroup('penjualanFaktur')" 
+                type="button"
+                class="w-full flex items-center justify-between px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors cursor-pointer"
+              >
+                <div class="flex items-center gap-3">
+                  <FileText class="w-4 h-4 text-slate-300 shrink-0" />
+                  <span>Faktur Penjualan</span>
+                </div>
+                <ChevronDown :class="[openSubGroups.penjualanFaktur ? 'rotate-0' : '-rotate-90', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+              </button>
+              <div v-show="openSubGroups.penjualanFaktur" class="bg-[#1C1C3E] py-1 space-y-0.5">
+                <Link 
+                  :href="route('admin.pos.index')" 
+                  :class="[isRoute('admin.pos.*') ? 'text-amber-400 font-semibold bg-[#2C2C5C]' : 'text-slate-300 hover:text-white hover:bg-[#2C2C5C]', 'flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] transition-colors']"
+                >
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                  <span>Faktur Baru</span>
+                </Link>
+                <Link 
+                  :href="route('admin.reports.index')" 
+                  class="flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] text-slate-300 hover:text-white hover:bg-[#2C2C5C] transition-colors"
+                >
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                  <span>Data Penjualan</span>
+                </Link>
+              </div>
+
+              <Link 
+                :href="route('admin.reports.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <Undo2 class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Data Retur Penjualan</span>
+              </Link>
+              <Link 
+                :href="route('admin.reports.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <Coins class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Laporan Penjualan</span>
+              </Link>
+              <Link 
+                :href="route('admin.reports.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <Calendar class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Penjualan Harian</span>
+              </Link>
+              <Link 
+                :href="route('admin.reports.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <CalendarDays class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Penjualan Bulanan</span>
+              </Link>
+              <Link 
+                :href="route('admin.cash-book.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <Receipt class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Setoran Kasir</span>
               </Link>
             </div>
           </div>
@@ -381,18 +466,45 @@ const logout = () => {
               <div class="flex items-center gap-3">
                 <CreditCard class="w-4 h-4 text-slate-400 shrink-0" />
                 <span>Gadai Perhiasan</span>
-                <span class="px-1.5 py-0.2 rounded-full bg-slate-700 text-[10px] text-slate-300 font-mono">0</span>
+                <span class="px-1.5 py-0.2 rounded-full bg-rose-500/80 text-[10px] text-white font-mono font-bold">0</span>
               </div>
               <ChevronDown :class="[openGroups.gadai ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.gadai" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.pawns.create')" :class="[isRoute('admin.pawns.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+            <div v-show="openGroups.gadai" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link 
+                :href="route('admin.pawns.create')" 
+                :class="[isRoute('admin.pawns.create') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Gadai Baru</span>
               </Link>
-              <Link :href="route('admin.pawns.index')" :class="[isRoute('admin.pawns.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link 
+                :href="route('admin.pawns.index')" 
+                :class="[isRoute('admin.pawns.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Data Gadai Perhiasan</span>
+              </Link>
+              <Link 
+                :href="route('admin.pawns.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Laporan Gadai Perhiasan</span>
+              </Link>
+              <Link 
+                :href="route('admin.pawns.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Laporan Gadai Harian</span>
+              </Link>
+              <Link 
+                :href="route('admin.pawns.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Laporan Gadai Bulanan</span>
               </Link>
             </div>
           </div>
@@ -410,14 +522,41 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.tukarTambah ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.tukarTambah" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.pos.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Tukar Tambah Kasir (POS)</span>
+            <div v-show="openGroups.tukarTambah" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link 
+                :href="route('admin.pos.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Tukar Tambah</span>
               </Link>
-              <Link :href="route('admin.buybacks.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Riwayat Emas Masuk</span>
+              <Link 
+                :href="route('admin.pos.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Tukar Tambah Baru</span>
+              </Link>
+              <Link 
+                :href="route('admin.buybacks.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Tukar Tambah Harian</span>
+              </Link>
+              <Link 
+                :href="route('admin.buybacks.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Tukar Tambah Bulanan</span>
+              </Link>
+              <Link 
+                :href="route('admin.buybacks.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Laporan Tukar Tambah</span>
               </Link>
             </div>
           </div>
@@ -435,14 +574,27 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.servis ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.servis" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.services.create')" :class="[isRoute('admin.services.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+            <div v-show="openGroups.servis" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link 
+                :href="route('admin.services.create')" 
+                :class="[isRoute('admin.services.create') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Order Servis Baru</span>
               </Link>
-              <Link :href="route('admin.services.index')" :class="[isRoute('admin.services.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+              <Link 
+                :href="route('admin.services.index')" 
+                :class="[isRoute('admin.services.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Data Servis Perhiasan</span>
+              </Link>
+              <Link 
+                :href="route('admin.services.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Laporan Servis</span>
               </Link>
             </div>
           </div>
@@ -460,18 +612,34 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.timbangBaki ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.timbangBaki" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.tray-scales.create')" :class="[isRoute('admin.tray-scales.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
+            <div v-show="openGroups.timbangBaki" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <Link 
+                :href="route('admin.tray-scales.index')" 
+                :class="[isRoute('admin.tray-scales.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Data Timbang Baki</span>
+              </Link>
+              <Link 
+                :href="route('admin.tray-scales.create')" 
+                :class="[isRoute('admin.tray-scales.create') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Timbang Baki Baru</span>
               </Link>
-              <Link :href="route('admin.tray-scales.index')" :class="[isRoute('admin.tray-scales.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Riwayat Timbang Harian</span>
+              <Link 
+                :href="route('admin.trays.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Data Baki</span>
               </Link>
-              <Link :href="route('admin.trays.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Katalog Baki & Etalase</span>
+              <Link 
+                :href="route('admin.tray-scales.index')" 
+                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                <span>Laporan Timbang Baki</span>
               </Link>
             </div>
           </div>
@@ -489,35 +657,47 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.pegawai ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.pegawai" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+            <div v-show="openGroups.pegawai" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
               <Link 
                 :href="route('admin.employees.create')" 
-                :class="[isRoute('admin.employees.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                :class="[isRoute('admin.employees.create') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
-                <Circle class="w-1.5 h-1.5 fill-current" />
+                <UserPlus class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Tambah Pegawai</span>
               </Link>
               <Link 
                 :href="route('admin.employees.index')" 
-                :class="[isRoute('admin.employees.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                :class="[isRoute('admin.employees.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
-                <Circle class="w-1.5 h-1.5 fill-current" />
+                <Users class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Data Pegawai</span>
               </Link>
-              <div class="pt-1.5 border-t border-[#25254B] mt-1 space-y-1">
-                <span class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider block">Penggajian</span>
+              
+              <!-- Sub-accordion: Penggajian -->
+              <button 
+                @click="toggleSubGroup('pegawaiPenggajian')" 
+                type="button"
+                class="w-full flex items-center justify-between px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors cursor-pointer"
+              >
+                <div class="flex items-center gap-3">
+                  <Wallet class="w-4 h-4 text-slate-300 shrink-0" />
+                  <span>Penggajian</span>
+                </div>
+                <ChevronDown :class="[openSubGroups.pegawaiPenggajian ? 'rotate-0' : '-rotate-90', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+              </button>
+              <div v-show="openSubGroups.pegawaiPenggajian" class="bg-[#1C1C3E] py-1 space-y-0.5">
                 <Link 
                   :href="route('admin.payrolls.create')" 
-                  :class="[isRoute('admin.payrolls.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                  :class="[isRoute('admin.payrolls.create') ? 'text-amber-400 font-semibold bg-[#2C2C5C]' : 'text-slate-300 hover:text-white hover:bg-[#2C2C5C]', 'flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] transition-colors']"
                 >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                   <span>Proses Penggajian</span>
                 </Link>
                 <Link 
                   :href="route('admin.payrolls.index')" 
-                  :class="[isRoute('admin.payrolls.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                  :class="[isRoute('admin.payrolls.index') ? 'text-amber-400 font-semibold bg-[#2C2C5C]' : 'text-slate-300 hover:text-white hover:bg-[#2C2C5C]', 'flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] transition-colors']"
                 >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                   <span>Data Penggajian</span>
                 </Link>
               </div>
@@ -541,83 +721,122 @@ const logout = () => {
               </div>
               <ChevronDown :class="[openGroups.keuangan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
-            <div v-show="openGroups.keuangan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <!-- Buku Kas Sub-group -->
-              <div class="pt-1 space-y-1">
-                <span class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider block">Buku Kas Toko</span>
+            <div v-show="openGroups.keuangan" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
+              <!-- Sub-accordion: Buku Kas -->
+              <button 
+                @click="toggleSubGroup('keuanganBukuKas')" 
+                type="button"
+                class="w-full flex items-center justify-between px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors cursor-pointer"
+              >
+                <div class="flex items-center gap-3">
+                  <BookOpen class="w-4 h-4 text-slate-300 shrink-0" />
+                  <span>Buku Kas</span>
+                </div>
+                <ChevronDown :class="[openSubGroups.keuanganBukuKas ? 'rotate-0' : '-rotate-90', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+              </button>
+              <div v-show="openSubGroups.keuanganBukuKas" class="bg-[#1C1C3E] py-1 space-y-0.5">
                 <Link 
                   :href="route('admin.cash-book.create')" 
-                  :class="[isRoute('admin.cash-book.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                  :class="[isRoute('admin.cash-book.create') ? 'text-amber-400 font-semibold bg-[#2C2C5C]' : 'text-slate-300 hover:text-white hover:bg-[#2C2C5C]', 'flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] transition-colors']"
                 >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
-                  <span>Tambah Baru (Kas In/Out)</span>
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                  <span>Tambah Baru</span>
                 </Link>
                 <Link 
                   :href="route('admin.cash-book.index')" 
-                  :class="[isRoute('admin.cash-book.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                  :class="[isRoute('admin.cash-book.index') ? 'text-amber-400 font-semibold bg-[#2C2C5C]' : 'text-slate-300 hover:text-white hover:bg-[#2C2C5C]', 'flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] transition-colors']"
                 >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
-                  <span>Buku Kas & Saldo</span>
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
+                  <span>Buku Kas</span>
                 </Link>
               </div>
 
-              <!-- Pengeluaran Sub-group -->
-              <div class="pt-1.5 border-t border-[#25254B] mt-1 space-y-1">
-                <span class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider block">Pengeluaran</span>
+              <!-- Sub-accordion: Pengeluaran -->
+              <button 
+                @click="toggleSubGroup('keuanganPengeluaran')" 
+                type="button"
+                class="w-full flex items-center justify-between px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors cursor-pointer"
+              >
+                <div class="flex items-center gap-3">
+                  <Undo2 class="w-4 h-4 text-slate-300 shrink-0" />
+                  <span>Pengeluaran</span>
+                </div>
+                <ChevronDown :class="[openSubGroups.keuanganPengeluaran ? 'rotate-0' : '-rotate-90', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+              </button>
+              <div v-show="openSubGroups.keuanganPengeluaran" class="bg-[#1C1C3E] py-1 space-y-0.5">
                 <Link 
                   :href="route('admin.expenses.create')" 
-                  :class="[isRoute('admin.expenses.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                  :class="[isRoute('admin.expenses.create') ? 'text-amber-400 font-semibold bg-[#2C2C5C]' : 'text-slate-300 hover:text-white hover:bg-[#2C2C5C]', 'flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] transition-colors']"
                 >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                   <span>Tambah Pengeluaran</span>
                 </Link>
                 <Link 
                   :href="route('admin.expenses.index')" 
-                  :class="[isRoute('admin.expenses.index') && !route().params.period ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                  :class="[isRoute('admin.expenses.index') && !route().params.period ? 'text-amber-400 font-semibold bg-[#2C2C5C]' : 'text-slate-300 hover:text-white hover:bg-[#2C2C5C]', 'flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] transition-colors']"
                 >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                   <span>Data Pengeluaran</span>
                 </Link>
                 <Link 
                   :href="route('admin.expenses.index', { period: 'daily' })" 
-                  class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+                  class="flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] text-slate-300 hover:text-white hover:bg-[#2C2C5C] transition-colors"
                 >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                   <span>Pengeluaran Harian</span>
                 </Link>
                 <Link 
                   :href="route('admin.expenses.index', { period: 'monthly' })" 
-                  class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+                  class="flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] text-slate-300 hover:text-white hover:bg-[#2C2C5C] transition-colors"
                 >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                   <span>Pengeluaran Bulanan</span>
                 </Link>
               </div>
 
-              <!-- Utang & Laporan Sub-group -->
-              <div class="pt-1.5 border-t border-[#25254B] mt-1 space-y-1">
-                <Link 
-                  :href="route('admin.debts.index')" 
-                  :class="[isRoute('admin.debts.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
-                >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
-                  <span>Pembayaran Utang Supplier</span>
-                </Link>
-                <Link 
-                  :href="route('admin.finance.profit-loss')" 
-                  :class="[isRoute('admin.finance.profit-loss') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
-                >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
-                  <span>Rekapitulasi Laba Rugi</span>
-                </Link>
-                <Link 
-                  :href="route('admin.finance.tax-report')" 
-                  :class="[isRoute('admin.finance.tax-report') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
-                >
-                  <Circle class="w-1.5 h-1.5 fill-current" />
-                  <span>Rekapitulasi Pajak Emas</span>
-                </Link>
-              </div>
+              <!-- Single Items Keuangan -->
+              <Link 
+                :href="route('admin.debts.index')" 
+                :class="[isRoute('admin.debts.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
+              >
+                <Receipt class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Pembayaran Utang</span>
+              </Link>
+              <Link 
+                :href="route('admin.debts.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <Coins class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Outstanding Kredit</span>
+              </Link>
+              <Link 
+                :href="route('admin.debts.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <Calendar class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Laporan Utang Piutang</span>
+              </Link>
+              <Link 
+                :href="route('admin.finance.tax-report')" 
+                :class="[isRoute('admin.finance.tax-report') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
+              >
+                <Percent class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Rekapitulasi Pajak</span>
+              </Link>
+              <Link 
+                :href="route('admin.finance.profit-loss')" 
+                :class="[isRoute('admin.finance.profit-loss') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
+              >
+                <BarChart3 class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Rekapitulasi Laba Rugi</span>
+              </Link>
+              <Link 
+                :href="route('admin.customers.index')" 
+                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+              >
+                <Award class="w-4 h-4 text-slate-300 shrink-0" />
+                <span>Rekapitulasi Fee Marketer</span>
+              </Link>
             </div>
           </div>
 
