@@ -122,6 +122,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('buyback-deductions', BuybackDeductionController::class)->only(['index', 'store', 'update', 'destroy']);
 
     // 7c. Modul Transaksi Khusus Toko Emas Sitokmas (FASE 4)
+    Route::get('/pawns/reports', [\App\Http\Controllers\Admin\PawnController::class, 'reports'])->name('pawns.reports');
+    Route::get('/pawns/daily', [\App\Http\Controllers\Admin\PawnController::class, 'daily'])->name('pawns.daily');
+    Route::get('/pawns/monthly', [\App\Http\Controllers\Admin\PawnController::class, 'monthly'])->name('pawns.monthly');
     Route::resource('pawns', \App\Http\Controllers\Admin\PawnController::class)->only(['index', 'create', 'store', 'destroy']);
     Route::post('/pawns/{pawn}/redeem', [\App\Http\Controllers\Admin\PawnController::class, 'redeem'])->name('pawns.redeem');
     

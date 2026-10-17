@@ -486,22 +486,22 @@ const logout = () => {
                 <span>Data Gadai Perhiasan</span>
               </Link>
               <Link 
-                :href="route('admin.pawns.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.pawns.reports')" 
+                :class="[isRoute('admin.pawns.reports') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Laporan Gadai Perhiasan</span>
               </Link>
               <Link 
-                :href="route('admin.pawns.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.pawns.daily')" 
+                :class="[isRoute('admin.pawns.daily') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Laporan Gadai Harian</span>
               </Link>
               <Link 
-                :href="route('admin.pawns.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.pawns.monthly')" 
+                :class="[isRoute('admin.pawns.monthly') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Laporan Gadai Bulanan</span>
