@@ -25,6 +25,8 @@ jobs:
             DIAG_FILE="/www/wwwroot/posemas.web.id/public/deploy_diag.txt"
             echo "=== DEPLOY DIAGNOSTIC ===" > "$DIAG_FILE"
             date >> "$DIAG_FILE"
+            echo "SSH User: $(whoami)" >> "$DIAG_FILE"
+            ls -la /www/server/data/default.pl >> "$DIAG_FILE" 2>&1 || true
             grep -E "^DB_CONNECTION|^DB_HOST|^DB_PORT|^DB_DATABASE|^DB_USERNAME" .env >> "$DIAG_FILE" || true
             
             # Check aaPanel root password or my.cnf and sync emas_db password
