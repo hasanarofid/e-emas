@@ -97,6 +97,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/pos/invoice/{sale}', [\App\Http\Controllers\Admin\PosController::class, 'invoice'])->name('pos.invoice');
     Route::get('/pos/certificate/{sale}', [\App\Http\Controllers\Admin\PosController::class, 'certificate'])->name('pos.certificate');
 
+    // Sub-menu Penjualan (SITOKMAS)
+    Route::get('/sales/marketers', [\App\Http\Controllers\Admin\SaleController::class, 'marketers'])->name('sales.marketers');
+    Route::get('/sales/returns', [\App\Http\Controllers\Admin\SaleController::class, 'returns'])->name('sales.returns');
+    Route::get('/sales/reports', [\App\Http\Controllers\Admin\SaleController::class, 'reports'])->name('sales.reports');
+    Route::get('/sales/daily', [\App\Http\Controllers\Admin\SaleController::class, 'daily'])->name('sales.daily');
+    Route::get('/sales/monthly', [\App\Http\Controllers\Admin\SaleController::class, 'monthly'])->name('sales.monthly');
+    Route::get('/sales/cashier-deposits', [\App\Http\Controllers\Admin\SaleController::class, 'cashierDeposits'])->name('sales.cashier-deposits');
+    Route::get('/sales', [\App\Http\Controllers\Admin\SaleController::class, 'index'])->name('sales.index');
+
     // 6. Master Bank & Pembayaran Kasir (Ref: SITOKMAS)
     Route::resource('bank-accounts', \App\Http\Controllers\Admin\BankAccountController::class)->only(['index', 'store', 'update', 'destroy']);
 

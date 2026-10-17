@@ -382,8 +382,8 @@ const logout = () => {
             </button>
             <div v-show="openGroups.penjualan" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
               <Link 
-                :href="route('admin.customers.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.sales.marketers')" 
+                :class="[isRoute('admin.sales.marketers') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Users class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Pelanggan Marketer</span>
@@ -410,8 +410,8 @@ const logout = () => {
                   <span>Faktur Baru</span>
                 </Link>
                 <Link 
-                  :href="route('admin.reports.index')" 
-                  class="flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] text-slate-300 hover:text-white hover:bg-[#2C2C5C] transition-colors"
+                  :href="route('admin.sales.index')" 
+                  :class="[isRoute('admin.sales.index') ? 'text-amber-400 font-semibold bg-[#2C2C5C]' : 'text-slate-300 hover:text-white hover:bg-[#2C2C5C]', 'flex items-center gap-3 pl-12 pr-4 py-1.5 text-[12.5px] transition-colors']"
                 >
                   <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                   <span>Data Penjualan</span>
@@ -419,36 +419,36 @@ const logout = () => {
               </div>
 
               <Link 
-                :href="route('admin.reports.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.sales.returns')" 
+                :class="[isRoute('admin.sales.returns') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Undo2 class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Data Retur Penjualan</span>
               </Link>
               <Link 
-                :href="route('admin.reports.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.sales.reports')" 
+                :class="[isRoute('admin.sales.reports') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Coins class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Laporan Penjualan</span>
               </Link>
               <Link 
-                :href="route('admin.reports.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.sales.daily')" 
+                :class="[isRoute('admin.sales.daily') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Calendar class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Penjualan Harian</span>
               </Link>
               <Link 
-                :href="route('admin.reports.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.sales.monthly')" 
+                :class="[isRoute('admin.sales.monthly') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <CalendarDays class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Penjualan Bulanan</span>
               </Link>
               <Link 
-                :href="route('admin.cash-book.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.sales.cashier-deposits')" 
+                :class="[isRoute('admin.sales.cashier-deposits') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Receipt class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Setoran Kasir</span>
