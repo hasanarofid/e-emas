@@ -126,11 +126,17 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/pawns/daily', [\App\Http\Controllers\Admin\PawnController::class, 'daily'])->name('pawns.daily');
     Route::get('/pawns/monthly', [\App\Http\Controllers\Admin\PawnController::class, 'monthly'])->name('pawns.monthly');
     Route::resource('pawns', \App\Http\Controllers\Admin\PawnController::class)->only(['index', 'create', 'store', 'destroy']);
-    Route::post('/pawns/{pawn}/redeem', [\App\Http\Controllers\Admin\PawnController::class, 'redeem'])->name('pawns.redeem');
-    
+    // Modul Tukar Tambah Emas (Trade-In SITOKMAS)
+    Route::get('/trade-ins/reports', [\App\Http\Controllers\Admin\TradeInController::class, 'reports'])->name('trade-ins.reports');
+    Route::get('/trade-ins/daily', [\App\Http\Controllers\Admin\TradeInController::class, 'daily'])->name('trade-ins.daily');
+    Route::get('/trade-ins/monthly', [\App\Http\Controllers\Admin\TradeInController::class, 'monthly'])->name('trade-ins.monthly');
+    Route::resource('trade-ins', \App\Http\Controllers\Admin\TradeInController::class)->only(['index', 'create', 'store']);
+
+    Route::get('/services/reports', [\App\Http\Controllers\Admin\JewelryServiceController::class, 'reports'])->name('services.reports');
     Route::resource('services', \App\Http\Controllers\Admin\JewelryServiceController::class)->only(['index', 'create', 'store', 'destroy']);
     Route::patch('/services/{service}/status', [\App\Http\Controllers\Admin\JewelryServiceController::class, 'updateStatus'])->name('services.update-status');
 
+    Route::get('/tray-scales/reports', [\App\Http\Controllers\Admin\TrayScaleController::class, 'reports'])->name('tray-scales.reports');
     Route::resource('tray-scales', \App\Http\Controllers\Admin\TrayScaleController::class)->only(['index', 'create', 'store']);
 
     // 7d. Modul Pegawai & Penggajian Toko Emas (FASE 5)
@@ -140,11 +146,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // 7e. Modul Keuangan & Buku Kas Toko Emas (FASE 6)
     Route::resource('cash-book', CashBookController::class)->only(['index', 'create', 'store', 'destroy']);
     Route::resource('expenses', ExpenseController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::get('/debts/outstanding', [DebtController::class, 'outstanding'])->name('debts.outstanding');
+    Route::get('/debts/reports', [DebtController::class, 'reports'])->name('debts.reports');
     Route::get('/debts', [DebtController::class, 'index'])->name('debts.index');
     Route::post('/debts/{debt}/pay', [DebtController::class, 'pay'])->name('debts.pay');
     Route::delete('/debts/{debt}', [DebtController::class, 'destroy'])->name('debts.destroy');
     Route::get('/finance/profit-loss', [FinanceReportController::class, 'profitAndLoss'])->name('finance.profit-loss');
     Route::get('/finance/tax-report', [FinanceReportController::class, 'taxReport'])->name('finance.tax-report');
+    Route::get('/finance/marketer-fees', [FinanceReportController::class, 'marketerFees'])->name('finance.marketer-fees');
 
     // 8. Stock Opname & Audit Baki (FASE 5)
     Route::get('/stock-audits', [\App\Http\Controllers\Admin\StockAuditController::class, 'index'])->name('stock-audits.index');

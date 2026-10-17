@@ -132,4 +132,40 @@ class FinanceReportController extends Controller
             ],
         ]);
     }
+
+    /**
+     * Rekapitulasi Pembagian Komisi / Fee Marketer Toko Emas
+     */
+    public function marketerFees(Request $request): Response
+    {
+        $customers = \App\Models\Customer::orderByDesc('total_purchased_amount')->get();
+
+        $marketers = $customers->map(function ($c) {
+            $totalSales = (float) $c->total_purchased_amount;
+            $rate = 1.5; // Komisi 1.5%
+            $fee = $totalSales * ($rate / 100);
+            return [
+                'id' => $c->id,
+                'name' => $c->name,
+                'code' => $c->code,
+                'phone' => $c->phone,
+                'total_purchased_amount' => $totalSales,
+                'commission_rate' => $rate,
+                'commission_amount' => $fee,
+                'points' => $c->points,
+            ];
+        });
+
+        $totalFee = $marketers->sum('commission_amount');
+        $totalOmset = $marketers->sum('total_purchased_amount');
+
+        return Inertia::render('Admin/Finance/MarketerFees', [
+            'marketers' => $marketers,
+            'stats' => [
+                'total_marketers' => $marketers->count(),
+                'total_omset_generated' => $totalOmset,
+                'total_commission_fee' => $totalFee,
+            ],
+        ]);
+    }
 }

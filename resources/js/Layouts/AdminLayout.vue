@@ -71,7 +71,7 @@ const openGroups = ref({
   gadai: isRoute('admin.pawns.*'),
   tukarTambah: isRoute('admin.trade-ins.*'),
   servis: isRoute('admin.services.*'),
-  timbangBaki: false,
+  timbangBaki: isRoute('admin.tray-scales.*') || isRoute('admin.trays.*'),
   pegawai: isRoute('admin.employees.*') || isRoute('admin.payrolls.*'),
   keuangan: isRoute('admin.cash-book.*') || isRoute('admin.expenses.*') || isRoute('admin.debts.*') || isRoute('admin.finance.*'),
 });
@@ -524,36 +524,36 @@ const logout = () => {
             </button>
             <div v-show="openGroups.tukarTambah" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
               <Link 
-                :href="route('admin.pos.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.trade-ins.index')" 
+                :class="[isRoute('admin.trade-ins.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Tukar Tambah</span>
               </Link>
               <Link 
-                :href="route('admin.pos.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.trade-ins.create')" 
+                :class="[isRoute('admin.trade-ins.create') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Tukar Tambah Baru</span>
               </Link>
               <Link 
-                :href="route('admin.buybacks.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.trade-ins.daily')" 
+                :class="[isRoute('admin.trade-ins.daily') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Tukar Tambah Harian</span>
               </Link>
               <Link 
-                :href="route('admin.buybacks.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.trade-ins.monthly')" 
+                :class="[isRoute('admin.trade-ins.monthly') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Tukar Tambah Bulanan</span>
               </Link>
               <Link 
-                :href="route('admin.buybacks.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.trade-ins.reports')" 
+                :class="[isRoute('admin.trade-ins.reports') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Laporan Tukar Tambah</span>
@@ -584,14 +584,14 @@ const logout = () => {
               </Link>
               <Link 
                 :href="route('admin.services.index')" 
-                :class="[isRoute('admin.services.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
+                :class="[isRoute('admin.services.index') && !isRoute('admin.services.reports') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Data Servis Perhiasan</span>
               </Link>
               <Link 
-                :href="route('admin.services.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.services.reports')" 
+                :class="[isRoute('admin.services.reports') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Laporan Servis</span>
@@ -615,7 +615,7 @@ const logout = () => {
             <div v-show="openGroups.timbangBaki" class="bg-[#24244D] py-1 my-1 rounded-lg space-y-0.5">
               <Link 
                 :href="route('admin.tray-scales.index')" 
-                :class="[isRoute('admin.tray-scales.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
+                :class="[isRoute('admin.tray-scales.index') && !isRoute('admin.tray-scales.reports') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Data Timbang Baki</span>
@@ -629,14 +629,14 @@ const logout = () => {
               </Link>
               <Link 
                 :href="route('admin.trays.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :class="[isRoute('admin.trays.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Data Baki</span>
               </Link>
               <Link 
-                :href="route('admin.tray-scales.index')" 
-                class="flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.tray-scales.reports')" 
+                :class="[isRoute('admin.tray-scales.reports') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 pl-8 pr-4 py-2 text-[13px] transition-colors']"
               >
                 <div class="w-2.5 h-2.5 rounded-full border border-slate-400 shrink-0"></div>
                 <span>Laporan Timbang Baki</span>
@@ -797,21 +797,21 @@ const logout = () => {
               <!-- Single Items Keuangan -->
               <Link 
                 :href="route('admin.debts.index')" 
-                :class="[isRoute('admin.debts.*') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
+                :class="[isRoute('admin.debts.index') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Receipt class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Pembayaran Utang</span>
               </Link>
               <Link 
-                :href="route('admin.debts.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.debts.outstanding')" 
+                :class="[isRoute('admin.debts.outstanding') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Coins class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Outstanding Kredit</span>
               </Link>
               <Link 
-                :href="route('admin.debts.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.debts.reports')" 
+                :class="[isRoute('admin.debts.reports') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Calendar class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Laporan Utang Piutang</span>
@@ -831,8 +831,8 @@ const logout = () => {
                 <span>Rekapitulasi Laba Rugi</span>
               </Link>
               <Link 
-                :href="route('admin.customers.index')" 
-                class="flex items-center gap-3 px-6 py-2 text-[13px] text-slate-300 hover:text-white hover:bg-[#323265] transition-colors"
+                :href="route('admin.finance.marketer-fees')" 
+                :class="[isRoute('admin.finance.marketer-fees') ? 'text-amber-400 font-semibold bg-[#323265]' : 'text-slate-300 hover:text-white hover:bg-[#323265]', 'flex items-center gap-3 px-6 py-2 text-[13px] transition-colors']"
               >
                 <Award class="w-4 h-4 text-slate-300 shrink-0" />
                 <span>Rekapitulasi Fee Marketer</span>

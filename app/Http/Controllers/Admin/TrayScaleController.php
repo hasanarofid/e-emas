@@ -96,4 +96,24 @@ class TrayScaleController extends Controller
         return redirect()->route('admin.tray-scales.index')
             ->with('success', "Timbang baki {$tray->code} berhasil dicatat!");
     }
+
+    /**
+     * Laporan Timbang Baki Harian & Berkala
+     */
+    public function reports(Request $request): Response
+    {
+        $logs = TrayScaleLog::with(['tray', 'user'])->latest('scale_date')->latest('id')->get();
+
+        $stats = [
+            'total_scales' => $logs->count(),
+            'matched_count' => $logs->where('status', 'matched')->count(),
+            'discrepancy_count' => $logs->where('status', 'discrepancy')->count(),
+            'total_difference' => (float) $logs->sum('difference_weight'),
+        ];
+
+        return Inertia::render('Admin/TrayScales/Reports', [
+            'logs' => $logs,
+            'stats' => $stats,
+        ]);
+    }
 }

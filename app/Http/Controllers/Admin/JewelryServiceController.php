@@ -130,4 +130,24 @@ class JewelryServiceController extends Controller
         $service->delete();
         return back()->with('success', "Data servis {$service->service_number} berhasil diarsipkan (Soft Delete)!");
     }
+
+    /**
+     * Laporan Servis Perhiasan Emas
+     */
+    public function reports(Request $request): Response
+    {
+        $services = JewelryService::with(['customer', 'cashier'])->latest()->get();
+
+        $stats = [
+            'total_services' => $services->count(),
+            'total_fee' => (float) $services->sum('cost'),
+            'completed_count' => $services->where('status', 'picked_up')->count(),
+            'in_progress_count' => $services->whereIn('status', ['received', 'in_progress', 'ready'])->count(),
+        ];
+
+        return Inertia::render('Admin/Services/Reports', [
+            'services' => $services,
+            'stats' => $stats,
+        ]);
+    }
 }

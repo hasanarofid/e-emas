@@ -98,4 +98,52 @@ class DebtController extends Controller
 
         return redirect()->route('admin.debts.index')->with('success', 'Data utang berhasil diarsipkan (soft delete).');
     }
+
+    /**
+     * Halaman Khusus Tagihan Outstanding Kredit & Jatuh Tempo
+     */
+    public function outstanding(Request $request): Response
+    {
+        $query = DebtPayable::with(['supplier', 'purchase'])
+            ->whereIn('status', ['unpaid', 'partial'])
+            ->orderBy('due_date');
+
+        if ($request->filled('supplier_id')) {
+            $query->where('supplier_id', $request->supplier_id);
+        }
+
+        $debts = $query->paginate(15)->withQueryString();
+        $suppliers = Supplier::where('is_active', true)->orderBy('name')->get();
+
+        return Inertia::render('Admin/Finance/Debts/Outstanding', [
+            'debts' => $debts,
+            'suppliers' => $suppliers,
+            'filters' => $request->only(['supplier_id']),
+            'stats' => [
+                'total_outstanding' => (float) DebtPayable::whereIn('status', ['unpaid', 'partial'])->sum('remaining_amount'),
+                'overdue_count' => DebtPayable::whereIn('status', ['unpaid', 'partial'])->where('due_date', '<', today())->count(),
+                'overdue_amount' => (float) DebtPayable::whereIn('status', ['unpaid', 'partial'])->where('due_date', '<', today())->sum('remaining_amount'),
+            ],
+        ]);
+    }
+
+    /**
+     * Laporan Rekapitulasi Utang Piutang
+     */
+    public function reports(Request $request): Response
+    {
+        $debts = DebtPayable::with(['supplier', 'purchase'])->latest()->get();
+
+        $stats = [
+            'total_debts' => (float) $debts->sum('total_amount'),
+            'total_paid' => (float) $debts->sum('paid_amount'),
+            'total_remaining' => (float) $debts->sum('remaining_amount'),
+            'count' => $debts->count(),
+        ];
+
+        return Inertia::render('Admin/Finance/Debts/Reports', [
+            'debts' => $debts,
+            'stats' => $stats,
+        ]);
+    }
 }
