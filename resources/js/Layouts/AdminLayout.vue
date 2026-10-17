@@ -349,15 +349,14 @@ const logout = () => {
               <ChevronDown :class="[openGroups.gadai ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
             <div v-show="openGroups.gadai" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Gadai Baru
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Data Gadai Perhiasan
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Laporan Gadai Harian
-              </span>
+              <Link :href="route('admin.pawns.create')" :class="[isRoute('admin.pawns.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Gadai Baru</span>
+              </Link>
+              <Link :href="route('admin.pawns.index')" :class="[isRoute('admin.pawns.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Data Gadai Perhiasan</span>
+              </Link>
             </div>
           </div>
 
@@ -375,12 +374,14 @@ const logout = () => {
               <ChevronDown :class="[openGroups.tukarTambah ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
             <div v-show="openGroups.tukarTambah" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Tukar Tambah Baru
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Laporan Tukar Tambah
-              </span>
+              <Link :href="route('admin.pos.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Tukar Tambah Kasir (POS)</span>
+              </Link>
+              <Link :href="route('admin.buybacks.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Riwayat Emas Masuk</span>
+              </Link>
             </div>
           </div>
 
@@ -398,15 +399,14 @@ const logout = () => {
               <ChevronDown :class="[openGroups.servis ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
             <div v-show="openGroups.servis" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Servis Baru (Cuci / Patri)
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Data Servis Perhiasan
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Jenis Servis
-              </span>
+              <Link :href="route('admin.services.create')" :class="[isRoute('admin.services.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Order Servis Baru</span>
+              </Link>
+              <Link :href="route('admin.services.index')" :class="[isRoute('admin.services.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Data Servis Perhiasan</span>
+              </Link>
             </div>
           </div>
 
@@ -424,13 +424,17 @@ const logout = () => {
               <ChevronDown :class="[openGroups.timbangBaki ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
             <div v-show="openGroups.timbangBaki" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link :href="route('admin.tray-scales.create')" :class="[isRoute('admin.tray-scales.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Timbang Baki Baru</span>
+              </Link>
+              <Link :href="route('admin.tray-scales.index')" :class="[isRoute('admin.tray-scales.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Riwayat Timbang Harian</span>
+              </Link>
               <Link :href="route('admin.trays.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
                 <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Data Baki & Etalase</span>
-              </Link>
-              <Link :href="route('admin.stock-audits.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Audit & Timbang Baki</span>
+                <span>Katalog Baki & Etalase</span>
               </Link>
             </div>
           </div>

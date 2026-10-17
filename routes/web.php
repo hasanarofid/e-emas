@@ -120,6 +120,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/buyback-deductions', [BuybackDeductionController::class, 'index'])->name('buyback-deductions.index');
     Route::put('/buyback-deductions/{buybackDeduction}', [BuybackDeductionController::class, 'update'])->name('buyback-deductions.update');
 
+    // 7c. Modul Transaksi Khusus Toko Emas Sitokmas (FASE 4)
+    Route::resource('pawns', \App\Http\Controllers\Admin\PawnController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::post('/pawns/{pawn}/redeem', [\App\Http\Controllers\Admin\PawnController::class, 'redeem'])->name('pawns.redeem');
+    
+    Route::resource('services', \App\Http\Controllers\Admin\JewelryServiceController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::patch('/services/{service}/status', [\App\Http\Controllers\Admin\JewelryServiceController::class, 'updateStatus'])->name('services.update-status');
+
+    Route::resource('tray-scales', \App\Http\Controllers\Admin\TrayScaleController::class)->only(['index', 'create', 'store']);
+
     // 8. Stock Opname & Audit Baki (FASE 5)
     Route::get('/stock-audits', [\App\Http\Controllers\Admin\StockAuditController::class, 'index'])->name('stock-audits.index');
     Route::post('/stock-audits', [\App\Http\Controllers\Admin\StockAuditController::class, 'store'])->name('stock-audits.store');
