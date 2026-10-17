@@ -52,6 +52,104 @@ class CustomerController extends Controller
     }
 
     /**
+     * Halaman Point & Member (Program Loyalitas Poin & Tingkatan Member)
+     */
+    public function points(Request $request): Response
+    {
+        $query = Customer::query();
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('code', 'like', "%{$search}%")
+                  ->orWhere('phone', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('tier')) {
+            $tier = $request->tier;
+            if ($tier === 'platinum') {
+                $query->where('points', '>=', 500);
+            } elseif ($tier === 'gold') {
+                $query->whereBetween('points', [200, 499]);
+            } elseif ($tier === 'silver') {
+                $query->whereBetween('points', [50, 199]);
+            } elseif ($tier === 'bronze') {
+                $query->where('points', '<', 50);
+            }
+        }
+
+        $customers = $query->orderByDesc('points')->paginate(10)->withQueryString();
+
+        $pointLogs = CustomerPointLog::with(['customer', 'user'])
+            ->latest()
+            ->take(15)
+            ->get();
+
+        $totalActivePoints = (int) Customer::sum('points');
+        $totalRedeemedPoints = (int) abs(CustomerPointLog::where('type', 'redeem')->sum('points'));
+        $topMembers = Customer::orderByDesc('points')->take(5)->get();
+
+        $rewardCatalog = [
+            [
+                'id' => 1,
+                'name' => 'Souvenir Pouch & Kotak Perhiasan Eksklusif',
+                'points_required' => 50,
+                'stock' => 25,
+                'category' => 'Aksesoris',
+                'description' => 'Kotak beludru elegan untuk menyimpan perhiasan emas dan sertifikat.'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Payung Golf Premium Toko Mas Permata',
+                'points_required' => 100,
+                'stock' => 18,
+                'category' => 'Merchandise',
+                'description' => 'Payung kokoh windproof dengan branding logo emas elegan.'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Voucher Potongan Ongkos Bikin Rp 100.000',
+                'points_required' => 200,
+                'stock' => 99,
+                'category' => 'Voucher Belanja',
+                'description' => 'Potongan langsung biaya ongkos pembuatan perhiasan custom atau baki.'
+            ],
+            [
+                'id' => 4,
+                'name' => 'Logam Mulia Mini Gold 0.05 Gram',
+                'points_required' => 350,
+                'stock' => 12,
+                'category' => 'Emas Murni',
+                'description' => 'Kepingan emas 24 karat bersertifikasi resmi pabrik.'
+            ],
+            [
+                'id' => 5,
+                'name' => 'Logam Mulia Antam Certicard 0.5 Gram',
+                'points_required' => 750,
+                'stock' => 5,
+                'category' => 'Emas Murni',
+                'description' => 'Emas batangan murni 24 karat kemasan CertiEye resmi Antam.'
+            ],
+        ];
+
+        return Inertia::render('Admin/Customers/PointMember', [
+            'customers' => $customers,
+            'pointLogs' => $pointLogs,
+            'filters' => $request->only(['search', 'tier']),
+            'stats' => [
+                'total_members' => Customer::count(),
+                'total_active_points' => $totalActivePoints,
+                'total_redeemed_points' => $totalRedeemedPoints,
+                'total_purchases_amount' => (float) Customer::sum('total_purchased_amount'),
+            ],
+            'topMembers' => $topMembers,
+            'rewardCatalog' => $rewardCatalog,
+        ]);
+    }
+
+    /**
      * Form tambah pelanggan baru
      */
     public function create(): Response

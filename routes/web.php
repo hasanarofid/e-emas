@@ -84,6 +84,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('/inventory/movements', [StockMovementController::class, 'storeMovement'])->name('inventory.movements.store');
 
     // 4d. Modul Pelanggan & Point Sitokmas (FASE 2)
+    Route::get('/customers/points', [CustomerController::class, 'points'])->name('customers.points');
     Route::get('/customers/export', [CustomerController::class, 'export'])->name('customers.export');
     Route::get('/customers/{customer}/transactions', [CustomerController::class, 'transactions'])->name('customers.transactions');
     Route::post('/customers/{customer}/redeem-reward', [CustomerController::class, 'redeemReward'])->name('customers.redeem-reward');
