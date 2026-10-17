@@ -26,28 +26,37 @@ jobs:
             echo "=== DEPLOY DIAGNOSTIC ===" > "$DIAG_FILE"
             date >> "$DIAG_FILE"
             echo "SSH User: $(whoami)" >> "$DIAG_FILE"
-            ls -la /www/server/data/default.pl >> "$DIAG_FILE" 2>&1 || true
             grep -E "^DB_CONNECTION|^DB_HOST|^DB_PORT|^DB_DATABASE|^DB_USERNAME" .env >> "$DIAG_FILE" || true
             
-            # Sync MySQL user 'emas_db' privileges as root
+            # Extract aaPanel MySQL root password & databases from aaPanel SQLite db
+            AAPANEL_ROOT_PASS=$(python3 -c "
+import sqlite3
+try:
+    conn = sqlite3.connect('/www/server/panel/data/default.db')
+    c = conn.cursor()
+    c.execute('SELECT mysql_root FROM config LIMIT 1')
+    res = c.fetchone()
+    if res and res[0]:
+        print(res[0])
+except Exception as e:
+    pass
+" 2>/dev/null || true)
+
+            echo "Found aaPanel Root Pass length: ${#AAPANEL_ROOT_PASS}" >> "$DIAG_FILE"
+
             ENV_DB_PASS=$(grep -E "^DB_PASSWORD=" .env | cut -d '=' -f2- | tr -d '"' | tr -d "'")
             
             SQL_QUERY="CREATE DATABASE IF NOT EXISTS emas_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; CREATE USER IF NOT EXISTS 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS'; CREATE USER IF NOT EXISTS 'emas_db'@'127.0.0.1' IDENTIFIED BY '$ENV_DB_PASS'; ALTER USER 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS'; ALTER USER 'emas_db'@'127.0.0.1' IDENTIFIED BY '$ENV_DB_PASS'; GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'localhost'; GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'127.0.0.1'; FLUSH PRIVILEGES;"
             
-            # Try connecting to MySQL using various aaPanel root credentials
-            MYSQL_ROOT_PASS=""
-            if [ -f /www/server/data/default.pl ]; then
-              MYSQL_ROOT_PASS=$(cat /www/server/data/default.pl)
-            elif [ -f /www/server/mysql/default.pl ]; then
-              MYSQL_ROOT_PASS=$(cat /www/server/mysql/default.pl)
+            if [ -n "$AAPANEL_ROOT_PASS" ]; then
+              mysql -u root -p"$AAPANEL_ROOT_PASS" -e "$SQL_QUERY" 2>> "$DIAG_FILE" && echo "MySQL grants synced with aaPanel root password successfully" >> "$DIAG_FILE" || true
             fi
+            
+            # Fallback attempts
+            mysql -e "$SQL_QUERY" 2>> "$DIAG_FILE" || true
 
-            if [ -n "$MYSQL_ROOT_PASS" ]; then
-              mysql -u root -p"$MYSQL_ROOT_PASS" -e "$SQL_QUERY" 2>> "$DIAG_FILE" || true
-            fi
-            mysql -e "$SQL_QUERY" 2>> "$DIAG_FILE" || \
-            mysql --defaults-file=/etc/mysql/debian.cnf -e "$SQL_QUERY" 2>> "$DIAG_FILE" || \
-            mysql -u root -e "$SQL_QUERY" 2>> "$DIAG_FILE" || true
+            # Test connection as emas_db
+            mysql -u emas_db -p"$ENV_DB_PASS" -h 127.0.0.1 emas_db -e "SELECT 1;" 2>> "$DIAG_FILE" && echo "emas_db connected successfully!" >> "$DIAG_FILE" || true
 
             composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
             php artisan migrate --force
