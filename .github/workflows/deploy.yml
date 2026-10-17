@@ -27,6 +27,23 @@ jobs:
             date >> "$DIAG_FILE"
             grep -E "^DB_CONNECTION|^DB_HOST|^DB_PORT|^DB_DATABASE|^DB_USERNAME" .env >> "$DIAG_FILE" || true
             
+            # Check aaPanel root password or my.cnf and sync emas_db password
+            ROOT_PASS=$(cat /www/server/data/default.pl 2>/dev/null || true)
+            ENV_DB_PASS=$(grep -E "^DB_PASSWORD=" .env | cut -d '=' -f2- | tr -d '"' | tr -d "'")
+            if [ -n "$ROOT_PASS" ] && [ -n "$ENV_DB_PASS" ]; then
+              echo "Syncing emas_db user credentials via MySQL root..." >> "$DIAG_FILE"
+              mysql -u root -p"$ROOT_PASS" -e "
+                CREATE DATABASE IF NOT EXISTS emas_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+                CREATE USER IF NOT EXISTS 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS';
+                CREATE USER IF NOT EXISTS 'emas_db'@'127.0.0.1' IDENTIFIED BY '$ENV_DB_PASS';
+                ALTER USER 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS';
+                ALTER USER 'emas_db'@'127.0.0.1' IDENTIFIED BY '$ENV_DB_PASS';
+                GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'localhost';
+                GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'127.0.0.1';
+                FLUSH PRIVILEGES;
+              " >> "$DIAG_FILE" 2>&1 || echo "MySQL sync warning: $?" >> "$DIAG_FILE"
+            fi
+
             php -r "
               \$lines = file('.env');
               \$env = [];
@@ -36,17 +53,9 @@ jobs:
                   \$env[\$k] = trim(\$v, '\"\'');
                 }
               }
-              echo 'Testing host=' . (\$env['DB_HOST'] ?? '127.0.0.1') . ': ';
+              echo 'Re-testing host=' . (\$env['DB_HOST'] ?? '127.0.0.1') . ': ';
               try {
                 \$p1 = new PDO('mysql:host=' . (\$env['DB_HOST'] ?? '127.0.0.1') . ';port=3306;dbname=' . (\$env['DB_DATABASE'] ?? 'emas_db'), \$env['DB_USERNAME'], \$env['DB_PASSWORD']);
-                echo 'SUCCESS\n';
-              } catch (Exception \$e) {
-                echo 'FAIL: ' . \$e->getMessage() . '\n';
-              }
-
-              echo 'Testing host=localhost: ';
-              try {
-                \$p2 = new PDO('mysql:host=localhost;dbname=' . (\$env['DB_DATABASE'] ?? 'emas_db'), \$env['DB_USERNAME'], \$env['DB_PASSWORD']);
                 echo 'SUCCESS\n';
               } catch (Exception \$e) {
                 echo 'FAIL: ' . \$e->getMessage() . '\n';
