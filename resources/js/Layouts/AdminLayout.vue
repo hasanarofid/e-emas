@@ -31,7 +31,8 @@ import {
   Search,
   Circle,
   Building2,
-  Award
+  Award,
+  ShoppingCart
 } from 'lucide-vue-next';
 import ThemeToggle from '@/Components/ThemeToggle.vue';
 
@@ -55,8 +56,8 @@ const openGroups = ref({
   utilitas: isRoute('admin.settings.*'),
   persediaan: isRoute('admin.brands.*') || isRoute('admin.units.*') || isRoute('admin.warehouses.*') || isRoute('admin.gold-rates.*') || isRoute('admin.items.*') || isRoute('admin.trays.*') || isRoute('admin.inventory.*') || isRoute('admin.stock-audits.*'),
   pelanggan: isRoute('admin.customers.*'),
-  pembelian: isRoute('admin.buybacks.*') || isRoute('admin.purchases.*') || isRoute('admin.suppliers.*'),
-  pembelianCepat: false,
+  pembelian: isRoute('admin.purchases.*') || isRoute('admin.suppliers.*') || isRoute('admin.buyback-deductions.*'),
+  pembelianCepat: isRoute('admin.buybacks.*'),
   penjualan: isRoute('admin.pos.*') || isRoute('admin.sales.*'),
   gadai: isRoute('admin.pawns.*'),
   tukarTambah: isRoute('admin.trade-ins.*'),
@@ -278,10 +279,6 @@ const logout = () => {
               <ChevronDown :class="[openGroups.pembelian ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
             <div v-show="openGroups.pembelian" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.buybacks.index')" :class="[isRoute('admin.buybacks.*') ? 'text-amber-400 font-semibold' : 'text-slate-400', 'flex items-center gap-2 py-1.5 px-2 rounded-lg hover:text-white hover:bg-[#25254B]']">
-                <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Beli Kembali (Buyback)</span>
-              </Link>
               <Link :href="route('admin.suppliers.index')" :class="[isRoute('admin.suppliers.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']">
                 <Circle class="w-1.5 h-1.5 fill-current" />
                 <span>Supplier & Pabrik Emas</span>
@@ -297,17 +294,57 @@ const logout = () => {
             </div>
           </div>
 
-          <!-- 6. PEMBELIAN CEPAT -->
-          <Link 
-            :href="route('admin.buybacks.create')"
-            class="flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
-          >
-            <div class="flex items-center gap-3">
-              <Zap class="w-4 h-4 text-amber-400 shrink-0" />
-              <span>Pembelian Cepat</span>
+          <!-- 6. PEMBELIAN CEPAT (ACCORDION SITOKMAS EDITION) -->
+          <div>
+            <button 
+              @click="toggleGroup('pembelianCepat')" 
+              type="button"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-slate-300 hover:bg-[#25254B] hover:text-white transition-all cursor-pointer"
+            >
+              <div class="flex items-center gap-3">
+                <ShoppingCart class="w-4 h-4 text-slate-400 shrink-0" />
+                <span>Pembelian Cepat</span>
+              </div>
+              <ChevronDown :class="[openGroups.pembelianCepat ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
+            </button>
+            <div v-show="openGroups.pembelianCepat" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
+              <Link 
+                :href="route('admin.buybacks.index')" 
+                :class="[isRoute('admin.buybacks.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+              >
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Data Pembelian Cepat</span>
+              </Link>
+              <Link 
+                :href="route('admin.buybacks.create')" 
+                :class="[isRoute('admin.buybacks.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+              >
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Pembelian Baru</span>
+              </Link>
+              <Link 
+                :href="route('admin.buybacks.index')" 
+                class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+              >
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Laporan Pembelian Cepat</span>
+              </Link>
+              <Link 
+                :href="route('admin.buybacks.index', { period: 'daily' })" 
+                class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+              >
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Pembelian Harian</span>
+              </Link>
+              <Link 
+                :href="route('admin.buybacks.index', { period: 'monthly' })" 
+                class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+              >
+                <Circle class="w-1.5 h-1.5 fill-current" />
+                <span>Pembelian Bulanan</span>
+              </Link>
             </div>
-            <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 rounded font-mono">KASIR</span>
-          </Link>
+          </div>
 
           <!-- 7. PENJUALAN (POS KASIR RESMI) -->
           <div>

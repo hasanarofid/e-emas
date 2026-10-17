@@ -33,6 +33,13 @@ class BuybackController extends Controller
             });
         }
 
+        if ($request->period === 'daily') {
+            $query->whereDate('created_at', today());
+        } elseif ($request->period === 'monthly') {
+            $query->whereMonth('created_at', now()->month)
+                  ->whereYear('created_at', now()->year);
+        }
+
         $buybacks = $query->paginate(15)->withQueryString();
 
         // Aggregated Stats
