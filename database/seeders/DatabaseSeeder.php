@@ -509,6 +509,7 @@ class DatabaseSeeder extends Seeder
         // 8. Seeder Pegawai & Riwayat Penggajian (Fase 5)
         $this->call([
             \Database\Seeders\EmployeeAndPayrollSeeder::class,
+            \Database\Seeders\FinanceSeeder::class,
         ]);
     }
 }

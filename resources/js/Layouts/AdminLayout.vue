@@ -64,7 +64,7 @@ const openGroups = ref({
   servis: isRoute('admin.services.*'),
   timbangBaki: false,
   pegawai: isRoute('admin.employees.*') || isRoute('admin.payrolls.*'),
-  keuangan: isRoute('admin.finance.*'),
+  keuangan: isRoute('admin.cash-book.*') || isRoute('admin.expenses.*') || isRoute('admin.debts.*') || isRoute('admin.finance.*'),
 });
 
 const toggleGroup = (groupKey) => {
@@ -524,7 +524,7 @@ const logout = () => {
             </div>
           </div>
 
-          <!-- 13. KEUANGAN (BADGE 46, 12) -->
+          <!-- 13. KEUANGAN (SITOKMAS EDITION) -->
           <div>
             <button 
               @click="toggleGroup('keuangan')" 
@@ -542,16 +542,82 @@ const logout = () => {
               <ChevronDown :class="[openGroups.keuangan ? 'rotate-180' : '', 'w-3.5 h-3.5 text-slate-400 transition-transform']" />
             </button>
             <div v-show="openGroups.keuangan" class="pl-8 pr-2 py-1 space-y-1 border-l border-[#2E2E56] ml-4 my-1">
-              <Link :href="route('admin.reports.index')" class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]">
-                <Circle class="w-1.5 h-1.5 fill-current" />
-                <span>Buku Kas Toko</span>
-              </Link>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Pengeluaran Harian & Bulanan
-              </span>
-              <span class="block py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B] cursor-pointer">
-                Rekapitulasi Laba Rugi
-              </span>
+              <!-- Buku Kas Sub-group -->
+              <div class="pt-1 space-y-1">
+                <span class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider block">Buku Kas Toko</span>
+                <Link 
+                  :href="route('admin.cash-book.create')" 
+                  :class="[isRoute('admin.cash-book.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Tambah Baru (Kas In/Out)</span>
+                </Link>
+                <Link 
+                  :href="route('admin.cash-book.index')" 
+                  :class="[isRoute('admin.cash-book.index') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Buku Kas & Saldo</span>
+                </Link>
+              </div>
+
+              <!-- Pengeluaran Sub-group -->
+              <div class="pt-1.5 border-t border-[#25254B] mt-1 space-y-1">
+                <span class="text-[11px] font-semibold text-slate-400 px-2 uppercase tracking-wider block">Pengeluaran</span>
+                <Link 
+                  :href="route('admin.expenses.create')" 
+                  :class="[isRoute('admin.expenses.create') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Tambah Pengeluaran</span>
+                </Link>
+                <Link 
+                  :href="route('admin.expenses.index')" 
+                  :class="[isRoute('admin.expenses.index') && !route().params.period ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Data Pengeluaran</span>
+                </Link>
+                <Link 
+                  :href="route('admin.expenses.index', { period: 'daily' })" 
+                  class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Pengeluaran Harian</span>
+                </Link>
+                <Link 
+                  :href="route('admin.expenses.index', { period: 'monthly' })" 
+                  class="flex items-center gap-2 py-1.5 px-2 rounded-lg text-slate-400 hover:text-white hover:bg-[#25254B]"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Pengeluaran Bulanan</span>
+                </Link>
+              </div>
+
+              <!-- Utang & Laporan Sub-group -->
+              <div class="pt-1.5 border-t border-[#25254B] mt-1 space-y-1">
+                <Link 
+                  :href="route('admin.debts.index')" 
+                  :class="[isRoute('admin.debts.*') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Pembayaran Utang Supplier</span>
+                </Link>
+                <Link 
+                  :href="route('admin.finance.profit-loss')" 
+                  :class="[isRoute('admin.finance.profit-loss') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Rekapitulasi Laba Rugi</span>
+                </Link>
+                <Link 
+                  :href="route('admin.finance.tax-report')" 
+                  :class="[isRoute('admin.finance.tax-report') ? 'text-amber-400 font-semibold bg-[#25254B]' : 'text-slate-400 hover:text-white hover:bg-[#25254B]', 'flex items-center gap-2 py-1.5 px-2 rounded-lg']"
+                >
+                  <Circle class="w-1.5 h-1.5 fill-current" />
+                  <span>Rekapitulasi Pajak Emas</span>
+                </Link>
+              </div>
             </div>
           </div>
 

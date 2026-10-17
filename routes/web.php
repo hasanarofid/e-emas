@@ -15,6 +15,10 @@ use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Admin\WarehouseController;
 use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\PayrollController;
+use App\Http\Controllers\Admin\CashBookController;
+use App\Http\Controllers\Admin\ExpenseController;
+use App\Http\Controllers\Admin\DebtController;
+use App\Http\Controllers\Admin\FinanceReportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -133,6 +137,15 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // 7d. Modul Pegawai & Penggajian Toko Emas (FASE 5)
     Route::resource('employees', EmployeeController::class);
     Route::resource('payrolls', PayrollController::class)->only(['index', 'create', 'store', 'show', 'destroy']);
+
+    // 7e. Modul Keuangan & Buku Kas Toko Emas (FASE 6)
+    Route::resource('cash-book', CashBookController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::resource('expenses', ExpenseController::class)->only(['index', 'create', 'store', 'destroy']);
+    Route::get('/debts', [DebtController::class, 'index'])->name('debts.index');
+    Route::post('/debts/{debt}/pay', [DebtController::class, 'pay'])->name('debts.pay');
+    Route::delete('/debts/{debt}', [DebtController::class, 'destroy'])->name('debts.destroy');
+    Route::get('/finance/profit-loss', [FinanceReportController::class, 'profitAndLoss'])->name('finance.profit-loss');
+    Route::get('/finance/tax-report', [FinanceReportController::class, 'taxReport'])->name('finance.tax-report');
 
     // 8. Stock Opname & Audit Baki (FASE 5)
     Route::get('/stock-audits', [\App\Http\Controllers\Admin\StockAuditController::class, 'index'])->name('stock-audits.index');
