@@ -29,43 +29,30 @@ jobs:
             ls -la /www/server/data/default.pl >> "$DIAG_FILE" 2>&1 || true
             grep -E "^DB_CONNECTION|^DB_HOST|^DB_PORT|^DB_DATABASE|^DB_USERNAME" .env >> "$DIAG_FILE" || true
             
-            # Check aaPanel root password or my.cnf and sync emas_db password
-            ROOT_PASS=$(cat /www/server/data/default.pl 2>/dev/null || true)
+            # Sync MySQL user 'emas_db' privileges as root
             ENV_DB_PASS=$(grep -E "^DB_PASSWORD=" .env | cut -d '=' -f2- | tr -d '"' | tr -d "'")
-            if [ -n "$ROOT_PASS" ] && [ -n "$ENV_DB_PASS" ]; then
-              echo "Syncing emas_db user credentials via MySQL root..." >> "$DIAG_FILE"
-              mysql -u root -p"$ROOT_PASS" -e "
-                CREATE DATABASE IF NOT EXISTS emas_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-                CREATE USER IF NOT EXISTS 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS';
-                CREATE USER IF NOT EXISTS 'emas_db'@'127.0.0.1' IDENTIFIED BY '$ENV_DB_PASS';
-                ALTER USER 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS';
-                ALTER USER 'emas_db'@'127.0.0.1' IDENTIFIED BY '$ENV_DB_PASS';
-                GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'localhost';
-                GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'127.0.0.1';
-                FLUSH PRIVILEGES;
-              " >> "$DIAG_FILE" 2>&1 || echo "MySQL sync warning: $?" >> "$DIAG_FILE"
+            
+            SQL_QUERY="CREATE DATABASE IF NOT EXISTS emas_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci; CREATE USER IF NOT EXISTS 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS'; CREATE USER IF NOT EXISTS 'emas_db'@'127.0.0.1' IDENTIFIED BY '$ENV_DB_PASS'; ALTER USER 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS'; ALTER USER 'emas_db'@'127.0.0.1' IDENTIFIED BY '$ENV_DB_PASS'; GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'localhost'; GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'127.0.0.1'; FLUSH PRIVILEGES;"
+            
+            # Try connecting to MySQL using various aaPanel root credentials
+            MYSQL_ROOT_PASS=""
+            if [ -f /www/server/data/default.pl ]; then
+              MYSQL_ROOT_PASS=$(cat /www/server/data/default.pl)
+            elif [ -f /www/server/mysql/default.pl ]; then
+              MYSQL_ROOT_PASS=$(cat /www/server/mysql/default.pl)
             fi
 
-            php -r "
-              \$lines = file('.env');
-              \$env = [];
-              foreach (\$lines as \$line) {
-                if (strpos(\$line, '=') !== false && strpos(trim(\$line), '#') !== 0) {
-                  list(\$k, \$v) = explode('=', trim(\$line), 2);
-                  \$env[\$k] = trim(\$v, '\"\'');
-                }
-              }
-              echo 'Re-testing host=' . (\$env['DB_HOST'] ?? '127.0.0.1') . ': ';
-              try {
-                \$p1 = new PDO('mysql:host=' . (\$env['DB_HOST'] ?? '127.0.0.1') . ';port=3306;dbname=' . (\$env['DB_DATABASE'] ?? 'emas_db'), \$env['DB_USERNAME'], \$env['DB_PASSWORD']);
-                echo 'SUCCESS\n';
-              } catch (Exception \$e) {
-                echo 'FAIL: ' . \$e->getMessage() . '\n';
-              }
-            " >> "$DIAG_FILE" 2>&1 || true
+            if [ -n "$MYSQL_ROOT_PASS" ]; then
+              mysql -u root -p"$MYSQL_ROOT_PASS" -e "$SQL_QUERY" 2>> "$DIAG_FILE" || true
+            fi
+            mysql -e "$SQL_QUERY" 2>> "$DIAG_FILE" || \
+            mysql --defaults-file=/etc/mysql/debian.cnf -e "$SQL_QUERY" 2>> "$DIAG_FILE" || \
+            mysql -u root -e "$SQL_QUERY" 2>> "$DIAG_FILE" || true
 
             composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
-            php artisan migrate --force || echo "Migration warning: $?" >> "$DIAG_FILE"
+            php artisan migrate --force
+            php artisan db:seed --class=EmployeeAndPayrollSeeder --force || true
+            php artisan db:seed --class=FinanceSeeder --force || true
             php artisan storage:link --quiet || true
             php artisan optimize:clear
             php artisan config:cache
@@ -73,4 +60,5 @@ jobs:
             php artisan view:cache
             chown -R www:www /www/wwwroot/posemas.web.id
             chmod -R 775 /www/wwwroot/posemas.web.id/storage /www/wwwroot/posemas.web.id/bootstrap/cache
-            echo "🚀 Deployment to posemas.web.id finished!" >> "$DIAG_FILE"
+            echo "Deployment finished at $(date)" >> "$DIAG_FILE"
+            echo "🚀 Deployment to posemas.web.id successful!"
