@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 cd /www/wwwroot/posemas.web.id
 git config --global --add safe.directory /www/wwwroot/posemas.web.id
@@ -9,6 +8,7 @@ DIAG_FILE="/www/wwwroot/posemas.web.id/public/deploy_diag.txt"
 echo "=== DEPLOY DIAGNOSTIC ===" > "$DIAG_FILE"
 date >> "$DIAG_FILE"
 echo "SSH User: $(whoami)" >> "$DIAG_FILE"
+echo "PHP Version: $(php -v | head -n 1)" >> "$DIAG_FILE"
 grep -E "^DB_CONNECTION|^DB_HOST|^DB_PORT|^DB_DATABASE|^DB_USERNAME" .env >> "$DIAG_FILE" || true
 
 # 1. Cek apakah ada password tersimpan untuk database 'emas_db' di SQLite aaPanel
@@ -27,7 +27,6 @@ except Exception:
 
 if [ -n "$REAL_DB_PASS" ]; then
     echo "Found registered password in aaPanel for emas_db" >> "$DIAG_FILE"
-    # Update DB_PASSWORD di .env agar 100% sama dengan aaPanel
     sed -i "s|^DB_PASSWORD=.*|DB_PASSWORD=\"$REAL_DB_PASS\"|" .env
 fi
 
@@ -49,7 +48,7 @@ except Exception:
 
 echo "Discovered MySQL root pass length: ${#ROOT_PASS}" >> "$DIAG_FILE"
 
-# 3. Query untuk sinkronisasi user emas_db di semua host (localhost, 127.0.0.1, %)
+# 3. Query untuk sinkronisasi user emas_db di semua host
 SQL_GRANT="
 CREATE DATABASE IF NOT EXISTS emas_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER IF NOT EXISTS 'emas_db'@'localhost' IDENTIFIED BY '$ENV_DB_PASS';
@@ -64,33 +63,35 @@ GRANT ALL PRIVILEGES ON emas_db.* TO 'emas_db'@'%';
 FLUSH PRIVILEGES;
 "
 
-# Eksekusi SQL sebagai root jika password ditemukan
 if [ -n "$ROOT_PASS" ]; then
     mysql -u root -p"$ROOT_PASS" -e "$SQL_GRANT" 2>> "$DIAG_FILE" && echo "Grants updated successfully with ROOT_PASS" >> "$DIAG_FILE" || true
 fi
-
-# Coba tanpa password (jika root socket auth aktif)
-mysql -e "$SQL_GRANT" 2>> "$DIAG_FILE" || true
 
 # 4. Tes koneksi database emas_db
 echo "=== TESTING MYSQL CONNECTION ===" >> "$DIAG_FILE"
 mysql -u emas_db -p"$ENV_DB_PASS" -h 127.0.0.1 emas_db -e "SELECT 'Koneksi Sukses' as status;" >> "$DIAG_FILE" 2>&1 || true
 
-# 5. Jalankan composer & Laravel migrations
-composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
-php artisan migrate --force >> "$DIAG_FILE" 2>&1 || true
-php artisan db:seed --class=EmployeeAndPayrollSeeder --force || true
-php artisan db:seed --class=FinanceSeeder --force || true
+# 5. Clear cache sebelum migrasi agar tidak ada stale config
+php artisan optimize:clear >> "$DIAG_FILE" 2>&1 || true
 
+# 6. Jalankan migrations secara terperinci
+echo "=== RUNNING MIGRATIONS ===" >> "$DIAG_FILE"
+php artisan migrate --force >> "$DIAG_FILE" 2>&1
+
+echo "=== RUNNING SEEDERS ===" >> "$DIAG_FILE"
+php artisan db:seed --force >> "$DIAG_FILE" 2>&1 || true
+
+# 7. Storage link & optimize
 php artisan storage:link --quiet || true
 php artisan optimize:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# 6. Set permission folder
+# 8. Set file permission
 chown -R www:www /www/wwwroot/posemas.web.id
 chmod -R 775 /www/wwwroot/posemas.web.id/storage /www/wwwroot/posemas.web.id/bootstrap/cache
 
-echo "Deploy finished: $(date)" >> "$DIAG_FILE"
+echo "=== DEPLOYMENT COMPLETED SUCCESSFULLY ===" >> "$DIAG_FILE"
+date >> "$DIAG_FILE"
 echo "🚀 Deployment successfully completed!"
