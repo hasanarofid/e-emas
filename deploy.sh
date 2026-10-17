@@ -79,7 +79,9 @@ echo "=== RUNNING MIGRATIONS ===" >> "$DIAG_FILE"
 php artisan migrate --force >> "$DIAG_FILE" 2>&1
 
 echo "=== RUNNING SEEDERS ===" >> "$DIAG_FILE"
-php artisan db:seed --force >> "$DIAG_FILE" 2>&1 || true
+php artisan db:seed --class=DatabaseSeeder --force >> "$DIAG_FILE" 2>&1 || true
+php artisan db:seed --class=EmployeeAndPayrollSeeder --force >> "$DIAG_FILE" 2>&1 || true
+php artisan db:seed --class=FinanceSeeder --force >> "$DIAG_FILE" 2>&1 || true
 
 # 7. Storage link & optimize
 php artisan storage:link --quiet || true
@@ -92,6 +94,7 @@ php artisan view:cache
 chown -R www:www /www/wwwroot/posemas.web.id
 chmod -R 775 /www/wwwroot/posemas.web.id/storage /www/wwwroot/posemas.web.id/bootstrap/cache
 
-echo "=== DEPLOYMENT COMPLETED SUCCESSFULLY ===" >> "$DIAG_FILE"
-date >> "$DIAG_FILE"
+# Hapus file diagnostik demi keamanan data credentials
+rm -f "$DIAG_FILE"
+
 echo "🚀 Deployment successfully completed!"
